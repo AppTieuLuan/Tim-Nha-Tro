@@ -1,0 +1,186 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.nhatro.login.SignUpFragment">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_gravity="center"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="350dp"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:textColorHint="#8effffff"
+            android:background="@drawable/bubble"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/username" />
+
+            <EditText
+                android:id="@+id/txtusername"
+                android:singleLine="true"
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:background="@android:color/transparent"
+                android:gravity="center_vertical"
+                android:hint="@string/username"
+                android:paddingEnd="32dp"
+                android:paddingStart="32dp"
+                android:textColor="#ffffff"
+                android:textColorHint="#8effffff" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="350dp"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:textColorHint="#8effffff"
+            android:background="@drawable/bubble"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/email" />
+
+            <EditText
+                android:id="@+id/txtemail"
+                android:singleLine="true"
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:background="@android:color/transparent"
+                android:gravity="center_vertical"
+                android:hint="@string/email"
+                android:paddingEnd="32dp"
+                android:paddingStart="32dp"
+                android:textColor="#ffffff"
+                android:textColorHint="#8effffff" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="350dp"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:textColorHint="#8effffff"
+            android:background="@drawable/bubble"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/phone" />
+
+            <EditText
+                android:id="@+id/txtphone"
+                android:singleLine="true"
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:background="@android:color/transparent"
+                android:gravity="center_vertical"
+                android:hint="@string/phone"
+                android:paddingEnd="32dp"
+                android:paddingStart="32dp"
+                android:textColor="#ffffff"
+                android:textColorHint="#8effffff" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="350dp"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:textColorHint="#8effffff"
+            android:background="@drawable/bubble"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/password" />
+
+            <EditText
+                android:id="@+id/txtpassword"
+                android:layout_width="250dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@android:color/transparent"
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical"
+                android:hint="@string/password"
+                android:inputType="textPassword"
+                android:paddingEnd="32dp"
+                android:paddingStart="32dp"
+                android:textColor="#ffffff"
+                android:textColorHint="#8effffff" />
+
+            <ImageView
+                android:id="@+id/imgshowpass"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/eye_black" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="350dp"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:textColorHint="#8effffff"
+            android:background="@drawable/bubble"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:id="@+id/imgcfpassword"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/password" />
+
+            <EditText
+                android:id="@+id/txtcfpassword"
+                android:layout_width="250dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@android:color/transparent"
+                android:layout_marginTop="16dp"
+                android:gravity="center_vertical"
+                android:hint="@string/confirm_password"
+                android:inputType="textPassword"
+                android:paddingEnd="32dp"
+                android:paddingStart="32dp"
+                android:textColor="#ffffff"
+                android:textColorHint="#8effffff" />
+            <ImageView
+                android:id="@+id/imgshowcfpass"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/eye_black" />
+
+        </LinearLayout>
+        <Button
+            android:id="@+id/btnsignin"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="20dp"
+            android:textColor="#fff"
+            android:textAllCaps="false"
+            android:textSize="18dp"
+            android:background="@drawable/btnsignup"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/signup" />
+    </LinearLayout>
+
+</FrameLayout>

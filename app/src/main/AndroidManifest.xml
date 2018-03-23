@@ -47,7 +47,8 @@
             android:name=".Details"
             android:label="@string/title_activity_details"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ChonTinh"></activity>
+        <activity android:name=".ChonTinh" />
+        <activity android:name=".LoginActivity" />
     </application>
 
 </manifest>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#131A56"
+    android:fitsSystemWindows="true"
+    tools:context="com.nhatro.LoginActivity">
+
+    <FrameLayout
+        android:id="@+id/bottom_login"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <FrameLayout
+        android:id="@+id/bottom_sign_up"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <com.nhatro.login.LoginButton
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:onClick="switchFragment" />
+
+    <FrameLayout
+        android:id="@+id/top_login"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <FrameLayout
+        android:id="@+id/top_sign_up"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</android.support.design.widget.CoordinatorLayout>
+</layout>
+

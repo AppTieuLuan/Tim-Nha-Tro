@@ -24,9 +24,9 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationViewPager;
 import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
+import com.nhatro.login.LoginFragment;
 
 public class MainActivity extends AppCompatActivity {
-
 
     AHBottomNavigation bottomNavigation;
     final android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
