@@ -35,14 +35,14 @@ public class LoginActivity extends AppCompatActivity {
         SignUpFragment topSignUpFragment = new SignUpFragment();
 
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.bottom_login, bottomLoginFragment)
-                .replace(R.id.top_login, topLoginFragment)
-                .replace(R.id.bottom_sign_up, bottomSignUpFragment)
-                .replace(R.id.top_sign_up, topSignUpFragment)
+                .replace(R.id.bottom_login, bottomSignUpFragment)
+                //.replace(R.id.top_login, topSignUpFragment)
+                .replace(R.id.bottom_sign_up, bottomLoginFragment)
+                //.replace(R.id.top_sign_up, topLoginFragment)
                 .commit();
         binding.topLogin.setRotation(-90);
         binding.topSignUp.setRotation(90);
-        //binding.bottomLogin.setVisibility(GONE);
+        binding.bottomLogin.setVisibility(GONE);
         //binding.bottomSignUp.setVisibility(GONE);
 
         binding.button.setOnSignUpListener(bottomSignUpFragment);
@@ -51,12 +51,12 @@ public class LoginActivity extends AppCompatActivity {
         binding.button.setOnButtonSwitched(isLogin -> {
             if (!isLogin) {
                 getSupportActionBar().setTitle("Đăng ký");
-                binding.bottomSignUp.setVisibility(VISIBLE);
-                binding.bottomLogin.setVisibility(GONE);
-            } else {
-                getSupportActionBar().setTitle("Đăng nhập");
                 binding.bottomLogin.setVisibility(VISIBLE);
                 binding.bottomSignUp.setVisibility(GONE);
+            } else {
+                getSupportActionBar().setTitle("Đăng nhập");
+                binding.bottomSignUp.setVisibility(VISIBLE);
+                binding.bottomLogin.setVisibility(GONE);
             }
             binding.getRoot()
                     .setBackgroundColor(ContextCompat.getColor(
@@ -64,7 +64,7 @@ public class LoginActivity extends AppCompatActivity {
                             isLogin ? R.color.mycolor : R.color.secondPage));
         });
 
-        binding.bottomSignUp.setAlpha(0f);
+        binding.bottomLogin.setAlpha(0f);
     }
 
     @Override
@@ -78,27 +78,26 @@ public class LoginActivity extends AppCompatActivity {
 
     public void switchFragment(View v) {
         if (isLogin) {
+            //binding.topLogin.setAlpha(1f);
             binding.topLogin.animate().rotation(0).setListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     super.onAnimationEnd(animation);
-//                    binding.bottomLogin.setAlpha(1f);
-                    binding.bottomSignUp.setAlpha(1f);
-                    binding.topLogin.setRotation(-90);
+                    binding.bottomLogin.setAlpha(1f);
+                    //binding.topLogin.setRotation(-90);
                 }
             });
             binding.bottomSignUp.animate().alpha(0f);
         } else {
-            binding.topSignUp.setAlpha(1f);
             binding.topSignUp.animate().rotation(0).setListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     super.onAnimationEnd(animation);
-                    binding.bottomLogin.setAlpha(1f);
-                    binding.topSignUp.setRotation(90);
+                    binding.bottomSignUp.setAlpha(1f);
+                    //binding.topSignUp.setRotation(90);
                 }
             });
-            binding.bottomSignUp.animate().alpha(0f);
+            binding.bottomLogin.animate().alpha(0f);
         }
 
         isLogin = !isLogin;
@@ -108,6 +107,7 @@ public class LoginActivity extends AppCompatActivity {
     private int getBottomMargin() {
         return getResources().getDimensionPixelOffset(R.dimen.bottom_margin);
     }
+
     @Override
     public boolean onSupportNavigateUp() {
         finish();

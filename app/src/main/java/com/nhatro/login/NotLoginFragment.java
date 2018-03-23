@@ -29,9 +29,8 @@ public class NotLoginFragment extends Fragment {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(getActivity(), LoginActivity.class);
-//                startActivity(intent);
-                Toast.makeText(getContext(), "Xin chào các bạn", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent);
             }
         });
         return view;
