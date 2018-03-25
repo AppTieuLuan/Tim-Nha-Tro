@@ -32,15 +32,15 @@ public class MainActivity extends AppCompatActivity {
     final android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
     HomeFragment homeFragment = new HomeFragment();
     NotifyFragment notifyFragment = new NotifyFragment();
-    PostFragment postFragment = new PostFragment();
+
     AccountFragment accountFragment = new AccountFragment();
     tim_o_ghep tim_o_ghep = new tim_o_ghep();
     Fragment active = homeFragment;
-    private int t1, t2, t3 = 0;
+    private int t1, t2, t3, t4 = 0;
 
     @Override
     public void onBackPressed() {
-        if(active != homeFragment) {
+        if (active != homeFragment) {
             bottomNavigation.setCurrentItem(0, false);
             fragmentManager.beginTransaction().hide(active).show(homeFragment).commit();
             active = homeFragment;
@@ -66,13 +66,13 @@ public class MainActivity extends AppCompatActivity {
 
 
         TextView txtLogo = findViewById(R.id.txtLogo);
-        Typeface tf = Typeface.createFromAsset(getAssets(),"fonts/font_logo.TTF");
+        Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/font_logo.TTF");
         txtLogo.setTypeface(tf);
         //actionBar.hide();
 
         bottomNavigation = (AHBottomNavigation) findViewById(R.id.bottom_navigation);
         /////////////
-         // Test
+        // Test
         bottomNavigation.setBehaviorTranslationEnabled(false);
         bottomNavigation.setForceTint(true);
 
@@ -87,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
 
         AHBottomNavigationItem item2 = new AHBottomNavigationItem("Tìm ở ghép", R.drawable.news);
         bottomNavigation.addItem(item2);
+
 
         AHBottomNavigationItem item3 = new AHBottomNavigationItem("Thông báo", R.drawable.notify);
         bottomNavigation.addItem(item3);
@@ -146,21 +147,44 @@ public class MainActivity extends AppCompatActivity {
                                 active = notifyFragment;
                             }
                         } else {
-                            bottomNavigation.setCurrentItem(3, false);
-                            if (t3 == 1) { // Đã add Fragment account
-                                // Nếu account fragment không phải đang active
-                                if (active != accountFragment) {
+                            if (position == 3) {
+                                bottomNavigation.setCurrentItem(3, false);
+                                if (t3 == 1) { // Đã add Fragment account
+                                    // Nếu account fragment không phải đang active
+                                    if (active != accountFragment) {
+                                        fragmentManager.beginTransaction().hide(active).show(accountFragment).commit();
+                                        //Set active là account Fragment
+                                        active = accountFragment;
+                                    }
+                                } else { // chưa add Fragment account
+                                    t3 = 1; // Set là đã add
+                                    // Add vào
+                                    fragmentManager.beginTransaction().add(R.id.frame, accountFragment).commit();
                                     fragmentManager.beginTransaction().hide(active).show(accountFragment).commit();
-                                    //Set active là account Fragment
                                     active = accountFragment;
                                 }
-                            } else { // chưa add Fragment account
-                                t3 = 1; // Set là đã add
-                                // Add vào
-                                fragmentManager.beginTransaction().add(R.id.frame, accountFragment).commit();
-                                fragmentManager.beginTransaction().hide(active).show(accountFragment).commit();
-                                active = accountFragment;
+                            } else {
+                                // possition = 2
+
+                                /*bottomNavigation.setCurrentItem(2, false);
+                                if (t4 == 1) { // Đã add Fragment Nhận thông báo
+                                    // Nếu nhận thông báo fragment không phải đang active
+                                    if (active != dangKyNhanTinFragment) {
+                                        fragmentManager.beginTransaction().hide(active).show(dangKyNhanTinFragment).commit();
+                                        //Set active là account Fragment
+                                        active = dangKyNhanTinFragment;
+                                    }
+                                } else { // chưa add Fragment nhận thông báo
+                                    t4 = 1; // Set là đã add
+                                    // Add vào
+                                    fragmentManager.beginTransaction().add(R.id.frame, dangKyNhanTinFragment).commit();
+                                    fragmentManager.beginTransaction().hide(active).show(dangKyNhanTinFragment).commit();
+                                    active = dangKyNhanTinFragment;
+                                }*/
+
+
                             }
+
                         }
                     }
                 }
