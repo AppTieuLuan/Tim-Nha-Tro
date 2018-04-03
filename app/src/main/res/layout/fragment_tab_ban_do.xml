@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nest_scrollview"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:padding="10dp"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/gray2"
+        tools:context="com.nhatro.tab_details.TabBanDo">
+        <RelativeLayout
+            android:background="@drawable/corner_seekbar_mapview"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="350dp">
+
+            <com.google.android.gms.maps.MapView
+                android:id="@+id/mapTabBanDo"
+                android:layout_width="match_parent"
+                android:layout_height="300dp" />
+            <TextView
+                android:layout_below="@id/mapTabBanDo"
+                android:textStyle="italic"
+                android:gravity="center"
+                android:text="Chọn vào bản đồ để xem chế độ toàn màn hình"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <TextView
+                android:id="@+id/txtChiDuong"
+                android:textSize="12sp"
+                android:textColor="@color/white"
+                android:layout_margin="10dp"
+                android:layout_alignEnd="@id/mapTabBanDo"
+                android:text="Chỉ đường"
+                android:background="@drawable/vien_tron_trong_suot"
+                android:padding="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+        
+
+    </FrameLayout>
+</android.support.v4.widget.NestedScrollView>

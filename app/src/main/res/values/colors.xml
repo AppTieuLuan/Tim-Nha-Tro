@@ -9,6 +9,7 @@
     <color name="white">#ffffff</color>
 
     <color name="transparenttt">#2e000000</color>
+    <color name="transparenttt2">#80000000</color>
     <color name="red">#ff0000</color>
 
     <color name="black">#000000</color>
@@ -18,5 +19,7 @@
     <color name="text">#ffffff</color>
     <color name="text_two">#94ffffff</color>
     <color name="green">#940ce61f</color>
+
+    <color name="black_overlay">#66000000</color>
 
 </resources>

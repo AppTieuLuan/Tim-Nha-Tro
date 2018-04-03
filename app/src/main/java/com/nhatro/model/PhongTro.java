@@ -13,6 +13,28 @@ public class PhongTro {
     private float chieudai;
     private float chieurong;
     private String gioitinh;
+    private boolean daluu;
+
+    public PhongTro(int id, String tieude, String diachi, float gia, float dientich, float chieudai, float chieurong, String gioitinh, boolean daluu) {
+        this.id = id;
+        this.tieude = tieude;
+        this.diachi = diachi;
+        this.gia = gia;
+        this.dientich = dientich;
+        this.chieudai = chieudai;
+        this.chieurong = chieurong;
+        this.gioitinh = gioitinh;
+        this.daluu = daluu;
+    }
+
+    public boolean isDaluu() {
+
+        return daluu;
+    }
+
+    public void setDaluu(boolean daluu) {
+        this.daluu = daluu;
+    }
 
     public int getId() {
         return id;
@@ -90,5 +112,6 @@ public class PhongTro {
         this.chieudai = chieudai;
         this.chieurong = chieurong;
         this.gioitinh = gioitinh;
+        this.daluu = false;
     }
 }

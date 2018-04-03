@@ -39,8 +39,9 @@ public class HomeFragment extends Fragment {
     private int maxArea = 200;
     private int minArea = 0;
     private int chonSapXep = 0, tempChon = 0;
-    private boolean[] selectedFacilitiess = {false, false, false, false, false, false, false, false, false, false, false, false, false, false, false};
-    private boolean sex = true;
+    private boolean[] selectedFacilitiess = {false, false, false, false, false, false, false, false, false, false, false, false};
+    private boolean sex;
+    int namnu = 0;
 
     ArrayList<Integer> lstChonQuanHuyen;
 
@@ -101,7 +102,7 @@ public class HomeFragment extends Fragment {
                 bundle.putString("tenTP",tenTP);
                 bundle.putInt("maxPrice", maxSlider);
                 bundle.putInt("minPrice", minSlider);
-                bundle.putBoolean("sex", sex);
+                bundle.putInt("namnu",namnu);
                 bundle.putInt("minArea", minArea);
                 bundle.putInt("maxArea", maxArea);
                 bundle.putBooleanArray("arrFacilities", selectedFacilitiess);
@@ -205,7 +206,7 @@ public class HomeFragment extends Fragment {
                     btnSapXep.setVisibility(View.VISIBLE);
                     moDanhSach = true;
                     txtCheDoXem.setText("Bản đồ");
-                    imgBanDo.setImageResource(R.drawable.map);
+                    imgBanDo.setImageResource(R.drawable.icon_maps);
 
 //                    FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 //                    transaction.replace(R.id.framDanhSach, new ListFragment());
@@ -243,7 +244,7 @@ public class HomeFragment extends Fragment {
             Bundle bundle = data.getBundleExtra("data");
             tenTP = bundle.getString("tenTP");
             soNguoiO = bundle.getInt("soNguoiO");
-            sex = bundle.getBoolean("sex");
+
             maxSlider = bundle.getInt("maxPrice");
             minSlider = bundle.getInt("minPrice");
             selectedFacilitiess = bundle.getBooleanArray("arrFacilities");
@@ -255,7 +256,7 @@ public class HomeFragment extends Fragment {
             timNhaNguyenCan = bundle.getBoolean("timNhaNguyenCan");
             timPhongTro = bundle.getBoolean("timPhongTro");
             timTimOGhep = bundle.getBoolean("timTimOGhep");
-
+            namnu = bundle.getInt("namnu");
 
             if (moDanhSach) {
                 listFragment.filterData();

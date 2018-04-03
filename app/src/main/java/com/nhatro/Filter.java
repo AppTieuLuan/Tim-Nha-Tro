@@ -58,14 +58,14 @@ public class Filter extends AppCompatActivity {
     ArrayList<Integer> lstChonQuanHuyen;
 
     boolean[] selectedFacitilies;
-    boolean sex;
+    int namnu;
 
     String tenTP = "";
     ExpandableHeightGridView gridQuanHuyen;
     Grid_Quan_Huyen_Adapter grid_quan_huyen_adapter;
 
     TextView btnOK, btnCancel, txtTPHT;
-    RadioButton radNam, radNu;
+    RadioButton radNam, radNu, radCa2;
     SegmentedGroup radGroup;
     CheckBox checkNhaTro, checkNhaNguyenCan, checkTimOGhep;
     LinearLayout btnChonTinh;
@@ -119,7 +119,7 @@ public class Filter extends AppCompatActivity {
 
         lstChonQuanHuyen = bundle.getIntegerArrayList("lstChonQuanHuyen");
         moDanhSach = bundle.getBoolean("moDanhSach");
-        sex = bundle.getBoolean("sex");
+        namnu = bundle.getInt("namnu");
         min = bundle.getInt("minPrice");
         max = bundle.getInt("maxPrice");
         tinhTP = bundle.getInt("tinhTP");
@@ -223,36 +223,17 @@ public class Filter extends AppCompatActivity {
         gridFacilities.setFocusable(false);
 
         lstFacilities.add(new Item_Grid_Facilities("Wifi", R.drawable.icons_wi_fi, selectedFacitilies[0]));
-        lstFacilities.add(new Item_Grid_Facilities("Gác", R.drawable.icons_wi_fi, selectedFacitilies[1]));
-        lstFacilities.add(new Item_Grid_Facilities("Toilet riêng", R.drawable.icons_wi_fi, selectedFacitilies[2]));
-        lstFacilities.add(new Item_Grid_Facilities("Phòng tắm riêng", R.drawable.icons_wi_fi, selectedFacitilies[3]));
-        lstFacilities.add(new Item_Grid_Facilities("Giường", R.drawable.icons_wi_fi, selectedFacitilies[4]));
-        lstFacilities.add(new Item_Grid_Facilities("Tivi", R.drawable.icons_wi_fi, selectedFacitilies[5]));
-        lstFacilities.add(new Item_Grid_Facilities("Tủ lạnh", R.drawable.icons_wi_fi, selectedFacitilies[6]));
-        lstFacilities.add(new Item_Grid_Facilities("Bếp gas", R.drawable.icons_wi_fi, selectedFacitilies[7]));
-        lstFacilities.add(new Item_Grid_Facilities("Quạt", R.drawable.icons_wi_fi, selectedFacitilies[8]));
-        lstFacilities.add(new Item_Grid_Facilities("Có bảo vệ", R.drawable.icons_wi_fi, selectedFacitilies[9]));
-        lstFacilities.add(new Item_Grid_Facilities("Máy lạnh", R.drawable.icons_wi_fi, selectedFacitilies[10]));
-        lstFacilities.add(new Item_Grid_Facilities("Camera", R.drawable.icons_wi_fi, selectedFacitilies[11]));
-        lstFacilities.add(new Item_Grid_Facilities("Cho phép vật nuôi", R.drawable.icons_wi_fi, selectedFacitilies[12]));
-        lstFacilities.add(new Item_Grid_Facilities("Giờ tự do", R.drawable.icons_wi_fi, selectedFacitilies[13]));
-        lstFacilities.add(new Item_Grid_Facilities("Khu để xe riêng", R.drawable.icons_wi_fi, selectedFacitilies[14]));
-
-//        lstFacilities.add(new Item_Grid_Facilities("Wifi", R.drawable.icons_wi_fi, false));
-//        lstFacilities.add(new Item_Grid_Facilities("Gác", R.drawable.icons_wi_fi, false));
-//        lstFacilities.add(new Item_Grid_Facilities("Toilet riêng", R.drawable.icons_wi_fi, false));
-//        lstFacilities.add(new Item_Grid_Facilities("Phòng tắm riêng", R.drawable.icons_wi_fi, false));
-//        lstFacilities.add(new Item_Grid_Facilities("Giường", R.drawable.icons_wi_fi, false));
-//        lstFacilities.add(new Item_Grid_Facilities("Tivi", R.drawable.icons_wi_fi, false));
-//        lstFacilities.add(new Item_Grid_Facilities("Tủ lạnh", R.drawable.icons_wi_fi, false));
-//        lstFacilities.add(new Item_Grid_Facilities("Bếp gas", R.drawable.icons_wi_fi, false));
-//        lstFacilities.add(new Item_Grid_Facilities("Quạt", R.drawable.icons_wi_fi, false));
-//        lstFacilities.add(new Item_Grid_Facilities("Có bảo vệ", R.drawable.icons_wi_fi, false));
-//        lstFacilities.add(new Item_Grid_Facilities("Máy lạnh", R.drawable.icons_wi_fi, false));
-//        lstFacilities.add(new Item_Grid_Facilities("Camera", R.drawable.icons_wi_fi, false));
-//        lstFacilities.add(new Item_Grid_Facilities("Cho phép vật nuôi", R.drawable.icons_wi_fi, false));
-//        lstFacilities.add(new Item_Grid_Facilities("Giờ tự do", R.drawable.icons_wi_fi, false));
-//        lstFacilities.add(new Item_Grid_Facilities("Khu để xe riêng", R.drawable.icons_wi_fi, false));
+        lstFacilities.add(new Item_Grid_Facilities("Gác", R.drawable.icon_gac, selectedFacitilies[1]));
+        lstFacilities.add(new Item_Grid_Facilities("Toilet riêng", R.drawable.icon_toilet, selectedFacitilies[2]));
+        lstFacilities.add(new Item_Grid_Facilities("Phòng tắm riêng", R.drawable.icon_bathroom, selectedFacitilies[3]));
+        lstFacilities.add(new Item_Grid_Facilities("Giường", R.drawable.icon_giuong, selectedFacitilies[4]));
+        lstFacilities.add(new Item_Grid_Facilities("Tivi", R.drawable.icon_tv, selectedFacitilies[5]));
+        lstFacilities.add(new Item_Grid_Facilities("Tủ lạnh", R.drawable.icon_tulanh, selectedFacitilies[6]));
+        lstFacilities.add(new Item_Grid_Facilities("Bếp gas", R.drawable.icon_bepga, selectedFacitilies[7]));
+        lstFacilities.add(new Item_Grid_Facilities("Quạt", R.drawable.icon_quat, selectedFacitilies[8]));
+        lstFacilities.add(new Item_Grid_Facilities("Tủ đồ", R.drawable.icon_tu_quan_ao, selectedFacitilies[9]));
+        lstFacilities.add(new Item_Grid_Facilities("Máy lạnh", R.drawable.icon_may_lanh, selectedFacitilies[10]));
+        lstFacilities.add(new Item_Grid_Facilities("Đèn điện", R.drawable.icon_bongden, selectedFacitilies[11]));
 
 
         final Grid_Facilities_Adapter myAdapter = new Grid_Facilities_Adapter(this, R.layout.grid_facilities_items, lstFacilities);
@@ -322,36 +303,44 @@ public class Filter extends AppCompatActivity {
 
         radNam = (RadioButton) findViewById(R.id.radNam);
         radNu = (RadioButton) findViewById(R.id.radNu);
-
+        radCa2 = (RadioButton) findViewById(R.id.radCa2);
         //radNam.setSelected();
 
         radGroup = (SegmentedGroup) findViewById(R.id.segmented2);
 
-        if (sex) {
-            radNam.setSelected(true);
-            radGroup.check(R.id.radNam);
+        if (namnu == 0) {
+            radCa2.setSelected(true);
+            radGroup.check(R.id.radCa2);
         } else {
-            radNu.setSelected(true);
-            radGroup.check(R.id.radNu);
-        }
-        radGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                //Toast.makeText(getApplicationContext(),String.valueOf(i),Toast.LENGTH_SHORT).show();
+            if (namnu == 1) {
+                radNam.setSelected(true);
+                radGroup.check(R.id.radNam);
+            } else {
+                radNu.setSelected(true);
+                radGroup.check(R.id.radNu);
+            }
 
+        }
+
+        radCa2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                namnu = 0;
             }
         });
         radNam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sex = true;
+                namnu = 1;
+                //sex = true;
                 //HomeFragment.sex = true;
             }
         });
         radNu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sex = false;
+                namnu = 2;
+                //sex = false;
                 //HomeFragment.sex = false;
             }
         });
@@ -393,7 +382,7 @@ public class Filter extends AppCompatActivity {
                 bundle.putInt("soNguoiO", soNguoiO);
                 bundle.putInt("maxArea", maxArea);
                 bundle.putInt("minArea", minArea);
-                bundle.putBoolean("sex", sex);
+                bundle.putInt("namnu",namnu);
                 bundle.putInt("minPrice", min);
                 bundle.putInt("maxPrice", max);
                 bundle.putBoolean("changeFilter", true);

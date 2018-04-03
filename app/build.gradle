@@ -49,5 +49,8 @@ dependencies {
     implementation 'com.elyeproj.libraries:loaderviewlibrary:1.4.1'
 
     compile 'com.github.warkiz.widget:indicatorseekbar:1.2.9'
+    compile 'de.hdodenhof:circleimageview:2.2.0'
+
+    compile 'com.google.android.gms:play-services-location:11.8.0'
 
 }

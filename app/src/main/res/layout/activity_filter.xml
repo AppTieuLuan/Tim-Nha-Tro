@@ -341,6 +341,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Nữ" />
+                    <RadioButton
+                        android:id="@+id/radCa2"
+                        style="@style/RadioButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Cả 2" />
                 </info.hoang8f.android.segmented.SegmentedGroup>
             </android.support.constraint.ConstraintLayout>
 

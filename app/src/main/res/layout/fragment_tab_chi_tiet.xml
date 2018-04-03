@@ -1,0 +1,506 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nest_scrollview"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/gray2"
+        tools:context="com.nhatro.tab_details.TabChiTiet">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:nestedScrollingEnabled="true">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/layoutThongTinChiTiet"
+                    android:padding="7dp"
+                    android:layout_margin="3dp"
+                    android:background="@color/white"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:textColor="@color/black"
+                        android:id="@+id/txtThongTin"
+                        android:textStyle="bold"
+                        android:text="Thông tin chi tiết"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:paddingEnd="50dp"
+                        android:id="@+id/txtLoaiNhaO"
+                        android:padding="@dimen/paddingIteminDetailScreen"
+                        android:textSize="12sp"
+                        app:layout_constraintTop_toBottomOf="@id/txtThongTin"
+                        android:text="Loại nhà ở"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/valueLoaiNhaO"
+                        android:padding="@dimen/paddingIteminDetailScreen"
+                        app:layout_constraintTop_toBottomOf="@id/txtThongTin"
+                        app:layout_constraintStart_toEndOf="@id/txtLoaiNhaO"
+                        android:text="Phòng trọ"
+                        android:textSize="12sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <View
+                        android:layout_marginHorizontal="4dp"
+                        android:id="@+id/line0"
+                        app:layout_constraintTop_toBottomOf="@id/valueLoaiNhaO"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@android:color/darker_gray"/>
+
+
+                    <TextView
+                        android:id="@+id/txtDT"
+                        android:padding="@dimen/paddingIteminDetailScreen"
+                        android:textSize="12sp"
+                        app:layout_constraintTop_toBottomOf="@id/line0"
+                        android:text="Diện tích"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/valueDienTich"
+                        android:padding="@dimen/paddingIteminDetailScreen"
+                        app:layout_constraintTop_toBottomOf="@id/line0"
+                        app:layout_constraintStart_toStartOf="@id/valueLoaiNhaO"
+                        android:text="12m2 (3m x 4m)"
+                        android:textSize="12sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <View
+                        android:layout_marginHorizontal="4dp"
+                        android:id="@+id/line1"
+                        app:layout_constraintTop_toBottomOf="@id/valueDienTich"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@android:color/darker_gray"/>
+
+
+
+                    <TextView
+                        android:id="@+id/txtGiaThue"
+                        android:padding="@dimen/paddingIteminDetailScreen"
+                        android:textSize="12sp"
+                        app:layout_constraintTop_toBottomOf="@id/line1"
+                        android:text="Giá thuê"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/valueGiaThue"
+                        android:padding="@dimen/paddingIteminDetailScreen"
+                        app:layout_constraintTop_toBottomOf="@id/line1"
+                        app:layout_constraintStart_toStartOf="@id/valueDienTich"
+                        android:text="1.200.000 vnđ/tháng"
+                        android:textSize="12sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <View
+                        android:layout_marginHorizontal="4dp"
+                        android:id="@+id/line2"
+                        app:layout_constraintTop_toBottomOf="@id/valueGiaThue"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@android:color/darker_gray"/>
+
+                    <TextView
+                        android:id="@+id/txtDatCoc"
+                        android:padding="@dimen/paddingIteminDetailScreen"
+                        android:textSize="12sp"
+                        app:layout_constraintTop_toBottomOf="@id/line2"
+                        android:text="Đặt cọc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/valueDatCoc"
+                        android:padding="@dimen/paddingIteminDetailScreen"
+                        app:layout_constraintTop_toBottomOf="@id/line2"
+                        app:layout_constraintStart_toStartOf="@id/valueGiaThue"
+                        android:text="1.200.000 vnđ"
+                        android:textSize="12sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <View
+                        android:layout_marginHorizontal="4dp"
+                        android:id="@+id/line3"
+                        app:layout_constraintTop_toBottomOf="@id/valueDatCoc"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@android:color/darker_gray"/>
+
+
+
+                    <TextView
+                        android:id="@+id/txtTienDien"
+                        android:padding="@dimen/paddingIteminDetailScreen"
+                        android:textSize="12sp"
+                        app:layout_constraintTop_toBottomOf="@id/line3"
+                        android:text="Tiền điện"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/valueTienDien"
+                        android:padding="@dimen/paddingIteminDetailScreen"
+                        app:layout_constraintTop_toBottomOf="@id/line3"
+                        app:layout_constraintStart_toStartOf="@id/valueDatCoc"
+                        android:text="3000 vnđ/kWh"
+                        android:textSize="12sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <View
+                        android:layout_marginHorizontal="4dp"
+                        android:id="@+id/line4"
+                        app:layout_constraintTop_toBottomOf="@id/valueTienDien"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@android:color/darker_gray"/>
+
+
+
+                    <TextView
+                        android:id="@+id/txtTienNuoc"
+                        android:padding="@dimen/paddingIteminDetailScreen"
+                        android:textSize="12sp"
+                        app:layout_constraintTop_toBottomOf="@id/line4"
+                        android:text="Tiền nước"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/valueTienNuoc"
+                        android:padding="@dimen/paddingIteminDetailScreen"
+                        app:layout_constraintTop_toBottomOf="@id/line4"
+                        app:layout_constraintStart_toStartOf="@id/valueTienDien"
+                        android:text="4000 vnđ/m3"
+                        android:textSize="12sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <View
+                        android:layout_marginHorizontal="4dp"
+                        android:id="@+id/line5"
+                        app:layout_constraintTop_toBottomOf="@id/valueTienNuoc"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@android:color/darker_gray"/>
+
+
+
+                    <TextView
+                        android:id="@+id/txtGioGiac"
+                        android:padding="@dimen/paddingIteminDetailScreen"
+                        android:textSize="12sp"
+                        app:layout_constraintTop_toBottomOf="@id/line5"
+                        android:text="Giờ giấc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/valueGioGiac"
+                        android:padding="@dimen/paddingIteminDetailScreen"
+                        app:layout_constraintTop_toBottomOf="@id/line5"
+                        app:layout_constraintStart_toStartOf="@id/valueTienNuoc"
+                        android:text="Tự do"
+                        android:textSize="12sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <View
+                        android:layout_marginHorizontal="4dp"
+                        android:id="@+id/line6"
+                        app:layout_constraintTop_toBottomOf="@id/valueGioGiac"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@android:color/darker_gray"/>
+
+                    <TextView
+                        android:id="@+id/txtBaoVe"
+                        android:padding="@dimen/paddingIteminDetailScreen"
+                        android:textSize="12sp"
+                        app:layout_constraintTop_toBottomOf="@id/line6"
+                        android:text="Bảo vệ"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/valueBaoVe"
+                        android:padding="@dimen/paddingIteminDetailScreen"
+                        app:layout_constraintTop_toBottomOf="@id/line6"
+                        app:layout_constraintStart_toStartOf="@id/valueGioGiac"
+                        android:text="Có"
+                        android:textSize="12sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <View
+                        android:layout_marginHorizontal="4dp"
+                        android:id="@+id/line7"
+                        app:layout_constraintTop_toBottomOf="@id/valueBaoVe"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@android:color/darker_gray"/>
+
+
+                    <TextView
+                        android:id="@+id/txtCamera"
+                        android:padding="@dimen/paddingIteminDetailScreen"
+                        android:textSize="12sp"
+                        app:layout_constraintTop_toBottomOf="@id/line7"
+                        android:text="Camera"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/valueCamera"
+                        android:padding="@dimen/paddingIteminDetailScreen"
+                        app:layout_constraintTop_toBottomOf="@id/line7"
+                        app:layout_constraintStart_toStartOf="@id/valueBaoVe"
+                        android:text="Có"
+                        android:textSize="12sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <View
+                        android:layout_marginHorizontal="4dp"
+                        android:id="@+id/line8"
+                        app:layout_constraintTop_toBottomOf="@id/valueCamera"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@android:color/darker_gray"/>
+
+                    <TextView
+                        android:id="@+id/txtChoPhepVatNuoi"
+                        android:padding="@dimen/paddingIteminDetailScreen"
+                        android:textSize="12sp"
+                        app:layout_constraintTop_toBottomOf="@id/line8"
+                        android:text="Cho phép vật nuôi"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/valueChoPhepVatNuoi"
+                        android:padding="@dimen/paddingIteminDetailScreen"
+                        app:layout_constraintTop_toBottomOf="@id/line8"
+                        app:layout_constraintStart_toStartOf="@id/valueCamera"
+                        android:text="Có"
+                        android:textSize="12sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <View
+                        android:layout_marginHorizontal="4dp"
+                        android:id="@+id/line9"
+                        app:layout_constraintTop_toBottomOf="@id/valueChoPhepVatNuoi"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@android:color/darker_gray"/>
+
+
+
+
+
+
+                </android.support.constraint.ConstraintLayout>
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/layoutLienHe"
+                    android:padding="7dp"
+                    android:layout_margin="3dp"
+                    android:background="@color/white"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:textColor="@color/black"
+                        android:id="@+id/txtLienHe"
+                        android:textStyle="bold"
+                        android:text="Thông tin liên hệ"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:paddingEnd="50dp"
+                        android:id="@+id/txtHoTen"
+                        android:padding="@dimen/paddingIteminDetailScreen"
+                        android:textSize="12sp"
+                        app:layout_constraintTop_toBottomOf="@id/txtLienHe"
+                        android:text="Họ tên"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/valueHoten"
+                        android:padding="@dimen/paddingIteminDetailScreen"
+                        app:layout_constraintStart_toEndOf="@id/txtHoTen"
+                        app:layout_constraintTop_toBottomOf="@id/txtLienHe"
+                        android:text="Nguyễn Văn Tên"
+                        android:textSize="12sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <View
+                        android:layout_marginHorizontal="4dp"
+                        android:id="@+id/line00"
+                        app:layout_constraintTop_toBottomOf="@id/valueHoten"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@android:color/darker_gray"/>
+
+
+                    <TextView
+                        android:id="@+id/txtSDT"
+                        android:padding="@dimen/paddingIteminDetailScreen"
+                        android:textSize="12sp"
+                        app:layout_constraintTop_toBottomOf="@id/line00"
+                        android:text="Số điện thoại"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:paddingEnd="20dp"
+                        android:id="@+id/valueSDT"
+                        android:padding="@dimen/paddingIteminDetailScreen"
+                        app:layout_constraintStart_toEndOf="@id/txtHoTen"
+                        app:layout_constraintTop_toBottomOf="@id/line00"
+                        android:text="0969349345"
+                        android:textSize="12sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <ImageView
+                        android:id="@+id/iconSMS"
+                        android:layout_margin="@dimen/paddingIteminDetailScreen"
+                        app:layout_constraintTop_toTopOf="@id/line00"
+                        app:layout_constraintStart_toEndOf="@id/valueSDT"
+                        android:src="@drawable/icons_sms"
+                        android:layout_width="50dp"
+                        android:layout_height="20dp"
+                        />
+
+                    <ImageView
+                        android:id="@+id/iconCall"
+                        android:layout_marginEnd="20dp"
+                        android:layout_margin="@dimen/paddingIteminDetailScreen"
+                        app:layout_constraintTop_toTopOf="@id/line00"
+                        app:layout_constraintStart_toEndOf="@id/iconSMS"
+                        android:src="@drawable/icon_call"
+                        android:layout_width="50dp"
+                        android:layout_height="20dp" />
+
+                    <View
+                        android:layout_marginHorizontal="4dp"
+                        android:id="@+id/line01"
+                        app:layout_constraintTop_toBottomOf="@id/valueSDT"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@android:color/darker_gray"/>
+
+
+
+                    <TextView
+                        android:id="@+id/txtFaceBook"
+                        android:padding="@dimen/paddingIteminDetailScreen"
+                        android:textSize="12sp"
+                        app:layout_constraintTop_toBottomOf="@id/line01"
+                        android:text="Facebook"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <ImageView
+                        android:id="@+id/iconfacebook"
+                        android:layout_margin="@dimen/paddingIteminDetailScreen"
+                        app:layout_constraintStart_toEndOf="@id/valueSDT"
+                        app:layout_constraintTop_toBottomOf="@id/line01"
+                        android:src="@drawable/icon_facebook"
+                        android:layout_width="50dp"
+                        android:layout_height="20dp"
+                        />
+
+                    <ImageView
+                        android:id="@+id/iconMessenger"
+                        android:layout_marginEnd="20dp"
+                        android:layout_margin="@dimen/paddingIteminDetailScreen"
+                        app:layout_constraintTop_toTopOf="@id/line01"
+                        app:layout_constraintStart_toEndOf="@id/iconfacebook"
+                        android:src="@drawable/icon_messenger"
+                        android:layout_width="50dp"
+                        android:layout_height="20dp" />
+                    <View
+                        android:layout_marginHorizontal="4dp"
+                        android:id="@+id/line02"
+                        app:layout_constraintTop_toBottomOf="@id/txtFaceBook"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@android:color/darker_gray"/>
+
+
+
+                    <TextView
+                        android:textColor="@color/colorPrimary"
+                        android:maxLines="2"
+                        android:ellipsize="end"
+                        android:id="@+id/valueDiaChi"
+                        android:padding="@dimen/paddingIteminDetailScreen"
+                        app:layout_constraintTop_toBottomOf="@id/txtFaceBook"
+                        android:text="78/12 đường Làng Tăng Phú, phường Tăng Nhơn Phú A, Quận 9, Hồ Chí Minh"
+                        android:textSize="12sp"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toEndOf="@id/txtHoTen"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        />
+                    <View
+                        android:layout_marginHorizontal="4dp"
+                        android:id="@+id/line03"
+                        app:layout_constraintTop_toBottomOf="@id/valueDiaChi"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@android:color/darker_gray"/>
+
+                    <TextView
+                        android:id="@+id/txtDiaChi"
+                        android:padding="@dimen/paddingIteminDetailScreen"
+                        android:textSize="12sp"
+                        app:layout_constraintTop_toBottomOf="@id/line02"
+                        app:layout_constraintBottom_toTopOf="@id/line03"
+                        android:text="Địa chỉ"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+
+                </android.support.constraint.ConstraintLayout>
+
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/layoutTienIch"
+                    android:padding="7dp"
+                    android:layout_margin="3dp"
+                    android:background="@color/white"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:textColor="@color/black"
+                        android:id="@+id/txtTienIch"
+                        android:textStyle="bold"
+                        android:text="Tiện tích và nội thất"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+
+
+                </android.support.constraint.ConstraintLayout>
+
+
+            </LinearLayout>
+
+
+
+
+        </ScrollView>
+
+    </FrameLayout>
+</android.support.v4.widget.NestedScrollView>
