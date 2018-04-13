@@ -21,5 +21,7 @@
     <color name="green">#940ce61f</color>
 
     <color name="black_overlay">#66000000</color>
-
+    <color name="transparent2">#33000000</color>
+    <color name="transparent3">#5366b5ed</color>
+    <color name="sf">#66b5ed</color>
 </resources>

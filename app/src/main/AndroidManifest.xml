@@ -5,13 +5,12 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-
+    <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-
-
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <uses-feature
         android:name="android.hardware.location"
@@ -23,8 +22,7 @@
     <permission
         android:name="com.nhatro.permission.MAP_RECEIVE"
         android:protectionLevel="signature" />
-    <!-- if you want to load images from a file OR from the internet -->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
 
     <application
         android:allowBackup="true"
@@ -52,12 +50,17 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ChonTinh" />
         <activity android:name=".LoginActivity" />
-        <activity android:name=".Image_View"></activity>
+        <activity android:name=".Image_View" />
 
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
+        <activity
+            android:name=".Newpost"
+            android:parentActivityName=".MainActivity"></activity>
+        <activity android:name=".LayViTri"
+            ></activity>
     </application>
 
 </manifest>

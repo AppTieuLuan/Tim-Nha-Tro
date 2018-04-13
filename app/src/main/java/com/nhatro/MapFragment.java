@@ -163,6 +163,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
                             .build();                   // Creates a CameraPosition from the builder
                     map.animateCamera(CameraUpdateFactory.newCameraPosition(temp));
 
+
+
                 }
 
                 @Override
@@ -217,12 +219,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
         CircleOptions circleOptions = new CircleOptions();
         circleOptions.center(point);
         circleOptions.radius(banKinh * 1000);
-        circleOptions.strokeColor(Color.BLACK);
+        circleOptions.strokeColor(Color.parseColor("#66b5ed"));
         // Fill color of the circle
-        circleOptions.fillColor(0x30ff0000);
+        circleOptions.fillColor(0x5366b5ed);
 
         // Border width of the circle
-        circleOptions.strokeWidth(2);
+        circleOptions.strokeWidth(1);
         // Adding the circle to the GoogleMap
         currentCircle = map.addCircle(circleOptions);
     }
@@ -425,11 +427,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
                 return false;
             }
         });
-        CameraPosition cameraPosition = new CameraPosition.Builder()
+        /*CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(new LatLng(10.85064713, 106.77209787))      // Sets the center of the map to location user
                 .zoom(14)                   // Sets the zoom
                 .build();                   // Creates a CameraPosition from the builder
-        map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));*/
+
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(10.85064713, 106.77209787), 14));
 
 
         drawCircle(new LatLng(10.85064713, 106.77209787), banKinh);

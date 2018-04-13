@@ -235,6 +235,9 @@ public class Filter extends AppCompatActivity {
         lstFacilities.add(new Item_Grid_Facilities("Máy lạnh", R.drawable.icon_may_lanh, selectedFacitilies[10]));
         lstFacilities.add(new Item_Grid_Facilities("Đèn điện", R.drawable.icon_bongden, selectedFacitilies[11]));
 
+        lstFacilities.add(new Item_Grid_Facilities("Bảo vệ", R.drawable.icon_baove, selectedFacitilies[12]));
+        lstFacilities.add(new Item_Grid_Facilities("Camera", R.drawable.icon_camera, selectedFacitilies[13]));
+        lstFacilities.add(new Item_Grid_Facilities("Khu để xe riêng", R.drawable.icon_doxe, selectedFacitilies[14]));
 
         final Grid_Facilities_Adapter myAdapter = new Grid_Facilities_Adapter(this, R.layout.grid_facilities_items, lstFacilities);
         myAdapter.notifyDataSetChanged();

@@ -71,8 +71,6 @@ public class TabBanDo extends Fragment implements OnMapReadyCallback {
 
 
         }
-
-
         return v;
     }
 
@@ -80,11 +78,13 @@ public class TabBanDo extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         this.map = googleMap;
 
-        CameraPosition cameraPosition = new CameraPosition.Builder()
+        /*CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(new LatLng(10.85064713, 106.77209787))      // Sets the center of the map to location user
                 .zoom(15)                   // Sets the zoom
                 .build();                   // Creates a CameraPosition from the builder
-        map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));*/
+
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(10.85064713, 106.77209787), 15));
 
         marker = map.addMarker(new MarkerOptions()
                 .title("Nhà trọ mới cho thuê tại quận 9")

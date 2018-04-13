@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:padding="1dp"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/images"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/add_image"
+        app:riv_border_color="#c6c5c5"
+        app:riv_border_width="1dip"
+        app:riv_corner_radius="15dip"
+        app:riv_oval="false"
+        app:riv_tile_mode="clamp"
+        android:padding="7dp"
+        />
+
+    <ImageView
+        android:id="@+id/iconRemoveImages"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:src="@drawable/icon_remove_images"
+        android:layout_width="25dp"
+        android:layout_height="25dp" />
+</android.support.constraint.ConstraintLayout>

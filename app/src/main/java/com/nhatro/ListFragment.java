@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -44,6 +45,8 @@ public class ListFragment extends Fragment {
     LinearLayout layoutList;
     ProgressBar loadingData;
 
+    FloatingActionButton btnAdd;
+
     ConstraintLayout layoutLoading;
 
     mHadler mHadlerr;
@@ -61,7 +64,7 @@ public class ListFragment extends Fragment {
         loadingData = v.findViewById(R.id.loadingData);
         layoutList = v.findViewById(R.id.layoutList);
 
-
+        btnAdd = v.findViewById(R.id.iconAdd);
         layoutLoading = v.findViewById(R.id.layoutLoadingList);
 
         mHadlerr = new mHadler();
@@ -116,6 +119,14 @@ public class ListFragment extends Fragment {
             }
         });
         //Toast.makeText(getContext(),"ĐANG LOAD DL",Toast.LENGTH_SHORT).show();
+
+        btnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intents = new Intent(getContext(),Newpost.class);
+                startActivity(intents);
+            }
+        });
         return v;
     }
 

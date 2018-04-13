@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout android:background="@drawable/background_toast_error"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="10dp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <ImageView
+        android:id="@+id/iconError"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:src="@drawable/icon_error"
+        android:layout_width="10dp"
+        android:layout_height="10dp" />
+    <TextView
+        android:paddingLeft="5dp"
+        app:layout_constraintStart_toEndOf="@id/iconError"
+        android:textColor="@color/white"
+        android:text="Đã xảy ra lỗi, vui lòng thử lại !"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</android.support.constraint.ConstraintLayout>

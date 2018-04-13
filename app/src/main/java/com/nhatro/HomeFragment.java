@@ -34,17 +34,16 @@ public class HomeFragment extends Fragment {
     int REQUEST_CODE = 1;
 
     //android.support.v4.app.FragmentManager fragmentManager = getChildFragmentManager();
-    private int minSlider = 0,soNguoiO = 1;
+    private int minSlider = 0, soNguoiO = 1;
     private int maxSlider = 10000000;
     private int maxArea = 200;
     private int minArea = 0;
     private int chonSapXep = 0, tempChon = 0;
-    private boolean[] selectedFacilitiess = {false, false, false, false, false, false, false, false, false, false, false, false};
+    private boolean[] selectedFacilitiess = {false, false, false, false, false, false, false, false, false, false, false, false, false, false, false};
     private boolean sex;
     int namnu = 0;
 
     ArrayList<Integer> lstChonQuanHuyen;
-
 
 
     private boolean isFragmentMap = false; // Biến đánh dấu cho biết đã add fragmnent home chưa
@@ -68,7 +67,7 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View v = inflater.inflate(R.layout.fragment_home, container, false);
-        final CharSequence[] sapXep = new CharSequence[] {"Mặc định","Giá từ thấp đến cao","Giá từ cao xuống thấp"};
+        final CharSequence[] sapXep = new CharSequence[]{"Mặc định", "Giá từ thấp đến cao", "Giá từ cao xuống thấp"};
 
         lstChonQuanHuyen = new ArrayList<>();
 
@@ -94,20 +93,20 @@ public class HomeFragment extends Fragment {
 
                 Bundle bundle = new Bundle();
 
-                bundle.putBoolean("moDanhSach",moDanhSach); // nếu mở danh sách sẽ hiện thị mục chọn tp, quận huyện
+                bundle.putBoolean("moDanhSach", moDanhSach); // nếu mở danh sách sẽ hiện thị mục chọn tp, quận huyện
                 bundle.putBoolean("timNhaNguyenCan", timNhaNguyenCan);
-                bundle.putBoolean("timPhongTro",timPhongTro);
-                bundle.putBoolean("timTimOGhep",timTimOGhep);
-                bundle.putIntegerArrayList("lstChonQuanHuyen",lstChonQuanHuyen);
-                bundle.putString("tenTP",tenTP);
+                bundle.putBoolean("timPhongTro", timPhongTro);
+                bundle.putBoolean("timTimOGhep", timTimOGhep);
+                bundle.putIntegerArrayList("lstChonQuanHuyen", lstChonQuanHuyen);
+                bundle.putString("tenTP", tenTP);
                 bundle.putInt("maxPrice", maxSlider);
                 bundle.putInt("minPrice", minSlider);
-                bundle.putInt("namnu",namnu);
+                bundle.putInt("namnu", namnu);
                 bundle.putInt("minArea", minArea);
                 bundle.putInt("maxArea", maxArea);
                 bundle.putBooleanArray("arrFacilities", selectedFacilitiess);
-                bundle.putInt("tinhTP",tinhTP);
-                bundle.putInt("soNguoiO",soNguoiO);
+                bundle.putInt("tinhTP", tinhTP);
+                bundle.putInt("soNguoiO", soNguoiO);
                 intent.putExtra("data", bundle);
 
                 startActivityForResult(intent, REQUEST_CODE);
@@ -120,34 +119,12 @@ public class HomeFragment extends Fragment {
         btnSapXep.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*new MaterialDialog.Builder(getContext())
-                        .title(R.string.tieude2)
-                        .items(R.array.sapxeps)
-                        .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
-                            @Override
-                            public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                                //Toast.makeText(getContext(), String.valueOf(R.array.sapxeps), Toast.LENGTH_SHORT).show();
-                                if (moDanhSach) {
-                                    listFragment.filterData();
-                                } else {
-                                    mapFragment.loadData();
-                                }
-                                return true;
-                            }
-                        })
-                        .positiveText(R.string.tieude3)
-                        .show();*/
-
-
-
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                 builder.setTitle("Sắp xếp")
                         .setSingleChoiceItems(sapXep, chonSapXep, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 tempChon = which;
-                                //Toast.makeText(getContext(),String.valueOf(which),Toast.LENGTH_SHORT).show();
-                                //utility.toast(" "+charSequence);
                             }
                         })
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {

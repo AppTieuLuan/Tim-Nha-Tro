@@ -135,6 +135,12 @@
             android:layout_height="20dp" />
     </LinearLayout>
 
-
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/iconAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
+        android:layout_gravity="bottom|right"
+        app:srcCompat="@drawable/icon_add" />
 
 </FrameLayout>
