@@ -10,7 +10,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <uses-feature
         android:name="android.hardware.location"
@@ -22,7 +22,6 @@
     <permission
         android:name="com.nhatro.permission.MAP_RECEIVE"
         android:protectionLevel="signature" />
-
 
     <application
         android:allowBackup="true"
@@ -58,9 +57,13 @@
 
         <activity
             android:name=".Newpost"
-            android:parentActivityName=".MainActivity"></activity>
-        <activity android:name=".LayViTri"
-            ></activity>
+            android:parentActivityName=".MainActivity" />
+        <activity android:name=".LayViTri" />
+        <activity android:name=".ChangePassActivity" />
+        <activity android:name=".ChangeProfileActivity" />
+        <activity android:name=".IntroduceActivity" />
+        <activity android:name=".SupportActivity" />
+        <activity android:name=".ManagerRoomActivity"></activity>
     </application>
 
 </manifest>

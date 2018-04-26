@@ -1,28 +1,159 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.nhatro.login.NotLoginFragment">
+    tools:context=".login.NotLoginFragment">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="180dp"
-        android:text="Vui lòng đăng nhập!"
-        android:textColor="#000000"
-        android:textSize="30dp" />
+    <ScrollView
+        android:background="#e2e4e3"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/btnlogin"
-        android:layout_width="200dp"
-        android:layout_height="50dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/btnlogin"
-        android:text="Đăng nhập"
-        android:textAllCaps="false"
-        android:textColor="#fff"
-        android:textSize="20dp" />
-</LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
+            <!--<LinearLayout-->
+            <!--android:orientation="vertical"-->
+            <!--android:clickable="true"-->
+            <!--android:focusable="true"-->
+            <!--android:layout_width="200dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center_horizontal"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:background="@drawable/avatar"-->
+            <!--android:gravity="center_vertical"-->
+            <!--android:textColorHint="#8effffff">-->
+
+            <!--<ImageView-->
+            <!--android:layout_width="150dp"-->
+            <!--android:layout_height="150dp"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:src="@drawable/iconusernotlogin" />-->
+            <!--</LinearLayout>-->
+            <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:text="Vui lòng đăng nhập"-->
+            <!--android:textColor="#000000"-->
+            <!--android:textSize="25dp" />-->
+
+            <!--<LinearLayout-->
+            <!--android:id="@+id/like"-->
+            <!--android:clickable="true"-->
+            <!--android:focusable="true"-->
+            <!--android:layout_width="320dp"-->
+            <!--android:layout_height="45dp"-->
+            <!--android:layout_gravity="center_horizontal"-->
+            <!--android:layout_marginTop="20dp"-->
+            <!--android:background="@drawable/ripple_effect"-->
+            <!--android:gravity="center_vertical"-->
+            <!--android:orientation="horizontal"-->
+            <!--android:textColorHint="#8effffff">-->
+            <!--<ImageView-->
+            <!--android:layout_marginLeft="10dp"-->
+            <!--android:layout_width="40dp"-->
+            <!--android:layout_height="40dp"-->
+            <!--android:src="@drawable/logout" />-->
+
+            <!--<TextView-->
+            <!--android:layout_width="280dp"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:layout_marginLeft="20dp"-->
+            <!--android:text="Danh sách yêu thích"-->
+            <!--android:textColor="#000000"-->
+            <!--android:textSize="20dp"-->
+            <!--android:gravity="center_vertical"/>-->
+            <!--</LinearLayout>-->
+            <LinearLayout
+                android:id="@+id/login"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_width="320dp"
+                android:layout_height="45dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/ripple_effect"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:textColorHint="#8effffff">
+
+                <ImageView
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/iconlogin" />
+
+                <TextView
+                    android:layout_width="280dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="20dp"
+                    android:text="Đăng nhập"
+                    android:textColor="#000000"
+                    android:textSize="20dp"
+                    android:gravity="center_vertical"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/introduce"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_width="320dp"
+                android:layout_height="45dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/ripple_effect"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:textColorHint="#8effffff">
+
+                <ImageView
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/iconintroduce" />
+
+                <TextView
+                    android:layout_width="280dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="20dp"
+                    android:text="Giới thiệu"
+                    android:textColor="#000000"
+                    android:textSize="20dp"
+                    android:gravity="center_vertical"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/support"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_width="320dp"
+                android:layout_height="45dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/ripple_effect"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:textColorHint="#8effffff">
+
+                <ImageView
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/iconsupport" />
+
+                <TextView
+                    android:layout_width="280dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="20dp"
+                    android:text="Hỗ trợ"
+                    android:textColor="#000000"
+                    android:textSize="20dp"
+                    android:gravity="center_vertical"/>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</android.support.constraint.ConstraintLayout>
+

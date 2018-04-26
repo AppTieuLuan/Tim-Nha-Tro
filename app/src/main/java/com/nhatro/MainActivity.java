@@ -1,5 +1,6 @@
 package com.nhatro;
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
@@ -24,7 +25,16 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationViewPager;
 import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
+import com.google.gson.Gson;
 import com.nhatro.login.LoginFragment;
+import com.nhatro.model.Token;
+import com.nhatro.model.User;
+import com.nhatro.retrofit.APIUtils;
+import com.nhatro.retrofit.DataClient;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -64,6 +74,8 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.custom_layout_actionbar);
 
+        checkLogin();//kiểm tra đăng nhập
+        refreshToken();//refresh token
 
         TextView txtLogo = findViewById(R.id.txtLogo);
         Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/font_logo.TTF");
@@ -193,5 +205,87 @@ public class MainActivity extends AppCompatActivity {
         });
         fragmentManager.beginTransaction().add(R.id.frame, homeFragment).commit(); // Add và hiện thị fragment home khi khởi động
 
+    }
+    public void checkLogin(){
+        SharedPreferences mPrefs = getSharedPreferences("Mydata", MODE_PRIVATE);
+        SharedPreferences.Editor editor = mPrefs.edit();
+        String token = getToken();
+        if(token.length() > 3) {
+            DataClient dataClient = APIUtils.getData();
+            retrofit2.Call<Token> tokenCall = dataClient.CheckLogin(token);
+            tokenCall.enqueue(new Callback<Token>() {
+                @Override
+                public void onResponse(Call<Token> call, Response<Token> response) {
+                    Log.d("FAFA", "OKKKKK");
+                    Token obj = response.body();
+                    if (obj.getToken().equals("expire") || obj.getToken().equals("token_is_incorrect")) {//nếu token hết hạn hoặc sai thì xóa khỏi sharereferences
+                        editor.remove("MyToken");
+                        editor.remove("MyUser");
+                        editor.commit();
+                    } else {
+                        User user = obj.getUser();
+                        Gson gson = new Gson();
+                        String userJson = gson.toJson(user);
+                        //Cập nhật lại token và info user
+                        editor.putString("MyToken", obj.getToken()).commit();
+                        editor.putString("MyUser", userJson).commit();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Token> call, Throwable t) {
+                    Toast.makeText(MainActivity.this, "Vui lòng kiểm tra lại đường truyền mạng!", Toast.LENGTH_SHORT).show();
+
+                }
+            });
+        }
+    }
+    public void refreshToken() {
+        SharedPreferences mPrefs = getSharedPreferences("Mydata", MODE_PRIVATE);
+        SharedPreferences.Editor editor = mPrefs.edit();
+
+        new Thread() {
+            public void run() {
+                while (true) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            String token = getToken();
+                            if (token.length() > 3) {
+                                DataClient dataClient = APIUtils.getData();
+                                retrofit2.Call<String> stringCall = dataClient.RefreshToken(getToken());
+                                stringCall.enqueue(new Callback<String>() {
+                                    @Override
+                                    public void onResponse(Call<String> call, Response<String> response) {
+                                        String mess = response.body();
+                                        if (mess.equals("token_correct") || mess.equals("expire")) {// hết hạn hoặc sai
+                                            editor.remove("MyToken");
+                                            editor.remove("MyUser");
+                                            editor.commit();// xóa user khi phiên làm việc đã kết thúc
+                                        } else {
+                                            editor.putString("MyToken", mess).commit();
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<String> call, Throwable t) {
+                                        Toast.makeText(MainActivity.this, "Vui lòng kiểm tra lại đường truyền mạng!", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                        }
+                    });
+                    try {
+                        Thread.sleep(30000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }.start();
+    }
+    public String getToken(){
+        SharedPreferences mPrefs = getSharedPreferences("Mydata", MODE_PRIVATE);
+        return mPrefs.getString("MyToken", "");
     }
 }

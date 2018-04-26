@@ -1,6 +1,6 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="password">Nhập mật khẩu</string>
-    <string name="email">Nhập email</string>
+    <string name="email">Nhập tài khoản</string>
     <string name="phone">Nhập số điện thoại</string>
     <string name="username">Nhập họ tên</string>
     <string name="confirm_password">Xác nhận mật khẩu</string>
@@ -9,6 +9,12 @@
     <string name="or">or</string>
     <string name="signup">Đăng ký ngay</string>
     <string name="_login">Đăng nhập ngay</string>
+    <string name="oldpass">Nhập mật khẩu cũ</string>
+    <string name="newpass">Nhập mật khẩu mới</string>
+    <string name="change">Xác nhận thay đổi</string>
+    <string name="facebook">Nhập địa chỉ (nếu có)</string>
+    <string name="registerannounce">Thêm một địa điểm vào danh sách</string>
+    <string name="addregister_announce">Thêm địa điểm mới</string>
 
     <string name="app_name">Nhà Trọ</string>
     <string name="map_api_key">AIzaSyCUot19K8QpDiHjveAcO7M613ZIMl2Hagg</string>
@@ -113,6 +119,48 @@
         "On the layout level, design your app layout to minimize opportunities for interference. "
         "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
         "when a user tries to pick up one of cards.\n\n"
+    </string>
+    <string name="supporttext">
+        Tất cả thông tin trên ứng dụng được người dùng đóng góp.
+        Chúng tôi sẽ không chịu bất cứ trách nhiệm gì về việc sử dụng thông tin của bạn.\n\n
+        Hiện tại ứng dụng của chúng tôi đã trong giai đoạn thử nghiệm, nếu bạn thấy có ý kiến đóng góp hoặc
+        nhận thấy hệ thống hoạt động lỗi, vui lòng thông báo cho chúng tôi!\n\n
+        Chúng tôi xin chân thành cảm ơn bạn đã sử dụng ứng dụng của chúng tôi.
+        Mọi thông tin liên hệ:\n\n
+        Hotline: 01679969607\n
+        Email: votongpm@gmail.com
+    </string>
+    <string name="fact" tools:ignore="TypographyEllipsis">
+        Trong những năm gần đây, những người ngoại tỉnh đổ ra các thành phố lớn để làm ăn, học tập và sinh sống,
+        kéo theo đó nhu cầu chỗ ở, nhà trọ ngày càng tăng cao.
+        Trong thời buổi giá cả leo thang như hiện nay, việc tìm thuê một ngôi nhà hoặc phòng trọ ưng ý để ở riêng
+        thật là một vấn để nan giải. Có nhiều nguyên nhân dẫn đến thực trạng này,
+        một trong số những nguyên nhân chính là do người thuê trọ khó khăn khi tìm
+        kiếm thông tin nhà trọ phù hợp với bản thân. Đa số thì người thuê trọ chỉ tìm
+        được thông tin nhà trọ từ những lời giới thiệu, tờ rơi quảng cáo hoặc trên một vài trang mạng xã hội hoặc
+        trực tiếp đi đến khu vực đó để tìm kiếm. Việc tìm kiếm thông tin này rất khó khăn dẫn đến nhiều vấn đề như
+        giá cả không hợp lý, chất lượng phòng trọ không phù hợp, làm mất nhiều thời gian của người thuê trọ…\n\n
+        Hiện nay có khá nhiều website có thể tìm kiếm nhà trọ tuy nhiên hiện nay smartphone là công cụ chủ yếu để mọi người duyệt web,
+        từ đó những hạn chế của website cũng bắt đầu bộc lộ: các tính năng bị hạn chế, nội dung hiện thị không đầy đủ,
+        không đem lại trải nghiệm mượt mà cho người dùng...vv , vì thế sự ra đời của một ứng để tìm kiếm nhà trọ là rất cần thiết.
+    </string>
+    <string name="infoapp">
+        Nắm bắt được những nhu cầu trên của người dùng nên chúng tôi đã xây dựng nên một ứng dụng tìm chỗ ở, nhà trọ.
+        Ứng dụng FMotel cung cấp một mạng tìm kiếm, chia sẽ thông tin chỗ ở, nhà trọ.\n\n
+        Bạn có thể chia sẽ thông tin chỗ ở, nhà trọ của bạn đến mọi người.\n\n
+        Bạn đang cần tìm một chỗ ở mới, bạn không có thời gian cho việc tìm kiếm khắp nơi, hay để FMotel giúp bạn nhé!\n\n
+        Bạn không có nhiều thời gian online, bạn có thể chia sẽ thông tin và nhu cầu tìm kiếm chỗ ở của bạn với mọi người
+        và có thể bạn sẽ được ai đó giúp đỡ, bằng cách đăng ký nhận thông tin, hệ thống sẽ thông báo cho bạn khi
+        có phòng mới phù hợp với những yêu cầu mà bạn đang tìm kiếm.
+    </string>
+    <string name="function" tools:ignore="TypographyEllipsis">
+        +\tCó thể tìm kiếm nhà trọ theo 2 hình thức - tìm theo danh sách và tìm trên bản đồ.\n\n
+        +\tCó thể tìm kiếm theo ý của mình bằng bộ lọc có nhiều chức năng: lọc theo giá, khu vực, diện tích, số người ở, các tiện nghi,...\n\n
+        +\tXem chi tiết về nhà trọ: hình ảnh, giá cả, vị trí, các thức liên lạc, tiện nghi, các bình luận về nhà trọ,...\n\n
+        +\tTìm và xem chi tiết các tin tức tìm phòng trọ, tìm ở ghép.\n\n
+        +\tCó thể liên lạc với người đăng tin qua gọi điện, nhắn tin, facebook.\n\n
+        +\tCó thể gửi tin nhắn phản hồi để giúp cải thiện ứng dụng.\n\n
+        +\tCó thể báo cáo những thông tin về chỗ ở, nhà trọ không chính xác.\n
     </string>
 
     <string name="title_activity_image__view">Image_View</string>

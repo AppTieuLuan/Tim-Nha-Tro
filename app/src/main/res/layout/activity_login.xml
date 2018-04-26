@@ -15,9 +15,11 @@
         android:layout_height="match_parent" />
 
     <FrameLayout
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:id="@+id/bottom_sign_up"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
     <com.nhatro.login.LoginButton
         android:id="@+id/button"
@@ -25,15 +27,15 @@
         android:layout_height="match_parent"
         android:onClick="switchFragment" />
 
-    <FrameLayout
-        android:id="@+id/top_login"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+    <!--<FrameLayout-->
+        <!--android:id="@+id/top_login"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent" />-->
 
-    <FrameLayout
-        android:id="@+id/top_sign_up"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+    <!--<FrameLayout-->
+        <!--android:id="@+id/top_sign_up"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent" />-->
 </android.support.design.widget.CoordinatorLayout>
 </layout>
 

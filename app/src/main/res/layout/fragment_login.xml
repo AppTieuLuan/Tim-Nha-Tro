@@ -2,10 +2,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context="com.nhatro.login.LoginFragment">
 
     <LinearLayout
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:id="@+id/layout"
         android:layout_width="350dp"
         android:layout_height="50dp"
         android:orientation="horizontal"
@@ -75,7 +79,7 @@
 
     </LinearLayout>
 
-    <Button
+    <br.com.simplepass.loading_button_lib.customViews.CircularProgressButton
         android:id="@+id/btnlogin"
         android:layout_width="300dp"
         android:layout_height="50dp"
@@ -85,6 +89,9 @@
         android:textSize="18dp"
         android:background="@drawable/btnlogin"
         android:layout_gravity="center_horizontal"
-        android:text="@string/_login" />
+        android:text="@string/_login"
+        app:spinning_bar_color="@color/white"
+        app:spinning_bar_padding="6dp"
+        app:spinning_bar_width="4dp"/>
 
 </LinearLayout>

@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/secondPage"
+    tools:context="com.nhatro.ChangeProfileActivity">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:id="@+id/layout"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="350dp"
+                android:layout_height="50dp"
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:textColorHint="#8effffff"
+                android:background="@drawable/bubble"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/username" />
+
+                <TextView
+                    android:id="@+id/txtaccount"
+                    android:singleLine="true"
+                    android:layout_width="300dp"
+                    android:layout_height="50dp"
+                    android:background="@android:color/transparent"
+                    android:gravity="center_vertical"
+                    android:text="Tài khoản"
+                    android:textSize="18dp"
+                    android:paddingEnd="32dp"
+                    android:paddingStart="32dp"
+                    android:textColor="#ffffff"
+                    android:textColorHint="#8effffff" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="350dp"
+                android:layout_height="50dp"
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:textColorHint="#8effffff"
+                android:background="@drawable/bubble"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/username" />
+
+                <EditText
+                    android:id="@+id/txtname"
+                    android:singleLine="true"
+                    android:layout_width="300dp"
+                    android:layout_height="50dp"
+                    android:background="@android:color/transparent"
+                    android:gravity="center_vertical"
+                    android:hint="@string/username"
+                    android:paddingEnd="32dp"
+                    android:paddingStart="32dp"
+                    android:textColor="#ffffff"
+                    android:textColorHint="#8effffff" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="350dp"
+                android:layout_height="50dp"
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:textColorHint="#8effffff"
+                android:background="@drawable/bubble"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/phone" />
+
+                <EditText
+                    android:id="@+id/txtphone"
+                    android:digits="0123456789."
+                    android:inputType="numberDecimal"
+                    android:singleLine="true"
+                    android:layout_width="300dp"
+                    android:layout_height="50dp"
+                    android:background="@android:color/transparent"
+                    android:gravity="center_vertical"
+                    android:hint="@string/phone"
+                    android:paddingEnd="32dp"
+                    android:paddingStart="32dp"
+                    android:textColor="#ffffff"
+                    android:textColorHint="#8effffff" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="350dp"
+                android:layout_height="50dp"
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:textColorHint="#8effffff"
+                android:background="@drawable/bubble"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:id="@+id/imagefbcheck"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/iconfb" />
+
+                <EditText
+                    android:id="@+id/txtfacebook"
+                    android:singleLine="true"
+                    android:layout_width="260dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@android:color/transparent"
+                    android:layout_marginTop="16dp"
+                    android:gravity="center_vertical"
+                    android:hint="@string/facebook"
+                    android:paddingEnd="32dp"
+                    android:paddingStart="32dp"
+                    android:textColor="#ffffff"
+                    android:textColorHint="#8effffff" />
+                <ImageView
+                    android:id="@+id/imgok"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="350dp"
+                android:layout_height="50dp"
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:textColorHint="#8effffff"
+                android:background="@drawable/bubble"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/iconlocation" />
+
+                <EditText
+                    android:id="@+id/txtaddress"
+                    android:singleLine="true"
+                    android:layout_width="300dp"
+                    android:layout_height="50dp"
+                    android:background="@android:color/transparent"
+                    android:gravity="center_vertical"
+                    android:hint="Nhập địa chỉ (nếu có)"
+                    android:paddingEnd="32dp"
+                    android:paddingStart="32dp"
+                    android:textColor="#ffffff"
+                    android:textColorHint="#8effffff" />
+            </LinearLayout>
+
+            <!--<Button-->
+            <!--android:id="@+id/changeprofile"-->
+            <!--android:layout_width="300dp"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:layout_marginTop="40dp"-->
+            <!--android:textColor="#fff"-->
+            <!--android:textAllCaps="false"-->
+            <!--android:textSize="18dp"-->
+            <!--android:background="@drawable/btnsignup"-->
+            <!--android:layout_gravity="center_horizontal"-->
+            <!--android:text="@string/change" />-->
+            <br.com.simplepass.loading_button_lib.customViews.CircularProgressButton
+                android:id="@+id/changeprofile"
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="40dp"
+                android:textColor="#fff"
+                android:textAllCaps="false"
+                android:textSize="18dp"
+                android:background="@drawable/btnsignup"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/change"
+                app:spinning_bar_color="@color/white"
+                app:spinning_bar_padding="6dp"
+                app:spinning_bar_width="4dp"/>
+        </LinearLayout>
+    </ScrollView>
+
+</FrameLayout>

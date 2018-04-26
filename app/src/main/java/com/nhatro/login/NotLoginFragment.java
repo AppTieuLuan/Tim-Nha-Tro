@@ -9,12 +9,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.nhatro.IntroduceActivity;
 import com.nhatro.LoginActivity;
 import com.nhatro.R;
+import com.nhatro.SupportActivity;
 
 public class NotLoginFragment extends Fragment {
+
+    LinearLayout btnlogin, btnsupport, btnintroduce;
 
     public NotLoginFragment() {
         // Required empty public constructor
@@ -25,11 +30,29 @@ public class NotLoginFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_not_login, container, false);
-        Button btn = view.findViewById(R.id.btnlogin);
-        btn.setOnClickListener(new View.OnClickListener() {
+        btnlogin = view.findViewById(R.id.login);
+        btnsupport = view.findViewById(R.id.support);
+        btnintroduce = view.findViewById(R.id.introduce);
+
+        btnlogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+        btnsupport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), SupportActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btnintroduce.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), IntroduceActivity.class);
                 startActivity(intent);
             }
         });
