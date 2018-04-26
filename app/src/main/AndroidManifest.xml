@@ -59,11 +59,13 @@
             android:name=".Newpost"
             android:parentActivityName=".MainActivity" />
         <activity android:name=".LayViTri" />
-        <activity android:name=".ChangePassActivity" />
-        <activity android:name=".ChangeProfileActivity" />
-        <activity android:name=".IntroduceActivity" />
-        <activity android:name=".SupportActivity" />
-        <activity android:name=".ManagerRoomActivity"></activity>
+        <activity android:name=".XemTinTimPhong" />
+        <activity android:name=".ThemTinTimPhong" />
+        <activity android:name=".ChonViTriNhanThongBao" />
+        <activity
+            android:name=".TestActivity">
+
+        </activity>
     </application>
 
 </manifest>

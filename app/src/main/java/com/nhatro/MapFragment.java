@@ -113,23 +113,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
             mCardAdapter = new CardMapViewAdapter(this.item);
 
 //            mCardAdapter.addCardItem(new ItemOnMapView(1, "Phòng trọ 1", "Địa chỉ 1", 1555, 10.85064713, 106.77209787));
-//            mCardAdapter.addCardItem(new ItemOnMapView(2, "Phòng trọ 2", "Địa chỉ 2", 1556, 10.25064713, 106.37209787));
-//            mCardAdapter.addCardItem(new ItemOnMapView(3, "Phòng trọ 3", "Địa chỉ 3", 1557, 10.15064713, 106.87209787));
-//            mCardAdapter.addCardItem(new ItemOnMapView(4, "Phòng trọ 4", "Địa chỉ 4", 1558, 10.45064713, 106.57209787));
-//            mCardAdapter.addCardItem(new ItemOnMapView(5, "Phòng trọ 5", "Địa chỉ 5", 1559, 10.55064713, 106.17209787));
-//            mCardAdapter.addCardItem(new ItemOnMapView(6, "Phòng trọ 6", "Địa chỉ 6", 1550, 10.85064713, 106.97209787));
-//            mCardAdapter.addCardItem(new ItemOnMapView(1, "Phòng trọ 1", "Địa chỉ 1", 1555, 10.85064713, 106.77209787));
-//            mCardAdapter.addCardItem(new ItemOnMapView(2, "Phòng trọ 2", "Địa chỉ 2", 1556, 10.25064713, 106.37209787));
-//            mCardAdapter.addCardItem(new ItemOnMapView(3, "Phòng trọ 3", "Địa chỉ 3", 1557, 10.15064713, 106.87209787));
-//            mCardAdapter.addCardItem(new ItemOnMapView(4, "Phòng trọ 4", "Địa chỉ 4", 1558, 10.45064713, 106.57209787));
-//            mCardAdapter.addCardItem(new ItemOnMapView(5, "Phòng trọ 5", "Địa chỉ 5", 1559, 10.55064713, 106.17209787));
-//            mCardAdapter.addCardItem(new ItemOnMapView(6, "Phòng trọ 6", "Địa chỉ 6", 1550, 10.85064713, 106.97209787));
-//            mCardAdapter.addCardItem(new ItemOnMapView(1, "Phòng trọ 1", "Địa chỉ 1", 1555, 10.85064713, 106.77209787));
-//            mCardAdapter.addCardItem(new ItemOnMapView(2, "Phòng trọ 2", "Địa chỉ 2", 1556, 10.25064713, 106.37209787));
-//            mCardAdapter.addCardItem(new ItemOnMapView(3, "Phòng trọ 3", "Địa chỉ 3", 1557, 10.15064713, 106.87209787));
-//            mCardAdapter.addCardItem(new ItemOnMapView(4, "Phòng trọ 4", "Địa chỉ 4", 1558, 10.45064713, 106.57209787));
-//            mCardAdapter.addCardItem(new ItemOnMapView(5, "Phòng trọ 5", "Địa chỉ 5", 1559, 10.55064713, 106.17209787));
-//            mCardAdapter.addCardItem(new ItemOnMapView(6, "Phòng trọ 6", "Địa chỉ 6", 1550, 10.85064713, 106.97209787));
 
             mCardShadowTransformer = new ShadowTransformer(mViewPager, mCardAdapter);
 
@@ -182,16 +165,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
                 @Override
                 public void onSectionChanged(IndicatorSeekBar seekBar, int thumbPosOnTick, String textBelowTick, boolean fromUserTouch) {
 
-                   /* if (isGestured == true) {*/
                     txtBanKinh.setText(String.valueOf(Math.round(seekBarBanKinh.getProgressFloat())) + " KM");
                     banKinh = Integer.parseInt(String.valueOf(Math.round(seekBarBanKinh.getProgressFloat())));
 
                     loadData();
-                    //currentCircle.setRadius(banKinh);
-                    //currentCircle.remove();
-                    //drawCircle(new LatLng(map.getCameraPosition().target.latitude, map.getCameraPosition().target.longitude), banKinh);
-                    /*}*/
-
                 }
 
                 @Override
@@ -205,12 +182,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
                 }
             });
 
-            //Toast.makeText(getContext()),
         }
-
-        // Toast.makeText(getContext(), "Load dữ liệu", Toast.LENGTH_SHORT).show();
-
-
         return view;
     }
 
@@ -233,7 +205,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
         Toast.makeText(getContext(), "Đang Lọc DL", Toast.LENGTH_SHORT).show();
         this.item.clear();
         map.clear();
-
 
         // Tạo lại marker khi di chuyển map
         BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.tmpmarker);

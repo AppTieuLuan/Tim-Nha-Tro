@@ -1,4 +1,5 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="match_parent"
@@ -8,7 +9,7 @@
 
 
     <android.support.constraint.ConstraintLayout
-        android:visibility="gone"
+        android:visibility="visible"
         android:id="@+id/layoutLoadingList"
         android:padding="10dp"
         android:paddingHorizontal="5dp"
@@ -107,6 +108,7 @@
     </android.support.constraint.ConstraintLayout>
 
     <LinearLayout
+        android:visibility="gone"
         android:id="@+id/layoutList"
         android:orientation="vertical"
         android:layout_width="fill_parent"
@@ -135,12 +137,14 @@
             android:layout_height="20dp" />
     </LinearLayout>
 
-    <android.support.design.widget.FloatingActionButton
+    <com.github.clans.fab.FloatingActionButton
         android:id="@+id/iconAdd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/fab_margin"
         android:layout_gravity="bottom|right"
-        app:srcCompat="@drawable/icon_add" />
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:src="@drawable/fab_add"/>
 
 </FrameLayout>

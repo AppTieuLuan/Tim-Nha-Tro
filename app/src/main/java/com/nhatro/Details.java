@@ -36,7 +36,7 @@ import java.util.List;
 public class Details extends AppCompatActivity {
 
     ViewPager viewPager;
-    String images[] = {"https://pm1.narvii.com/6016/2f719b81e29dd3ca5afcc722614560f0132a98aa_hq.jpg",
+    String images[] = {"https://nhatroservice.000webhostapp.com/images/.20180423224728ee.jpg",
             "https://znews-photo-td.zadn.vn/w660/Uploaded/natmzz/2018_04_01/0_2.jpg",
             "https://znews-photo-td.zadn.vn/w660/Uploaded/natmzz/2018_04_01/0.jpg",
             "https://znews-photo-td.zadn.vn/w660/Uploaded/fcivbqmv/2018_03_31/Facebookhacker.jpg",

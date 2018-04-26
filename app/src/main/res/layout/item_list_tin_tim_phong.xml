@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/back_ground_item_list_view_comment"
+    android:padding="7dp"
+    android:layout_margin="7dp"
+    android:layout_marginBottom="7dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <TextView
+        android:layout_marginLeft="5dp"
+        android:padding="3dp"
+        android:id="@+id/txttype"
+        android:textColor="@color/white"
+        android:textSize="10sp"
+        android:background="@drawable/border_text_type_item_cardview"
+        app:layout_constraintStart_toEndOf="@id/avatar"
+        android:text="Tìm phòng trọ"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+
+
+
+    <TextView
+        android:layout_marginLeft="5dp"
+        android:padding="3dp"
+        android:id="@+id/txtSex"
+        android:textColor="@color/white"
+        android:textSize="10sp"
+        android:background="@drawable/border_text_type_item_cardview"
+        app:layout_constraintStart_toEndOf="@id/txttype"
+        android:text="Nam"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+
+    <TextView
+        app:layout_constraintTop_toBottomOf="@id/txttype"
+        android:id="@+id/txtTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:text="Cần tìm gấp phòng trọ tại  quận 9 Cần tìm gấp phòng trọ tại quận 9 Cần tìm gấp phòng trọ tại quận 9 "
+        android:paddingBottom="3dp"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        />
+
+    <ImageView
+        app:layout_constraintStart_toStartOf="@id/txtTitle"
+        android:paddingLeft="5dp"
+        android:id="@+id/marker"
+        android:paddingRight="2dp"
+        android:paddingBottom="1dp"
+        app:layout_constraintTop_toTopOf="@id/txtAddress"
+        android:src="@drawable/marker"
+        android:layout_width="15dp"
+        android:layout_height="15dp" />
+
+    <TextView
+        android:id="@+id/txtAddress"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:text="Quận 9, Thủ Đức / TPHCM"
+        android:maxLines="2"
+        android:textSize="10sp"
+        app:layout_constraintStart_toEndOf="@id/marker"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtTitle" />
+
+    <ImageView
+        app:layout_constraintStart_toStartOf="@id/txtTitle"
+        android:paddingLeft="5dp"
+        android:id="@+id/marker2"
+        android:paddingRight="2dp"
+        android:paddingBottom="1dp"
+        app:layout_constraintTop_toTopOf="@id/txtKhuVuc"
+        android:src="@drawable/marker"
+        android:layout_width="15dp"
+        android:layout_height="15dp" />
+
+    <TextView
+        android:id="@+id/txtKhuVuc"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:text="Khu vực: Đình Phong Phú, Ngã tư Thủ Đức, Vincom Quận 9, Giao Thông Vận Tải"
+        android:maxLines="3"
+        android:textSize="10sp"
+        app:layout_constraintStart_toEndOf="@id/marker"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtAddress" />
+
+
+    <ImageView
+        app:layout_constraintStart_toStartOf="@id/txtTitle"
+        android:paddingLeft="5dp"
+        android:id="@+id/songuoi"
+        android:paddingRight="2dp"
+        android:paddingBottom="1dp"
+        app:layout_constraintTop_toTopOf="@id/txtSoNguoi"
+        android:src="@drawable/icon_songuoi"
+        android:layout_width="15dp"
+        android:layout_height="15dp" />
+
+    <TextView
+        android:id="@+id/txtSoNguoi"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:text="Số lượng: 2 người"
+        android:textSize="10sp"
+        app:layout_constraintStart_toEndOf="@id/songuoi"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtKhuVuc" />
+
+    <TextView
+        android:id="@+id/valueGiaTu"
+        android:textStyle="bold|italic"
+        android:paddingTop="3dp"
+        android:textSize="11sp"
+        app:layout_constraintStart_toStartOf="@id/txtTitle"
+        app:layout_constraintTop_toBottomOf="@id/txtSoNguoi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Giá từ: 1.0000.000 - 1.500.000 vnđ"
+        />
+</android.support.constraint.ConstraintLayout>

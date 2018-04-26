@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray2"
+    tools:context="com.nhatro.XemTinTimPhong">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/layoutThongTin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:padding="7dp">
+
+                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/profile_image"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:src="@drawable/avatar_userr"
+                    app:civ_border_color="#c1c0c0"
+                    app:civ_border_width="1dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <TextView
+                    android:id="@+id/txtTen"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Nguyễn Văn A"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/profile_image" />
+
+                <TextView
+                    android:id="@+id/txtTuoi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tuổi 28"
+                    android:textSize="12sp"
+                    android:textStyle="italic"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txtTen" />
+
+                <TextView
+                    android:id="@+id/txtSoDT"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0969340320"
+                    android:textSize="12sp"
+                    android:textStyle="italic"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txtTuoi" />
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/layoutLienLac"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="3dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txtSoDT">
+
+                    <ImageView
+                        android:id="@+id/btnCall"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:padding="5dp"
+                        android:src="@drawable/icon_call" />
+
+                    <ImageView
+                        android:id="@+id/btnGuiSMS"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:padding="5dp"
+                        android:src="@drawable/icons_sms"
+                        app:layout_constraintStart_toEndOf="@id/btnCall" />
+
+                    <ImageView
+                        android:id="@+id/btnFaceBook"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:padding="5dp"
+                        android:src="@drawable/icon_facebook"
+                        app:layout_constraintStart_toEndOf="@id/btnGuiSMS" />
+
+                    <ImageView
+                        android:id="@+id/btnMessenger"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:padding="5dp"
+                        android:src="@drawable/icon_messenger"
+                        app:layout_constraintStart_toEndOf="@id/btnFaceBook" />
+
+                </android.support.constraint.ConstraintLayout>
+
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/layoutTTYC"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
+                android:padding="7dp"
+                app:layout_constraintTop_toBottomOf="@+id/layoutThongTin">
+
+                <TextView
+                    android:id="@+id/txtTieuDe"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="3"
+                    android:text="Tìm phòng trọ tại quận 9 cho 1 người ở. "
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <View
+                    android:id="@+id/divider1"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginVertical="7dp"
+                    android:background="@android:color/darker_gray"
+                    app:layout_constraintTop_toBottomOf="@id/txtTieuDe" />
+
+                <TextView
+                    android:id="@+id/txtTTCT"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="7dp"
+                    android:text="Thông tin yêu cầu"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/divider1" />
+
+                <TextView
+                    android:id="@+id/txtLoaiNhaO"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/paddingIteminDetailScreen"
+                    android:paddingEnd="50dp"
+                    android:text="Loại tin"
+                    android:textSize="12sp"
+                    app:layout_constraintTop_toBottomOf="@id/txtTTCT" />
+
+                <TextView
+                    android:id="@+id/valueLoaiNhaO"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/paddingIteminDetailScreen"
+                    android:text="Tìm phòng ở ghép"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toEndOf="@id/txtLoaiNhaO"
+                    app:layout_constraintTop_toBottomOf="@id/txtTTCT" />
+
+                <View
+                    android:id="@+id/line0"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginHorizontal="4dp"
+                    android:background="@android:color/darker_gray"
+                    app:layout_constraintTop_toBottomOf="@id/txtLoaiNhaO" />
+
+
+                <TextView
+                    android:id="@+id/txtSoNguoi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/paddingIteminDetailScreen"
+                    android:text="Số người"
+                    android:textSize="12sp"
+                    app:layout_constraintTop_toBottomOf="@id/line0" />
+
+                <TextView
+                    android:id="@+id/valueSoNguoi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/paddingIteminDetailScreen"
+                    android:text="2 - 4"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toStartOf="@id/valueLoaiNhaO"
+                    app:layout_constraintTop_toBottomOf="@id/line0" />
+
+                <View
+                    android:id="@+id/line1"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginHorizontal="4dp"
+                    android:background="@android:color/darker_gray"
+                    app:layout_constraintTop_toBottomOf="@id/valueSoNguoi" />
+
+
+                <TextView
+                    android:id="@+id/txtGiaMongMuon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/paddingIteminDetailScreen"
+                    android:text="Giá mong muốn"
+                    android:textSize="12sp"
+                    app:layout_constraintTop_toBottomOf="@id/line1" />
+
+                <TextView
+                    android:id="@+id/valueGiaMonMuon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/paddingIteminDetailScreen"
+                    android:text="Từ 1.200.000 - 1.500.000 vnđ"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toStartOf="@id/valueLoaiNhaO"
+                    app:layout_constraintTop_toBottomOf="@id/line1" />
+
+                <View
+                    android:id="@+id/line2"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginHorizontal="4dp"
+                    android:background="@android:color/darker_gray"
+                    app:layout_constraintTop_toBottomOf="@id/valueGiaMonMuon" />
+
+
+
+
+
+                <TextView
+                    android:id="@+id/txtQH"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/paddingIteminDetailScreen"
+                    android:text="Quận, huyện"
+                    android:textSize="12sp"
+                    app:layout_constraintTop_toBottomOf="@id/line2" />
+
+                <TextView
+                    android:id="@+id/valueQH"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/paddingIteminDetailScreen"
+                    android:text="Quận 9 / Hồ Chí Minh"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toStartOf="@id/valueGiaMonMuon"
+                    app:layout_constraintTop_toBottomOf="@id/line2" />
+
+                <View
+                    android:id="@+id/line3"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginHorizontal="4dp"
+                    android:background="@android:color/darker_gray"
+                    app:layout_constraintTop_toBottomOf="@id/valueQH" />
+
+                <TextView
+                android:id="@+id/txtKhuVuc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/paddingIteminDetailScreen"
+                android:text="Khu vực"
+                android:textSize="12sp"
+                app:layout_constraintTop_toBottomOf="@id/line3" />
+
+                <TextView
+                    android:id="@+id/valueKhuVuc"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/paddingIteminDetailScreen"
+                    android:text="Đình phong phú, Vincom Quận 9, Chợ Lê Văn Việt sd"
+                    android:maxLines="3"
+                    android:textSize="12sp"
+                    android:ellipsize="end"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/valueQH"
+                    app:layout_constraintTop_toBottomOf="@id/line3" />
+
+                <View
+                    android:id="@+id/line34"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginHorizontal="4dp"
+                    android:background="@android:color/darker_gray"
+                    app:layout_constraintTop_toBottomOf="@id/valueKhuVuc" />
+
+
+                <TextView
+                    android:id="@+id/txtGioGiac"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/paddingIteminDetailScreen"
+                    android:text="Giờ giấc"
+                    android:textSize="12sp"
+                    app:layout_constraintTop_toBottomOf="@id/line34" />
+
+                <TextView
+                    android:id="@+id/valueGioGiac"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/paddingIteminDetailScreen"
+                    android:text="Không yêu cầu"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toStartOf="@id/valueKhuVuc"
+                    app:layout_constraintTop_toBottomOf="@id/line34" />
+
+                <View
+                    android:id="@+id/line4"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginHorizontal="4dp"
+                    android:background="@android:color/darker_gray"
+                    app:layout_constraintTop_toBottomOf="@id/valueKhuVuc" />
+
+
+            </android.support.constraint.ConstraintLayout>
+
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/tnmm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
+                android:padding="7dp"
+                app:layout_constraintTop_toBottomOf="@+id/layoutTTYC">
+
+                <TextView
+                    android:id="@+id/txtTTTIN"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Tiện nghi mong muốn"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <com.nhatro.adapter.ExpandableHeightGridView
+                    android:id="@+id/gridTienNghi"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:isScrollContainer="false"
+                    android:numColumns="5"
+                    android:paddingTop="7dp"
+                    android:stretchMode="columnWidth"
+                    app:layout_constraintTop_toBottomOf="@id/txtTTTIN" />
+
+            </android.support.constraint.ConstraintLayout>
+
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/layoutmotathems"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
+                android:padding="7dp"
+                app:layout_constraintTop_toBottomOf="@+id/tnmm">
+
+                <TextView
+                    android:id="@+id/txtMoTaThem"
+                    android:textStyle="bold"
+                    android:textSize="13sp"
+                    android:paddingBottom="4dp"
+                    android:text="Mô tả thêm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <LinearLayout
+                    android:padding="7dp"
+                    android:orientation="vertical"
+                    android:background="@drawable/back_ground_item_list_view_comment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/txtMoTaThem"
+                    >
+                    <TextView
+                        android:id="@+id/txtbinhluan"
+                        android:textSize="12sp"
+                        android:text="Phòng mình rộng rãi, có gác rộng, thoải mái, sạch sẽ từ trong phòng ra ngoài cổng.\n
+Tiền phòng: 1 triệu 6, điện 3k, nước 5k, wifi 50k.\n
+Địa chỉ: 123/11 Hoàng Diệu 2, Linh Trung, Thủ Đức (1 cổng Đối diện trà sữa Hoa Hướng Dương, và 1 cổng đối diện Trà sữa Gossip. )"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+            </android.support.constraint.ConstraintLayout>
+
+
+        </android.support.constraint.ConstraintLayout>
+    </ScrollView>
+
+
+</android.support.constraint.ConstraintLayout>

@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white">
+
+                <TextView
+                    android:id="@+id/txtThongTin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/gray2"
+                    android:padding="@dimen/paddingIteminDetailScreen"
+                    android:text="Thông tin chi tiết"
+                    android:textColor="@color/black"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/valueTieuDe"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:backgroundTint="@color/white"
+                    android:hint="Nhập tiêu đề *"
+                    android:maxLines="7"
+                    android:paddingLeft="90dp"
+                    android:textColor="#000000"
+                    android:textSize="13sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txtThongTin"
+
+                    />
+
+                <TextView
+                    android:id="@+id/txtTieuDe"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/paddingIteminDetailScreen"
+                    android:paddingEnd="30dp"
+                    android:text="Tiêu đề"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@id/valueTieuDe"
+                    app:layout_constraintTop_toTopOf="@id/valueTieuDe"
+
+                    />
+
+                <View
+                    android:id="@+id/divider1"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@android:color/darker_gray"
+                    app:layout_constraintTop_toBottomOf="@id/valueTieuDe" />
+
+
+                <TextView
+                    android:id="@+id/txtLoaiNhaO"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/paddingIteminDetailScreen"
+                    android:paddingEnd="30dp"
+                    android:text="Loại nhà ở"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@id/divider1" />
+
+                <RadioButton
+                    android:id="@+id/checkPhongTro"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tìm Thuê Phòng Trọ"
+                    app:layout_constraintTop_toBottomOf="@id/txtLoaiNhaO" />
+
+                <RadioButton
+                    android:id="@+id/checkNhaNguyenCan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tìm Thuê Nhà Nguyên Căn"
+                    app:layout_constraintStart_toStartOf="@id/valueTieuDe"
+                    app:layout_constraintTop_toBottomOf="@id/checkPhongTro" />
+
+                <RadioButton
+                    android:id="@+id/checkTimOGhep"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tìm Phòng Ở Ghép"
+                    app:layout_constraintTop_toBottomOf="@id/checkNhaNguyenCan" />
+
+                <View
+                    android:id="@+id/divider2"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@android:color/darker_gray"
+                    app:layout_constraintTop_toBottomOf="@id/checkTimOGhep" />
+                />
+
+                <TextView
+                    android:id="@+id/txtSoNguoi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/paddingIteminDetailScreen"
+                    android:paddingEnd="30dp"
+                    android:text="Số người muốn ở"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@id/divider2" />
+
+                <LinearLayout
+                    android:id="@+id/layoutSoNguoi"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="30dp"
+                    android:orientation="vertical"
+                    android:paddingBottom="7dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/valueTieuDe"
+                    app:layout_constraintTop_toBottomOf="@id/txtSoNguoi">
+
+                    <com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar
+                        android:id="@+id/seekSoNguoi"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:bar_highlight_color="@color/colorAccent"
+                        app:left_thumb_image="@drawable/icon_circle"
+                        app:max_value="10"
+                        app:min_value="1"
+                        app:right_thumb_image="@drawable/icon_circle"
+                        app:steps="1" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/minSoNguoi"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:paddingTop="5dp"
+                            android:text="1"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            app:layout_constraintTop_toBottomOf="@id/seekSoNguoi" />
+
+                        <TextView
+                            android:id="@+id/maxSoNguoi"
+                            android:layout_width="fill_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="end"
+                            android:gravity="end"
+                            android:paddingTop="5dp"
+                            android:text="10"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toEndOf="@id/seekSoNguoi"
+                            app:layout_constraintTop_toBottomOf="@id/seekSoNguoi" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/divider3"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@android:color/darker_gray"
+                    app:layout_constraintTop_toBottomOf="@id/layoutSoNguoi" />
+                />
+
+                <TextView
+                    android:id="@+id/txtGia"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/paddingIteminDetailScreen"
+                    android:paddingEnd="30dp"
+                    android:text="Giá mong muốn"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@id/divider3" />
+
+                <LinearLayout
+                    android:id="@+id/layoutGia"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="30dp"
+                    android:orientation="vertical"
+                    android:paddingBottom="7dp"
+                    app:layout_constraintTop_toBottomOf="@id/txtGia">
+
+                    <com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar
+                        android:id="@+id/seekGia"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:bar_highlight_color="@color/colorAccent"
+                        app:left_thumb_image="@drawable/icon_circle"
+                        app:max_value="10000000"
+                        app:min_value="0"
+                        app:right_thumb_image="@drawable/icon_circle"
+                        app:steps="100" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/minGia"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:paddingTop="5dp"
+                            android:text="1"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            app:layout_constraintTop_toBottomOf="@id/seekSoNguoi" />
+
+                        <TextView
+                            android:id="@+id/maxGia"
+                            android:layout_width="fill_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="end"
+                            android:gravity="end"
+                            android:paddingTop="5dp"
+                            android:text="10"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toEndOf="@id/seekSoNguoi"
+                            app:layout_constraintTop_toBottomOf="@id/seekSoNguoi" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/divider4"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@android:color/darker_gray"
+                    app:layout_constraintTop_toBottomOf="@id/layoutGia" />
+                />
+
+                <TextView
+                    android:id="@+id/txtDC"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/gray2"
+                    android:padding="@dimen/paddingIteminDetailScreen"
+                    android:text="Khu vực mong muốn"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@id/divider4" />
+
+                <Spinner
+                    android:id="@+id/spinnerTinhTP"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="85dp"
+                    android:layout_marginRight="20dp"
+                    app:layout_constraintTop_toBottomOf="@id/txtDC"
+
+                    ></Spinner>
+
+                <TextView
+                    android:id="@+id/txtTP"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/paddingIteminDetailScreen"
+                    android:paddingEnd="25dp"
+                    android:text="Tỉnh/TP"
+                    android:textSize="13sp"
+
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@id/spinnerTinhTP"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/spinnerTinhTP" />
+
+                <View
+                    android:id="@+id/divider5"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@android:color/darker_gray"
+                    app:layout_constraintTop_toBottomOf="@id/txtTP" />
+                />
+                <TextView
+                    android:id="@+id/txtQuanHuyen"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/paddingIteminDetailScreen"
+                    android:paddingEnd="25dp"
+                    android:text="Quận huyện"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/divider5" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycleQH"
+                    app:layout_constraintTop_toBottomOf="@id/txtQuanHuyen"
+                    android:padding="@dimen/paddingIteminDetailScreen"
+                    android:layout_width="match_parent"
+
+                    android:layout_height="wrap_content">
+
+                </android.support.v7.widget.RecyclerView>
+                <View
+                    android:layout_marginTop="7dp"
+                    android:id="@+id/divider6"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@android:color/darker_gray"
+                    app:layout_constraintTop_toBottomOf="@id/recycleQH" />
+
+
+                <LinearLayout
+                    android:id="@+id/layoutKV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintTop_toBottomOf="@id/divider6">
+
+                    <TextView
+                        android:id="@+id/txtKhuVuc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/paddingIteminDetailScreen"
+                        android:paddingEnd="15dp"
+                        android:text="Khu vực"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/valueKV" />
+
+                    <EditText
+
+                        android:id="@+id/valueKV"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:backgroundTint="@color/white"
+                        android:hint="Nhập tiêu đề *"
+                        android:maxLines="7"
+                        android:textColor="#000000"
+                        android:textSize="13sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/divider6" />
+
+                </LinearLayout>
+
+                    <TextView
+                        app:layout_constraintTop_toBottomOf="@id/layoutKV"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="OK"
+                        android:background="@color/colorPrimary"
+                        android:padding="10dp"
+                        android:textColor="@color/white"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+
+            </android.support.constraint.ConstraintLayout>
+        </ScrollView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutTransparent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/transparent2"
+        android:orientation="vertical"
+        android:visibility="gone"></LinearLayout>
+
+
+</RelativeLayout>
+

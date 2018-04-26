@@ -47,11 +47,8 @@ public class Grid_Add_Image_Adapter extends ArrayAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         View v = convertView;
-
-
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         v = inflater.inflate(R.layout.item_grid_chon_hinh_anh, null);
-
         ImageView images = (ImageView) v.findViewById(R.id.images);
         ImageView iconRemoveImages = (ImageView) v.findViewById(R.id.iconRemoveImages);
 

@@ -45,7 +45,7 @@ public class ListFragment extends Fragment {
     LinearLayout layoutList;
     ProgressBar loadingData;
 
-    FloatingActionButton btnAdd;
+    com.github.clans.fab.FloatingActionButton btnAdd;
 
     ConstraintLayout layoutLoading;
 
@@ -114,11 +114,9 @@ public class ListFragment extends Fragment {
                     isLoading = true;
                     Thread thread = new ThreadData();
                     thread.start();
-                    //lstDanhSach.addFooterView(footerview);
                 }
             }
         });
-        //Toast.makeText(getContext(),"ĐANG LOAD DL",Toast.LENGTH_SHORT).show();
 
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,14 +141,6 @@ public class ListFragment extends Fragment {
             isnext = false;
         }
         datas.add(new PhongTro(8, "Thêm 1", "78/12 Làng Tăng Phú, Phường Tăng Nhơn Phú A, Quận 9 Thành Phố Hồ Chí Minh, TPHCM", 1520000, 30, 10, 3, "Nam"));
-
-        /*datas.add(new PhongTro(9, "Thêm 2", "Số 5 Võ Văn Ngân, Quận Thủ Đức, TPHCM", 1600000, 30, 10, 3, "Nữ"));
-        datas.add(new PhongTro(10, "Thêm 3", "Số 1 Võ Văn Ngân, Quận Thủ Đức, TPHCM", 1200000, 30, 10, 3, "Nam"));
-
-        datas.add(new PhongTro(12, "Thêm 4", "78/12 Làng Tăng Phú, Phường Tăng Nhơn Phú A, Quận 9 Thành Phố Hồ Chí Minh, TPHCM", 1520000, 30, 10, 3, "Nam"));
-        datas.add(new PhongTro(11, "Thêm 5", "Số 5 Võ Văn Ngân, Quận Thủ Đức, TPHCM", 1600000, 30, 10, 3, "Nữ"));
-        datas.add(new PhongTro(13, "Thêm 6", "Số 1 Võ Văn Ngân, Quận Thủ Đức, TPHCM", 1200000, 30, 10, 3, "Nam"));
-*/
         return datas;
     }
 
