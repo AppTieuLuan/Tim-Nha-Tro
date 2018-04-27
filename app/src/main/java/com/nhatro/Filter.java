@@ -50,7 +50,7 @@ public class Filter extends AppCompatActivity {
     private int maxArea = 200;
     private int soNguoiO = 1;
     private int tinhTP;
-    private boolean moDanhSach;
+    private boolean moDanhSach, giogiac;
     GridView gridFacilities;
     ArrayList<Item_Grid_Facilities> lstFacilities = new ArrayList<>();
     ArrayList<QuanHuyen> listQuanHuyen = new ArrayList<>();
@@ -67,7 +67,7 @@ public class Filter extends AppCompatActivity {
     TextView btnOK, btnCancel, txtTPHT;
     RadioButton radNam, radNu, radCa2;
     SegmentedGroup radGroup;
-    CheckBox checkNhaTro, checkNhaNguyenCan, checkTimOGhep;
+    CheckBox checkNhaTro, checkNhaNguyenCan, checkTimOGhep, checkGioGiac;
     LinearLayout btnChonTinh;
     SQLite_QuanHuyen sqLite_quanHuyen;
 
@@ -101,7 +101,7 @@ public class Filter extends AppCompatActivity {
         gridQuanHuyen.setExpanded(true);
         gridQuanHuyen.setFocusable(false);
 
-
+        checkGioGiac = findViewById(R.id.checkGioGiac);
         checkNhaNguyenCan = (CheckBox) findViewById(R.id.checkNhaNguyenCan);
         checkNhaTro = (CheckBox) findViewById(R.id.checkPhongTro);
         checkTimOGhep = (CheckBox) findViewById(R.id.checkTimOGhep);
@@ -116,7 +116,7 @@ public class Filter extends AppCompatActivity {
         timNhaNguyenCan = bundle.getBoolean("timNhaNguyenCan");
         timPhongTro = bundle.getBoolean("timPhongTro");
         timTimOGhep = bundle.getBoolean("timTimOGhep");
-
+        giogiac = bundle.getBoolean("giogiac");
         lstChonQuanHuyen = bundle.getIntegerArrayList("lstChonQuanHuyen");
         moDanhSach = bundle.getBoolean("moDanhSach");
         namnu = bundle.getInt("namnu");
@@ -203,15 +203,6 @@ public class Filter extends AppCompatActivity {
             }
 
         });
-
-
-        //selectedFacitilies = HomeFragment.selectedFacilitiess;
-
-//        selectedFacitilies = new boolean[15];
-//        for (int i = 0; i < 15; i++) {
-//            selectedFacitilies[i] = false;
-//            selectedFacitilies[i] = HomeFragment.selectedFacilitiess[i];
-//        }
 
         selectedFacitilies = bundle.getBooleanArray("arrFacilities");
 
@@ -328,7 +319,7 @@ public class Filter extends AppCompatActivity {
         radCa2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                namnu = 0;
+                namnu = 3;
             }
         });
         radNam.setOnClickListener(new View.OnClickListener() {
@@ -380,18 +371,24 @@ public class Filter extends AppCompatActivity {
                 bundle.putBoolean("timNhaNguyenCan", checkNhaNguyenCan.isChecked());
                 bundle.putBoolean("timPhongTro", checkNhaTro.isChecked());
                 bundle.putBoolean("timTimOGhep", checkTimOGhep.isChecked());
-
                 bundle.putString("tenTP", tenTP);
                 bundle.putInt("soNguoiO", soNguoiO);
                 bundle.putInt("maxArea", maxArea);
                 bundle.putInt("minArea", minArea);
-                bundle.putInt("namnu",namnu);
+                bundle.putInt("namnu", namnu);
                 bundle.putInt("minPrice", min);
                 bundle.putInt("maxPrice", max);
                 bundle.putBoolean("changeFilter", true);
                 bundle.putBooleanArray("arrFacilities", selectedFacitilies);
                 bundle.putInt("tinhTP", tinhTP);
+                if (checkGioGiac.isChecked()) {
+                    bundle.putBoolean("giogiac", true);
+                } else {
+                    bundle.putBoolean("giogiac", false);
+                }
                 intent.putExtra("data", bundle);
+
+
                 setResult(1, intent); // phương thức này sẽ trả kết quả cho Activity1
                 finish(); // Đóng Activity hiện tại
 

@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.nhatro.model.LocDL;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,11 +41,12 @@ public class HomeFragment extends Fragment {
     private int minArea = 0;
     private int chonSapXep = 0, tempChon = 0;
     private boolean[] selectedFacilitiess = {false, false, false, false, false, false, false, false, false, false, false, false, false, false, false};
-    private boolean sex;
-    int namnu = 0;
+    private boolean giogiac = false;
+    int namnu = 3;
 
     ArrayList<Integer> lstChonQuanHuyen;
 
+    LocDL locDL;
 
     private boolean isFragmentMap = false; // Biến đánh dấu cho biết đã add fragmnent home chưa
     private boolean changeFilter = false;
@@ -54,7 +56,6 @@ public class HomeFragment extends Fragment {
     MapFragment mapFragment = new MapFragment();
     ListFragment listFragment = new ListFragment();
     android.support.v4.app.FragmentManager fragmentManager1;
-
 
     public HomeFragment() {
         // Required empty public constructor
@@ -71,6 +72,22 @@ public class HomeFragment extends Fragment {
 
         lstChonQuanHuyen = new ArrayList<>();
 
+        locDL = new LocDL();
+
+        Bundle bundlemap2 = new Bundle();
+        bundlemap2.putInt("giamin",locDL.getGiamin());
+        bundlemap2.putInt("giamax",locDL.getGiamax());
+        bundlemap2.putInt("dientichmin",locDL.getDientichmin());
+        bundlemap2.putInt("dientichmax",locDL.getDientichmax());
+        bundlemap2.putInt("songuoio",locDL.getSonguoio());
+        bundlemap2.putString("loaitin",locDL.getLoaitin());
+        bundlemap2.putString("tiennghi",locDL.getTiennghi());
+        bundlemap2.putInt("doituong",locDL.getDoituong());
+        bundlemap2.putInt("giogiac",locDL.getGiogiac());
+        bundlemap2.putInt("idtp",locDL.getIdtp());
+        bundlemap2.putString("idqh",locDL.getIdqh());
+        bundlemap2.putInt("trang",1);
+        listFragment.setArguments(bundlemap2);
 
         fragmentManager1 = getChildFragmentManager();
         fragmentManager1.beginTransaction().add(R.id.framDanhSach, listFragment).commit();
@@ -92,7 +109,7 @@ public class HomeFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), Filter.class);
 
                 Bundle bundle = new Bundle();
-
+                bundle.putBoolean("giogiac",giogiac);
                 bundle.putBoolean("moDanhSach", moDanhSach); // nếu mở danh sách sẽ hiện thị mục chọn tp, quận huyện
                 bundle.putBoolean("timNhaNguyenCan", timNhaNguyenCan);
                 bundle.putBoolean("timPhongTro", timPhongTro);
@@ -132,17 +149,15 @@ public class HomeFragment extends Fragment {
                             public void onClick(DialogInterface dialog, int which) {
                                 chonSapXep = tempChon;
                                 if (moDanhSach) {
-                                    listFragment.filterData();
+                                    listFragment.filterData(locDL);
                                 } else {
-                                    mapFragment.loadData();
+                                    mapFragment.loadData(locDL);
                                 }
                             }
                         });
                 builder.create().show();
             }
         });
-
-
         btnMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -155,27 +170,45 @@ public class HomeFragment extends Fragment {
                     moDanhSach = false;
                     txtCheDoXem.setText("Danh sách");
                     imgBanDo.setImageResource(R.drawable.icon_list);
-
+                    locDL.setDanhsach(0);
                     if (isFragmentMap) {
                         fragmentManager1.beginTransaction().hide(listFragment).show(mapFragment).commit();
                         if (changeFilter) {
-                            mapFragment.loadData();
+                            mapFragment.loadData(locDL);
                             changeFilter = false;
                         }
                     } else {
                         isFragmentMap = true;
 
+
+                       /* Bundle bundle = new Bundle();
+                        bundle.putString("DocNum", docNum);   //parameters are (key, value).*/
+
+                       // mFrag.setArguments(bundle);
+
 //                        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 //                        transaction.replace(R.id.framDanhSach, new MapFragment());
 //                        transaction.commit();
+                        Bundle bundlemap = new Bundle();
+                        bundlemap.putInt("giamin",locDL.getGiamin());
+                        bundlemap.putInt("giamax",locDL.getGiamax());
+                        bundlemap.putInt("dientichmin",locDL.getDientichmin());
+                        bundlemap.putInt("dientichmax",locDL.getDientichmax());
+                        bundlemap.putInt("songuoio",locDL.getSonguoio());
+                        bundlemap.putString("loaitin",locDL.getLoaitin());
+                        bundlemap.putString("tiennghi",locDL.getTiennghi());
+                        bundlemap.putInt("doituong",locDL.getDoituong());
+                        bundlemap.putInt("giogiac",locDL.getGiogiac());
 
+                        mapFragment.setArguments(bundlemap);
                         fragmentManager1.beginTransaction().add(R.id.framDanhSach, mapFragment).commit();
                         fragmentManager1.beginTransaction().hide(listFragment).show(mapFragment).commit();
-
+                        //mapFragment.loadData(locDL);
                     }
 
 
                 } else {
+                    locDL.setDanhsach(1);
                     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                     params.weight = 1f;
                     btnMap.setLayoutParams(params);
@@ -191,7 +224,7 @@ public class HomeFragment extends Fragment {
 
                     fragmentManager1.beginTransaction().hide(mapFragment).show(listFragment).commit();
                     if (changeFilter) {
-                        listFragment.filterData();
+                        listFragment.filterData(locDL);
                         changeFilter = false;
                     }
                 }
@@ -234,15 +267,62 @@ public class HomeFragment extends Fragment {
             timPhongTro = bundle.getBoolean("timPhongTro");
             timTimOGhep = bundle.getBoolean("timTimOGhep");
             namnu = bundle.getInt("namnu");
+            giogiac = bundle.getBoolean("giogiac");
+
+            if(giogiac){
+                locDL.setGiogiac(1);
+            }
+            locDL.setIdtp(tinhTP);
+            locDL.setGiamin(minSlider);
+            locDL.setGiamax(maxSlider);
+            locDL.setDientichmin(minArea);
+            locDL.setDientichmax(maxArea);
+            locDL.setSonguoio(soNguoiO);
+            locDL.setDoituong(namnu);
+
+            String tempLocTin = "(";
+            if (!timTimOGhep && !timPhongTro && !timNhaNguyenCan) {
+                tempLocTin = "";
+            } else {
+                if (timNhaNguyenCan) {
+                    tempLocTin = tempLocTin + "3,";
+                }
+                if (timPhongTro) {
+                    tempLocTin = tempLocTin + "1,";
+                }
+                if (timTimOGhep) {
+                    tempLocTin = tempLocTin + "2,";
+                }
+
+                tempLocTin = tempLocTin.substring(0, tempLocTin.length() - 1);
+                tempLocTin = tempLocTin + ")";
+            }
+
+            locDL.setLoaitin(tempLocTin);
+            String idqh = "";
+            if(lstChonQuanHuyen.size() > 0){
+                idqh = idqh + "(";
+                for (int i = 0; i < lstChonQuanHuyen.size(); i++) {
+                    idqh = idqh + lstChonQuanHuyen.get(i) + ",";
+                }
+                idqh = idqh.substring(0,idqh.length() - 1);
+                idqh = idqh + ")";
+            }
+            locDL.setIdqh(idqh);
 
             if (moDanhSach) {
-                listFragment.filterData();
+                locDL.setDanhsach(1);
+
+                listFragment.filterData(locDL);
 
 //                FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 //                transaction.replace(R.id.framDanhSach, new ListFragment());
 //                transaction.commit();
             } else {
-                mapFragment.loadData();
+
+                locDL.setDanhsach(0);
+                //sss.setDanhsach(0);
+                mapFragment.loadData(locDL);
 //                FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 //                transaction.replace(R.id.framDanhSach, new MapFragment());
 //                transaction.commit();

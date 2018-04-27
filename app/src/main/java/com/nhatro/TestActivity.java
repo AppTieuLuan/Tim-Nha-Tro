@@ -36,8 +36,7 @@ public class TestActivity extends AppCompatActivity {
     SQLite_QuanHuyen sqLite_quanHuyen;
     //int indexSpinnerTinhTp;
 
-   // LinearLayout layoutButtonOK;
-
+    // LinearLayout layoutButtonOK;
 
 
     RecyclerView recycleQH;
@@ -46,6 +45,7 @@ public class TestActivity extends AppCompatActivity {
 
 
     LinearLayoutManager layoutManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +56,7 @@ public class TestActivity extends AppCompatActivity {
         seekSoNguoi = (CrystalRangeSeekbar) findViewById(R.id.seekSoNguoi);
         minSoNguoi = findViewById(R.id.minSoNguoi);
         maxSoNguoi = findViewById(R.id.maxSoNguoi);
-      //  layoutButtonOK = findViewById(R.id.layoutButtonOK);
+        //  layoutButtonOK = findViewById(R.id.layoutButtonOK);
         sqLite_quanHuyen = new SQLite_QuanHuyen(TestActivity.this);
         quanHuyens = new ArrayList<>();
 
@@ -145,4 +145,65 @@ public class TestActivity extends AppCompatActivity {
             }
         });*/
     }
+
+    /*protected String doInBackground(String... arg0) {
+        if (byGetOrPost == 0) { //means by Get Method
+            try {
+                String username = (String) arg0[0];
+                String password = (String) arg0[1];
+                String link = "http://myphpmysqlweb.hostei.com/login.php?username=" + username + "& password=" + password;
+
+                URL url = new URL(link);
+                HttpClient client = new DefaultHttpClient();
+                HttpGet request = new HttpGet();
+                request.setURI(new URI(link));
+                HttpResponse response = client.execute(request);
+                BufferedReader in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+
+                StringBuffer sb = new StringBuffer("");
+                String line = "";
+
+                while ((line = in.readLine()) != null) {
+                    sb.append(line);
+                    break;
+                }
+                in.close();
+                return sb.toString();
+            } catch (Exception e) {
+                return new String("Exception: " + e.getMessage());
+            }
+        } else {
+            try {
+                String username = (String) arg0[0];
+                String password = (String) arg0[1];
+
+                String link = "http://myphpmysqlweb.hostei.com/loginpost.php";
+                String data = URLEncoder.encode("username", "UTF-8") + "=" + URLEncoder.encode(username, "UTF-8");
+                data += "&" + URLEncoder.encode("password", "UTF-8") + "=" + URLEncoder.encode(password, "UTF-8");
+
+                URL url = new URL(link);
+                URLConnection conn = url.openConnection();
+
+                conn.setDoOutput(true);
+                OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+
+                wr.write(data);
+                wr.flush();
+
+                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+
+                StringBuilder sb = new StringBuilder();
+                String line = null;
+
+                // Read Server Response
+                while ((line = reader.readLine()) != null) {
+                    sb.append(line);
+                    break;
+                }
+                return sb.toString();
+            } catch (Exception e) {
+                return new String("Exception: " + e.getMessage());
+            }
+        }
+    }*/
 }

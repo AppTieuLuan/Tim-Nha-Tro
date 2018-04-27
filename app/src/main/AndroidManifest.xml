@@ -66,6 +66,11 @@
             android:name=".TestActivity">
 
         </activity>
+        <activity android:name=".ChangePassActivity" />
+        <activity android:name=".ChangeProfileActivity" />
+        <activity android:name=".IntroduceActivity" />
+        <activity android:name=".SupportActivity" />
+        <activity android:name=".ManagerRoomActivity"></activity>
     </application>
 
 </manifest>

@@ -68,12 +68,12 @@ public class CustomListViewAdapter extends BaseAdapter {
 
 
 
-        Picasso.with(context).load("https://www.theworlds50best.com/latinamerica/en/filestore/jpg/HC-HarrySas-slider-home.jpg").into(img);
+
 
 
         // getting movie data for the row
         PhongTro pt = data.get(i);
-
+        Picasso.with(context).load(pt.getHinhanh()).into(img);
         // title
         title.setText(pt.getTieude());
         address.setText(pt.getDiachi());
@@ -81,7 +81,16 @@ public class CustomListViewAdapter extends BaseAdapter {
         area.setText("Diện tích: "+ String.valueOf(pt.getDientich()) + "("+ String.valueOf(pt.getChieudai())+ "m x " +
                         String.valueOf(pt.getChieurong()) + "m)");
 
-        sex.setText(pt.getGioitinh());
+        if(pt.getGioitinh().equals("3")){
+            sex.setVisibility(View.INVISIBLE);
+        } else {
+            if(pt.getGioitinh().equals("1")){
+                sex.setText("Nam");
+            } else {
+                sex.setText("Nữ");
+            }
+        }
+
 
         if(pt.isDaluu()) {
             imgSave.setColorFilter(Color.parseColor("#008efc"));

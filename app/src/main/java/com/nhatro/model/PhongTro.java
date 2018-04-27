@@ -6,6 +6,33 @@ package com.nhatro.model;
 
 public class PhongTro {
     private int id;
+    private String hinhanh;
+
+    public PhongTro(){
+
+    }
+    public PhongTro(int id, String hinhanh, String tieude, String diachi, float gia, float dientich, float chieudai, float chieurong, String gioitinh, boolean daluu) {
+        this.id = id;
+        this.hinhanh = hinhanh;
+        this.tieude = tieude;
+        this.diachi = diachi;
+        this.gia = gia;
+        this.dientich = dientich;
+        this.chieudai = chieudai;
+        this.chieurong = chieurong;
+        this.gioitinh = gioitinh;
+        this.daluu = daluu;
+    }
+
+    public String getHinhanh() {
+
+        return hinhanh;
+    }
+
+    public void setHinhanh(String hinhanh) {
+        this.hinhanh = hinhanh;
+    }
+
     private String tieude;
     private String diachi;
     private float gia;

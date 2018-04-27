@@ -25,7 +25,9 @@ import android.widget.Toast;
 
 import com.elyeproj.loaderviewlibrary.LoaderImageView;
 import com.elyeproj.loaderviewlibrary.LoaderTextView;
+import com.nhatro.DAL.DAL_PhongTro;
 import com.nhatro.adapter.CustomListViewAdapter;
+import com.nhatro.model.LocDL;
 import com.nhatro.model.PhongTro;
 
 import java.util.ArrayList;
@@ -45,6 +47,7 @@ public class ListFragment extends Fragment {
     LinearLayout layoutList;
     ProgressBar loadingData;
 
+    LocDL locDL;
     com.github.clans.fab.FloatingActionButton btnAdd;
 
     ConstraintLayout layoutLoading;
@@ -59,6 +62,22 @@ public class ListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_list, container, false);
+        Bundle bundle = getArguments();
+        locDL = new LocDL();
+        locDL.setBankinh(2);
+        locDL.setGiamin(bundle.getInt("giamin"));
+        locDL.setGiamax(bundle.getInt("giamax"));
+        locDL.setDientichmin(bundle.getInt("dientichmin"));
+        locDL.setDientichmax(bundle.getInt("dientichmax"));
+        locDL.setSonguoio(bundle.getInt("songuoio"));
+        locDL.setLoaitin(bundle.getString("loaitin"));
+        locDL.setTiennghi(bundle.getString("tiennghi"));
+        locDL.setDoituong(bundle.getInt("doituong"));
+        locDL.setGiogiac(bundle.getInt("giogiac"));
+        locDL.setIdtp(bundle.getInt("idtp"));
+        locDL.setIdqh("");
+        locDL.setTrang(1);
+
 
         footerview = inflater.inflate(R.layout.footer_listivew, null);
         loadingData = v.findViewById(R.id.loadingData);
@@ -125,25 +144,19 @@ public class ListFragment extends Fragment {
                 startActivity(intents);
             }
         });
+        filterData(locDL);
         return v;
     }
 
 
-    public void filterData() {
-        Toast.makeText(getContext(),"Đang Lọc DL",Toast.LENGTH_SHORT).show();
+    public void filterData(LocDL locDL) {
+       /* Toast.makeText(getContext(),"Đang Lọc DL",Toast.LENGTH_SHORT).show();*/
+        this.locDL = locDL;
         isnext = true;
         Thread thread = new ThreadFilter();
         thread.start();
     }
-    public ArrayList<PhongTro> getData() {
-        ArrayList<PhongTro> datas = new ArrayList<>();
-        if(datas.size() == 0) {
-            isnext = false;
-        }
-        datas.add(new PhongTro(8, "Thêm 1", "78/12 Làng Tăng Phú, Phường Tăng Nhơn Phú A, Quận 9 Thành Phố Hồ Chí Minh, TPHCM", 1520000, 30, 10, 3, "Nam"));
-        return datas;
-    }
-
+  
     public class mHadler extends Handler {
         @Override
         public void handleMessage(Message msg) {
@@ -153,9 +166,13 @@ public class ListFragment extends Fragment {
                 //lstDanhSach.addFooterView(footerview);
                 loadingData.setVisibility(View.VISIBLE);
             } else {
-                //data.addAll(getData());
-                data.clear();
-                data.addAll(getData());
+                ArrayList<PhongTro> tmep = new ArrayList<>();
+
+                tmep = (ArrayList<PhongTro>) msg.obj;
+                if(tmep.size() == 0){
+                    isnext = false;
+                }
+                data.addAll(tmep);
                 adapter.notifyDataSetChanged();
                 isLoading = false;
                 loadingData.setVisibility(View.GONE);
@@ -169,13 +186,10 @@ public class ListFragment extends Fragment {
         public void run() {
             mHadlerr.sendEmptyMessage(0);
             ArrayList<PhongTro> mangData = new ArrayList<>();
-            mangData = getData();
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
 
+            DAL_PhongTro dal_phongTro = new DAL_PhongTro();
+            mangData = dal_phongTro.danhSachPhong(locDL);
+            locDL.setTrang(locDL.getTrang() + 1);
             Message message = mHadlerr.obtainMessage(1, mangData);
             mHadlerr.sendMessage(message);
 
@@ -192,7 +206,12 @@ public class ListFragment extends Fragment {
                 layoutList.setVisibility(View.GONE);
                 layoutLoading.setVisibility(View.VISIBLE);
             } else {
-                data.addAll(getData());
+                ArrayList<PhongTro> aa = new ArrayList<>();
+                aa = (ArrayList<PhongTro>) msg.obj;
+                if(aa.size() == 0){
+                    isnext = false;
+                }
+                data.addAll(aa);
                 adapter.notifyDataSetChanged();
                 layoutList.setVisibility(View.VISIBLE);
                 layoutLoading.setVisibility(View.GONE);
@@ -206,13 +225,9 @@ public class ListFragment extends Fragment {
         public void run() {
             handlerFilter.sendEmptyMessage(0);
             ArrayList<PhongTro> mangData = new ArrayList<>();
-            mangData = getData();
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
+            DAL_PhongTro sss = new DAL_PhongTro();
+            mangData = sss.danhSachPhong(locDL);
+            locDL.setTrang(locDL.getTrang() + 1);
             Message message = handlerFilter.obtainMessage(1, mangData);
             handlerFilter.sendMessage(message);
         }

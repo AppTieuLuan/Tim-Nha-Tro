@@ -1,5 +1,6 @@
 package com.nhatro.DAL;
 
+import android.os.StrictMode;
 import android.util.Log;
 
 import org.apache.http.HttpEntity;
@@ -21,10 +22,12 @@ import java.util.List;
  */
 
 public class MyService {
-    static InputStream is = null;
+    InputStream is = null;
     static String response = null;
     public final static int GET = 1;
     public final static int POST = 2;
+
+
 
     public String callService(String url, int method) {
         return this.callService(url, method, null);
@@ -126,10 +129,10 @@ public class MyService {
             }
             is.close();
             response = sb.toString();
+
         } catch (Exception e) {
             Log.e("Buffer Error", "Error: " + e.toString());
         }
-
         return response;
 
     }

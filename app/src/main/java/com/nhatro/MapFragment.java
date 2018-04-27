@@ -7,7 +7,10 @@ import android.graphics.Color;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -35,9 +38,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.ui.IconGenerator;
+import com.nhatro.DAL.DAL_PhongTro;
 import com.nhatro.adapter.CardMapViewAdapter;
 import com.nhatro.adapter.ShadowTransformer;
 import com.nhatro.model.ItemOnMapView;
+import com.nhatro.model.LocDL;
 import com.warkiz.widget.IndicatorSeekBar;
 
 import java.util.ArrayList;
@@ -52,7 +57,6 @@ import static android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE;
  */
 public class MapFragment extends Fragment implements OnMapReadyCallback, View.OnClickListener {
 
-    static View view;
     private MapView mapView;
     private GoogleMap map;
     private LatLng currentSelected;
@@ -73,7 +77,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
     private Circle currentCircle;
     private Marker tempMarker; // Marker xuất hiện khi di chuyển map.
     private IndicatorSeekBar seekBarBanKinh;
-
+    LocDL locDL;
     private boolean isGestured; // Xác định có phải là người di chuyển map để di chuyển circle
 
     public MapFragment() {
@@ -86,8 +90,23 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        if (view == null) {
-            view = inflater.inflate(R.layout.fragment_map, container, false);
+        /*if (view == null) {*/
+            View view = inflater.inflate(R.layout.fragment_map, container, false);
+            locDL = new LocDL();
+            Bundle bundle = getArguments();
+            locDL.setBankinh(2);
+            locDL.setGiamin(bundle.getInt("giamin"));
+            locDL.setGiamax(bundle.getInt("giamax"));
+            locDL.setDientichmin(bundle.getInt("dientichmin"));
+            locDL.setDientichmax(bundle.getInt("dientichmax"));
+            locDL.setSonguoio(bundle.getInt("songuoio"));
+            locDL.setLoaitin(bundle.getString("loaitin"));
+            locDL.setTiennghi(bundle.getString("tiennghi"));
+            locDL.setDoituong(bundle.getInt("doituong"));
+            locDL.setGiogiac(bundle.getInt("giogiac"));
+            locDL.setDanhsach(0);
+
+
             banKinh = 2;
             isGestured = false;
 
@@ -101,22 +120,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
             lstMarker = new ArrayList<>();
 
             item = new ArrayList<>();
-
-            this.item.add(new ItemOnMapView(1, "Phòng trọ 1", "Địa chỉ 1", 1200000, 10.85064713, 106.77209787));
-            this.item.add(new ItemOnMapView(2, "Phòng trọ 2", "Địa chỉ 2", 1100000, 10.84986079, 106.77403353));
-            this.item.add(new ItemOnMapView(3, "Phòng trọ 3", "Địa chỉ 3", 550000, 10.84739511, 106.77034281));
-            this.item.add(new ItemOnMapView(4, "Phòng trọ 4", "Địa chỉ 4", 450000, 10.84636247, 106.77435539));
-            this.item.add(new ItemOnMapView(5, "Phòng trọ 5", "Địa chỉ 5", 2100000, 10.84440583, 106.76908467));
-            this.item.add(new ItemOnMapView(6, "Phòng trọ 6", "Địa chỉ 6", 1800000, 10.84484839, 106.77485678));
-
+            item = getDS();
             mViewPager = (ViewPager) view.findViewById(R.id.viewPager);
             mCardAdapter = new CardMapViewAdapter(this.item);
 
 //            mCardAdapter.addCardItem(new ItemOnMapView(1, "Phòng trọ 1", "Địa chỉ 1", 1555, 10.85064713, 106.77209787));
 
             mCardShadowTransformer = new ShadowTransformer(mViewPager, mCardAdapter);
-
-            mCardAdapter.notifyDataSetChanged();
             mViewPager.setAdapter(mCardAdapter);
 
             mViewPager.setPageTransformer(false, mCardShadowTransformer);
@@ -168,7 +178,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
                     txtBanKinh.setText(String.valueOf(Math.round(seekBarBanKinh.getProgressFloat())) + " KM");
                     banKinh = Integer.parseInt(String.valueOf(Math.round(seekBarBanKinh.getProgressFloat())));
 
-                    loadData();
+                    loadData(locDL);
                 }
 
                 @Override
@@ -182,8 +192,21 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
                 }
             });
 
-        }
         return view;
+    }
+
+    private void setUpViewPager(){
+
+    }
+
+    public void filterData(LocDL locDL) {
+       /* Toast.makeText(getContext(),"Đang Lọc DL",Toast.LENGTH_SHORT).show();*/
+        this.locDL = locDL;
+
+        DAL_PhongTro dal_phongTro = new DAL_PhongTro();
+        //String tsss = dal_phongTro.danhSachPhong(locDL);
+
+        //Log.d("KẾT QUẢ : ", tsss);
     }
 
     private void drawCircle(LatLng point, int banKinh) {
@@ -201,8 +224,38 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
         currentCircle = map.addCircle(circleOptions);
     }
 
-    public void loadData() {
+    public ArrayList<ItemOnMapView> getDS(){
+        ArrayList<ItemOnMapView> temp = new ArrayList<>();
+
+        temp.add(new ItemOnMapView(1, "Phòng trọ 1", "Địa chỉ 1", 1200000, 10.85064713, 106.77209787));
+        temp.add(new ItemOnMapView(2, "Phòng trọ 2", "Địa chỉ 2", 1100000, 10.84986079, 106.77403353));
+        temp.add(new ItemOnMapView(3, "Phòng trọ 3", "Địa chỉ 3", 550000, 10.84739511, 106.77034281));
+        temp.add(new ItemOnMapView(4, "Phòng trọ 4", "Địa chỉ 4", 450000, 10.84636247, 106.77435539));
+        temp.add(new ItemOnMapView(5, "Phòng trọ 5", "Địa chỉ 5", 2100000, 10.84440583, 106.76908467));
+        temp.add(new ItemOnMapView(6, "Phòng trọ 6", "Địa chỉ 6", 1800000, 10.84484839, 106.77485678));
+
+        return temp;
+    }
+
+
+    public void dataMoveCamera(){
+        Toast.makeText(getContext(), "Đang Lọc DL cmr", Toast.LENGTH_SHORT).show();
+
+    }
+    public void loadData(LocDL loc) {
         Toast.makeText(getContext(), "Đang Lọc DL", Toast.LENGTH_SHORT).show();
+
+        loc.setLat(map.getCameraPosition().target.latitude);
+        loc.setLng(map.getCameraPosition().target.longitude);
+        loc.setBankinh(banKinh);
+
+        this.locDL = loc;
+        /*ThreadFilter threadFilter = new ThreadFilter();
+        threadFilter.run();*/
+
+        GetDataAsync getDataAsync = new GetDataAsync();
+        getDataAsync.execute(locDL);
+
         this.item.clear();
         map.clear();
 
@@ -252,18 +305,37 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
                 selectedMarker = lstMarker.get(0);
                 indexSelected = 0;
             }
+
+
         }
 
         indexSelected = 0;
         selectedMarker = lstMarker.get(0);
         //drawCircle(new LatLng(map.getCameraPosition().target.latitude,map.getCameraPosition().target.longitude),Integer.parseInt(String.valueOf(seekBarBanKinh.getProgressFloat())));
+
+
+
     }
 
-
+    public LatLng getLatLong(){
+        return tempMarker.getPosition();
+    }
+    public int banKinh(){
+        return banKinh;
+    }
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.map = googleMap;
 
+        if(tempMarker == null){
+            BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.tmpmarker);
+            LatLng latLng = new LatLng(map.getCameraPosition().target.latitude, map.getCameraPosition().target.longitude);
+            MarkerOptions markerOptions = new MarkerOptions().position(latLng)
+                    .icon(icon);
+
+            tempMarker = map.addMarker(markerOptions);
+            tempMarker.setVisible(false);
+        }
         map.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
             @Override
             public void onCameraMove() {
@@ -278,7 +350,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
                         LatLng latLng = new LatLng(map.getCameraPosition().target.latitude, map.getCameraPosition().target.longitude);
                         MarkerOptions markerOptions = new MarkerOptions().position(latLng)
                                 .icon(icon);
-
                         tempMarker = map.addMarker(markerOptions);
                     }
                 }
@@ -308,7 +379,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
                 if (isGestured) {
                     if (currentCircle != null) {
                         //currentCircle.setCenter(new LatLng(map.getCameraPosition().target.latitude, map.getCameraPosition().target.longitude));
-                        loadData();
+                        loadData(locDL);
                     } else {
                         // Instantiating CircleOptions to draw a circle around the marker
                         CircleOptions circleOptions = new CircleOptions();
@@ -329,9 +400,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
 
                     if (tempMarker != null)
                         tempMarker.setVisible(false);
-
-
-
                 } else {
 
                 }
@@ -409,6 +477,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
 
         drawCircle(new LatLng(10.85064713, 106.77209787), banKinh);
 
+        loadData(locDL);
     }
 
     public void renderMarker(int position) {
@@ -476,5 +545,23 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
         return ssb;
     }
 
+    public class GetDataAsync extends AsyncTask<LocDL,String,Void>{
+
+        @Override
+        protected Void doInBackground(LocDL... locDLS) {
+            DAL_PhongTro dal_phongTro = new DAL_PhongTro();
+            String ss = String.valueOf(dal_phongTro.danhSachPhong(locDLS[0]).size());
+
+            publishProgress(ss);
+            return null;
+        }
+        @Override
+        protected void onProgressUpdate(String... strings) {
+            // TODO Auto-generated method stub
+            super.onProgressUpdate(strings);
+
+            Log.d("Chuỗi DL NHẬN ĐC ", strings[0]);
+        }
+    }
 
 }

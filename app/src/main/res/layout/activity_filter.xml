@@ -269,6 +269,32 @@
                 android:background="@android:color/darker_gray"
                 app:layout_constraintTop_toBottomOf="@id/checkTimOGhep" />
 
+
+            <TextView
+                android:id="@+id/txtGioGiac"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:paddingTop="8dp"
+                android:text="Giờ giấc"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/divider5" />
+            <CheckBox
+                app:layout_constraintStart_toStartOf="@id/sliderArea"
+                android:text="Tự do"
+                app:layout_constraintTop_toBottomOf="@id/txtGioGiac"
+                android:id="@+id/checkGioGiac"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <View
+                android:id="@+id/divider55"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:background="@android:color/darker_gray"
+                app:layout_constraintTop_toBottomOf="@id/checkGioGiac" />
+
             <TextView
                 android:id="@+id/tblFacilities"
                 android:layout_width="wrap_content"
@@ -277,7 +303,7 @@
                 android:paddingTop="8dp"
                 android:text="CÁC TIỆN NGHI"
                 android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@id/divider5" />
+                app:layout_constraintTop_toBottomOf="@id/divider55" />
 
             <com.nhatro.adapter.ExpandableHeightGridView
                 android:id="@+id/gridFacilities"
