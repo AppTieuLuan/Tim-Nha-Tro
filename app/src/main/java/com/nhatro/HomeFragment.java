@@ -254,7 +254,7 @@ public class HomeFragment extends Fragment {
             Bundle bundle = data.getBundleExtra("data");
             tenTP = bundle.getString("tenTP");
             soNguoiO = bundle.getInt("soNguoiO");
-
+            locDL.setTrang(1);
             maxSlider = bundle.getInt("maxPrice");
             minSlider = bundle.getInt("minPrice");
             selectedFacilitiess = bundle.getBooleanArray("arrFacilities");

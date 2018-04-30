@@ -59,12 +59,12 @@ public class ManagerRoomActivity extends AppCompatActivity implements CallBackLi
 
         data = new ArrayList<>();
 
-        data.add(new PhongTro(1, "Phòng Trọ Sạch Sẽ", "Số 1 Võ Văn Ngân, Quận Thủ Đức, TPHCM", 1200000, 30, 10, 3, "Nam"));
-        data.add(new PhongTro(2, "Phòng 2 Sạch Sẽ", "Số 2 Võ Văn Ngân, Quận Thủ Đức, TPHCM", 1300000, 30, 10, 3, "Nam"));
-        data.add(new PhongTro(3, "Phòng 3 Sạch Sẽ", "Số 3 Võ Văn Ngân, Quận Thủ Đức, TPHCM", 1400000, 30, 10, 3, "Nam"));
-        data.add(new PhongTro(4, "78/12 Làng Tăng Phú, Phường Tăng Nhơn Phú A, Quận 9 Thành Phố Hồ Chí Minh, TPHCM", "78/12 Làng Tăng Phú, Phường Tăng Nhơn Phú A, Quận 9 Thành Phố Hồ Chí Minh, TPHCM", 1520000, 30, 10, 3, "Nam"));
-        data.add(new PhongTro(5, "Phòng 5 Sạch Sẽ", "Số 5 Võ Văn Ngân, Quận Thủ Đức, TPHCM", 1600000, 30, 10, 3, "Nữ"));
-        data.add(new PhongTro(6, "Phòng Trọ Sạch Sẽ", "Số 1 Võ Văn Ngân, Quận Thủ Đức, TPHCM", 1200000, 30, 10, 3, "Nam"));
+        data.add(new PhongTro("1", "Phòng Trọ Sạch Sẽ", "Số 1 Võ Văn Ngân, Quận Thủ Đức, TPHCM", 1200000, 30, 10, 3, "Nam"));
+        data.add(new PhongTro("2", "Phòng 2 Sạch Sẽ", "Số 2 Võ Văn Ngân, Quận Thủ Đức, TPHCM", 1300000, 30, 10, 3, "Nam"));
+        data.add(new PhongTro("3", "Phòng 3 Sạch Sẽ", "Số 3 Võ Văn Ngân, Quận Thủ Đức, TPHCM", 1400000, 30, 10, 3, "Nam"));
+        data.add(new PhongTro("4", "78/12 Làng Tăng Phú, Phường Tăng Nhơn Phú A, Quận 9 Thành Phố Hồ Chí Minh, TPHCM", "78/12 Làng Tăng Phú, Phường Tăng Nhơn Phú A, Quận 9 Thành Phố Hồ Chí Minh, TPHCM", 1520000, 30, 10, 3, "Nam"));
+        data.add(new PhongTro("5", "Phòng 5 Sạch Sẽ", "Số 5 Võ Văn Ngân, Quận Thủ Đức, TPHCM", 1600000, 30, 10, 3, "Nữ"));
+        data.add(new PhongTro("6", "Phòng Trọ Sạch Sẽ", "Số 1 Võ Văn Ngân, Quận Thủ Đức, TPHCM", 1200000, 30, 10, 3, "Nam"));
 
         lstDanhSach = (ListView)findViewById(R.id.lstDanhSachTin);
         adapter = new ManagerAdapter(ManagerRoomActivity.this, data);
@@ -77,8 +77,8 @@ public class ManagerRoomActivity extends AppCompatActivity implements CallBackLi
                 Intent intent = new Intent(ManagerRoomActivity.this, Details.class);
 
                 Bundle bundle = new Bundle();
-                int idItem = data.get(i).getId();
-                bundle.putInt("iditem", idItem);
+                String idItem = data.get(i).getId();
+                bundle.putString("iditem", idItem);
                 intent.putExtra("iditem", bundle);
                 startActivity(intent);
             }
@@ -115,7 +115,7 @@ public class ManagerRoomActivity extends AppCompatActivity implements CallBackLi
         if(datas.size() == 0) {
             isnext = false;
         }
-        datas.add(new PhongTro(8, "Thêm 1", "78/12 Làng Tăng Phú, Phường Tăng Nhơn Phú A, Quận 9 Thành Phố Hồ Chí Minh, TPHCM", 1520000, 30, 10, 3, "Nam"));
+        datas.add(new PhongTro("8", "Thêm 1", "78/12 Làng Tăng Phú, Phường Tăng Nhơn Phú A, Quận 9 Thành Phố Hồ Chí Minh, TPHCM", 1520000, 30, 10, 3, "Nam"));
 
         /*datas.add(new PhongTro(9, "Thêm 2", "Số 5 Võ Văn Ngân, Quận Thủ Đức, TPHCM", 1600000, 30, 10, 3, "Nữ"));
         datas.add(new PhongTro(10, "Thêm 3", "Số 1 Võ Văn Ngân, Quận Thủ Đức, TPHCM", 1200000, 30, 10, 3, "Nam"));

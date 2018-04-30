@@ -42,7 +42,7 @@ public class ManagerAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int i) {
-        return this.data.get(i).getId();
+        return 0;
     }
 
     @Override

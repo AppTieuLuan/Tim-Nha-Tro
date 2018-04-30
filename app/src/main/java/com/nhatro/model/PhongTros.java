@@ -5,7 +5,7 @@ package com.nhatro.model;
  */
 
 public class PhongTros {
-    int id;
+    String id;
     String tieude;
     int gia;
     String diachi;
@@ -33,11 +33,66 @@ public class PhongTros {
     int idtp;
     int idqh;
 
-    public int getId() {
+    String username;
+    String hoten;
+    String sdt;
+    String tentp;
+    String tenqh;
+    String facebook;
+
+    public String getFacebook() {
+        return facebook;
+    }
+
+    public void setFacebook(String facebook) {
+        this.facebook = facebook;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getHoten() {
+        return hoten;
+    }
+
+    public void setHoten(String hoten) {
+        this.hoten = hoten;
+    }
+
+    public String getSdt() {
+        return sdt;
+    }
+
+    public void setSdt(String sdt) {
+        this.sdt = sdt;
+    }
+
+    public String getTentp() {
+        return tentp;
+    }
+
+    public void setTentp(String tentp) {
+        this.tentp = tentp;
+    }
+
+    public String getTenqh() {
+        return tenqh;
+    }
+
+    public void setTenqh(String tenqh) {
+        this.tenqh = tenqh;
+    }
+
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -52,7 +107,7 @@ public class PhongTros {
     public PhongTros() {
     }
 
-    public PhongTros(int id, String tieude, int gia, String diachi, float dientich, float chieudai, float chieurong, int loaitin, int songuoimin, int songuoimax, String tiennghi, int doituong, double lat, double lng, String ngay, int iduser, String motathem, int giadien, String donvidien, int gianuoc, String donvinuoc, int tiencoc, String donvicoc, String giogiac, int idtp, int idqh, int soreport) {
+    public PhongTros(String id, String tieude, int gia, String diachi, float dientich, float chieudai, float chieurong, int loaitin, int songuoimin, int songuoimax, String tiennghi, int doituong, double lat, double lng, String ngay, int iduser, String motathem, int giadien, String donvidien, int gianuoc, String donvinuoc, int tiencoc, String donvicoc, String giogiac, int idtp, int idqh, int soreport) {
 
         this.id = id;
         this.tieude = tieude;

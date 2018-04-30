@@ -15,6 +15,8 @@ import com.nhatro.Image_View;
 import com.nhatro.R;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+
 /**
  * Created by CongHoang on 2/22/2018.
  */
@@ -22,10 +24,10 @@ import com.squareup.picasso.Picasso;
 public class MyCustomPagerAdapter extends PagerAdapter {
 
     Context context;
-    String images[];
+    ArrayList<String> images;
     LayoutInflater layoutInflater;
 
-    public MyCustomPagerAdapter(Context context,  String images[]) {
+    public MyCustomPagerAdapter(Context context,  ArrayList<String> images) {
         this.context = context;
         this.images = images;
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -33,7 +35,7 @@ public class MyCustomPagerAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return images.length;
+        return images.size();
     }
 
     @Override
@@ -41,7 +43,7 @@ public class MyCustomPagerAdapter extends PagerAdapter {
         View itemView = layoutInflater.inflate(R.layout.viewpageritem, container, false);
 
         ImageView imageView = (ImageView) itemView.findViewById(R.id.imageViewPager);
-        Picasso.with(context).load(images[position]).into(imageView);
+        Picasso.with(context).load(images.get(position)).into(imageView);
 
         //imageView.setImageResource(images[position]);
 
@@ -57,7 +59,9 @@ public class MyCustomPagerAdapter extends PagerAdapter {
                 Bundle bundle = new Bundle();
                 bundle.putInt("index",position);
 
+                bundle.putStringArrayList("data",images);
                 intent.putExtra("data",bundle);
+
 
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);

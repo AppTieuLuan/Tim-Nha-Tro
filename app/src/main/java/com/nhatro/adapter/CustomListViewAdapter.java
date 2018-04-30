@@ -1,7 +1,6 @@
 package com.nhatro.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,8 +11,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.nhatro.Details;
-import com.nhatro.Filter;
 import com.nhatro.R;
 import com.nhatro.model.PhongTro;
 import com.squareup.picasso.Picasso;
@@ -45,7 +42,7 @@ public class CustomListViewAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int i) {
-        return this.data.get(i).getId();
+        return 0;
     }
 
     @Override

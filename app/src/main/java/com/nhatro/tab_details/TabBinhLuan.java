@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,7 +52,7 @@ public class TabBinhLuan extends Fragment {
 
         v = inflater.inflate(R.layout.fragment_tab_binh_luan, container, false);
         data = new ArrayList<>();
-
+        Log.d("LOADDD ANH", "LOAD DLLLLLLLLLLL ANHHHHHHHHHHHHH");
         listViewBinhLuan = (ListView) v.findViewById(R.id.lstBinhLuan);
         imgSend = (ImageView) v.findViewById(R.id.btnSend);
         data.add(new BinhLuan(1, "https://i-vnexpress.vnecdn.net/2018/03/30/khaidonpng-1522370624_90x90.png", "user1", "Nguyễn Văn Thanh", "Với công trình không thể thi công hệ thống hút khói, thành phố đề xuất thay thế cửa mở ra hành lang bằng cửa chống cháy tự động đóng", "30/3/2018 15:20"));

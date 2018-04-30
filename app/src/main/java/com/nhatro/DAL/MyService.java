@@ -46,10 +46,10 @@ public class MyService {
                 // Thêm tham số
                 if (params != null) {
                     httpPost.setEntity(new UrlEncodedFormEntity(params));
+
                 }
 
                 httpResponse = httpClient.execute(httpPost);
-
             } else if (method == GET) {
                 // Gắn tham số vào URL
                 if (params != null) {

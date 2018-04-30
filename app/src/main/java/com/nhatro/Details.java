@@ -1,6 +1,7 @@
 package com.nhatro;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -24,6 +25,7 @@ import android.widget.TabHost;
 import android.widget.TextView;
 
 
+import com.nhatro.DAL.HinhAnhs;
 import com.nhatro.adapter.MyCustomPagerAdapter;
 import com.nhatro.tab_details.TabBanDo;
 import com.nhatro.tab_details.TabBinhLuan;
@@ -36,17 +38,17 @@ import java.util.List;
 public class Details extends AppCompatActivity {
 
     ViewPager viewPager;
-    String images[] = {"https://nhatroservice.000webhostapp.com/images/.20180423224728ee.jpg",
-            "https://znews-photo-td.zadn.vn/w660/Uploaded/natmzz/2018_04_01/0_2.jpg",
-            "https://znews-photo-td.zadn.vn/w660/Uploaded/natmzz/2018_04_01/0.jpg",
-            "https://znews-photo-td.zadn.vn/w660/Uploaded/fcivbqmv/2018_03_31/Facebookhacker.jpg",
-            "https://znews-photo-td.zadn.vn/w660/Uploaded/natmzz/2018_03_31/1_13.jpg",
-            "https://znews-stc.zdn.vn/static/campaign/tuyendung/2018/tuyendung2018_2.jpg",
-            "https://znews-photo-td.zadn.vn/w660/Uploaded/natmzz/2018_03_31/1_8.jpg"};
+    ArrayList<String> images;
 
     MyCustomPagerAdapter myCustomPagerAdapter;
-
+    TabChiTiet tabChiTiet = new TabChiTiet();
+    TabBinhLuan tabBinhLuan;
+    TabBanDo tabBanDo;
     private FragmentTabHost mTabHost;
+    android.support.v4.app.FragmentManager fragmentManager;
+    TextView btntabChiTiet, btntabBinhLuan, btntabBanDo;
+    int tab;
+    Fragment active;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,15 +57,21 @@ public class Details extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        active = tabChiTiet;
+        btntabChiTiet = findViewById(R.id.btntabChiTiet);
+        btntabBinhLuan = findViewById(R.id.btntabBinhLuan);
+        btntabBanDo = findViewById(R.id.btntabBanDo);
+        tab = 1;
 
         Intent callerIntent = getIntent();
         Bundle bundle = callerIntent.getBundleExtra("iditem");
-        int iditem = bundle.getInt("iditem");
+        String iditem = bundle.getString("iditem");
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(String.valueOf(iditem));
 
-
+        images = new ArrayList<>();
         ImageView imageView = new ImageView(getSupportActionBar().getThemedContext());
         imageView.setScaleType(ImageView.ScaleType.CENTER);
         imageView.setImageResource(R.drawable.icon_call);
@@ -92,16 +100,16 @@ public class Details extends AppCompatActivity {
             }
         });
 
-        mTabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);
+        /*mTabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);
         mTabHost.setup(this, getSupportFragmentManager(), android.R.id.tabcontent);
 
-       /* mTabHost.addTab(
+       *//* mTabHost.addTab(
                 mTabHost.newTabSpec("tab1").setIndicator("Chi tiết", null),
-                TabChiTiet.class, null);*/
+                TabChiTiet.class, null);*//*
 
 
         Bundle bundle1 = new Bundle();
-        bundle1.putInt("id",iditem);
+        bundle1.putString("id", iditem);
         mTabHost.addTab(
                 mTabHost.newTabSpec("tab1").setIndicator("Chi tiết", null),
                 TabChiTiet.class, bundle1);
@@ -111,13 +119,101 @@ public class Details extends AppCompatActivity {
                 TabBinhLuan.class, null);
         mTabHost.addTab(
                 mTabHost.newTabSpec("tab3").setIndicator("Bản đồ", null),
-                TabBanDo.class, null);
+                TabBanDo.class, null);*/
 
+        LoadImages loadImages = new LoadImages();
+        loadImages.execute(iditem);
+
+
+        fragmentManager = getSupportFragmentManager();
+
+        Bundle bundle1 = new Bundle();
+        bundle1.putString("id", iditem);
+        /*mTabHost.addTab(
+                mTabHost.newTabSpec("tab1").setIndicator("Chi tiết", null),
+                TabChiTiet.class, bundle1);*/
+        tabChiTiet.setArguments(bundle1);
+        fragmentManager.beginTransaction().add(R.id.frameeee, tabChiTiet).commit();
+
+        btntabChiTiet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (tab != 1) {
+                    fragmentManager.beginTransaction().hide(active).show(tabChiTiet).commit();
+                    tab = 1;
+                    active = tabChiTiet;
+                }
+            }
+        });
+
+        btntabBanDo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (tabBanDo == null) {
+                    Bundle bundle1 = new Bundle();
+                    bundle1.putString("id", iditem);
+                    tabBanDo = new TabBanDo();
+                    tabBanDo.setArguments(bundle1);
+
+                    fragmentManager.beginTransaction().add(R.id.frameeee, tabBanDo).commit();
+                    fragmentManager.beginTransaction().hide(active).show(tabBanDo).commit();
+                    active = tabBanDo;
+                    tab = 3;
+                } else {
+                    if (tab != 3) {
+                        tab = 3;
+                        fragmentManager.beginTransaction().hide(active).show(tabBanDo).commit();
+                        active = tabBanDo;
+                    }
+                }
+            }
+        });
+
+        btntabBinhLuan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (tabBinhLuan == null) {
+                    Bundle bundle1 = new Bundle();
+                    bundle1.putString("id", iditem);
+                    tabBinhLuan = new TabBinhLuan();
+                    tabBinhLuan.setArguments(bundle1);
+
+                    fragmentManager.beginTransaction().add(R.id.frameeee, tabBinhLuan).commit();
+                    fragmentManager.beginTransaction().hide(active).show(tabBinhLuan).commit();
+                    active = tabBinhLuan;
+                    tab = 2;
+                } else {
+                    if (tab != 2) {
+                        tab = 2;
+                        fragmentManager.beginTransaction().hide(active).show(tabBinhLuan).commit();
+                        active = tabBinhLuan;
+                    }
+                }
+            }
+        });
     }
 
     @Override
     public boolean onSupportNavigateUp() {
         finish();
         return true;
+    }
+
+    public class LoadImages extends AsyncTask<String, Void, Void> {
+
+        @Override
+        protected Void doInBackground(String... strings) {
+            HinhAnhs hinhAnhs = new HinhAnhs();
+            images = hinhAnhs.getImages(strings[0]);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            // TODO Auto-generated method stub
+            super.onPostExecute(result);
+            myCustomPagerAdapter = new MyCustomPagerAdapter(getApplicationContext(), images);
+            viewPager.setAdapter(myCustomPagerAdapter);
+        }
     }
 }

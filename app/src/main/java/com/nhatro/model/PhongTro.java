@@ -5,13 +5,13 @@ package com.nhatro.model;
  */
 
 public class PhongTro {
-    private int id;
+    private String id;
     private String hinhanh;
 
     public PhongTro(){
 
     }
-    public PhongTro(int id, String hinhanh, String tieude, String diachi, float gia, float dientich, float chieudai, float chieurong, String gioitinh, boolean daluu) {
+    public PhongTro(String id, String hinhanh, String tieude, String diachi, float gia, float dientich, float chieudai, float chieurong, String gioitinh, boolean daluu) {
         this.id = id;
         this.hinhanh = hinhanh;
         this.tieude = tieude;
@@ -42,7 +42,7 @@ public class PhongTro {
     private String gioitinh;
     private boolean daluu;
 
-    public PhongTro(int id, String tieude, String diachi, float gia, float dientich, float chieudai, float chieurong, String gioitinh, boolean daluu) {
+    public PhongTro(String id, String tieude, String diachi, float gia, float dientich, float chieudai, float chieurong, String gioitinh, boolean daluu) {
         this.id = id;
         this.tieude = tieude;
         this.diachi = diachi;
@@ -63,11 +63,11 @@ public class PhongTro {
         this.daluu = daluu;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -130,7 +130,7 @@ public class PhongTro {
         this.gioitinh = gioitinh;
     }
 
-    public PhongTro(int id, String tieude, String diachi, float gia, float dientich, float chieudai, float chieurong, String gioitinh) {
+    public PhongTro(String id, String tieude, String diachi, float gia, float dientich, float chieudai, float chieurong, String gioitinh) {
         this.id = id;
         this.tieude = tieude;
         this.diachi = diachi;

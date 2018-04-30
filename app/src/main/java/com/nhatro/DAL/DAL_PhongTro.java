@@ -1,5 +1,7 @@
 package com.nhatro.DAL;
 
+import android.util.Log;
+
 import com.nhatro.model.LocDL;
 import com.nhatro.model.PhongTro;
 import com.nhatro.model.PhongTros;
@@ -24,10 +26,11 @@ import java.util.List;
  */
 
 public class DAL_PhongTro {
+    Variable variable = new Variable();
     public boolean themTinPhong(PhongTros a, ArrayList<String> listImages) {
         boolean rs = false;
 
-        String URL_NEW = "https://nhatroservice.000webhostapp.com/upTinPhongTro.php";
+        String URL_NEW = variable + "upTinPhongTro.php";
         //String URL_NEW = "http://192.168.1.9:8080/firebase/upTinPhongTro.php";
         // Tạo danh sách tham số gửi đến máy chủ
         List<NameValuePair> args = new ArrayList<NameValuePair>();
@@ -115,6 +118,9 @@ public class DAL_PhongTro {
         MyService jsonParser = new MyService();
 
         String json = jsonParser.callService(URL_NEW, MyService.POST, args);
+
+        Log.d("JSON LOAD DS", json);
+        Log.d("JSON TRANGSSS",String.valueOf(locDL.getTrang()));
         if (json != null) {
             try {
                 JSONObject jsonObj = new JSONObject(json);
@@ -123,7 +129,7 @@ public class DAL_PhongTro {
                     for (int i = 0; i < hotros.length(); i++) {
                         JSONObject obj = (JSONObject) hotros.get(i);
                         PhongTro pt = new PhongTro();
-                        pt.setId(obj.getInt("id"));
+                        pt.setId(obj.getString("id"));
                         pt.setTieude(obj.getString("tieude"));
                         pt.setGia(Integer.parseInt(obj.getString("gia")));
                         pt.setDiachi(obj.getString("diachi"));
@@ -186,5 +192,62 @@ public class DAL_PhongTro {
             }
         }*/
         return dsP;
+    }
+
+    public PhongTros thongTinPhong(String id){
+        PhongTros a = new PhongTros();
+        String URL_NEW = variable.getWebservice() + "layThongTinChiTiet.php";
+        //String URL_NEW = "http://192.168.1.23:8080/firebase/layThongTinChiTiet.php";
+        // Tạo danh sách tham số gửi đến máy chủ
+        List<NameValuePair> args = new ArrayList<NameValuePair>();
+
+        args.add(new BasicNameValuePair("id", id));
+
+        MyService jsonParser = new MyService();
+
+        String json = jsonParser.callService(URL_NEW, MyService.POST, args);
+        Log.d("JSONNNNNNNNNNNNNNNNNN", json);
+        if (json != null) {
+            try {
+                JSONObject jsonObject = new JSONObject(json);
+                int success = jsonObject.getInt("kq");
+
+                if (success == 1) {
+                    JSONObject jsonObject1 = jsonObject.getJSONObject("phong");
+                    a.setUsername(jsonObject1.getString("username"));
+                    a.setHoten(jsonObject1.getString("hoten"));
+                    a.setSdt(jsonObject1.getString("sodt"));
+                    a.setFacebook(jsonObject1.getString("facebook"));
+                    a.setId(jsonObject1.getString("id"));
+                    a.setTieude(jsonObject1.getString("tieude"));
+                    a.setGia(jsonObject1.getInt("gia"));
+                    a.setDiachi(jsonObject1.getString("diachi"));
+                    a.setDientich(jsonObject1.getInt("dientich"));
+                    a.setChieudai(jsonObject1.getInt("chieudai"));
+                    a.setChieurong(jsonObject1.getInt("chieurong"));
+                    a.setLoaitin(jsonObject1.getInt("loaitintuc"));
+                    a.setSonguoimin(jsonObject1.getInt("songuoimin"));
+                    a.setSonguoimax(jsonObject1.getInt("songuoimax"));
+                    a.setTiennghi(jsonObject1.getString("tiennghi"));
+                    a.setDoituong(jsonObject1.getInt("doituong"));
+                    a.setMotathem(jsonObject1.getString("motathem"));
+                    a.setGiadien(jsonObject1.getInt("giadien"));
+                    a.setDonvidien(jsonObject1.getString("donvidien"));
+                    a.setGianuoc(jsonObject1.getInt("gianuoc"));
+                    a.setDonvinuoc(jsonObject1.getString("donvinuoc"));
+                    a.setTiencoc(jsonObject1.getInt("tiencoc"));
+                    a.setDonvicoc(jsonObject1.getString("donvicoc"));
+                    a.setGiogiac(jsonObject1.getString("giogiac"));
+                    a.setTentp(jsonObject1.getString("tentp"));
+                    a.setTenqh(jsonObject1.getString("tenquanhuyen"));
+                    return a;
+                } else {
+                    return null;
+                }
+            } catch (JSONException e) {
+                return null;
+            }
+        }
+        return null;
     }
 }

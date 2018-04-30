@@ -91,12 +91,12 @@ public class ListFragment extends Fragment {
 
         data = new ArrayList<>();
 
-        data.add(new PhongTro(1, "Phòng Trọ Sạch Sẽ", "Số 1 Võ Văn Ngân, Quận Thủ Đức, TPHCM", 1200000, 30, 10, 3, "Nam"));
+        /*data.add(new PhongTro(1, "Phòng Trọ Sạch Sẽ", "Số 1 Võ Văn Ngân, Quận Thủ Đức, TPHCM", 1200000, 30, 10, 3, "Nam"));
         data.add(new PhongTro(2, "Phòng 2 Sạch Sẽ", "Số 2 Võ Văn Ngân, Quận Thủ Đức, TPHCM", 1300000, 30, 10, 3, "Nam"));
         data.add(new PhongTro(3, "Phòng 3 Sạch Sẽ", "Số 3 Võ Văn Ngân, Quận Thủ Đức, TPHCM", 1400000, 30, 10, 3, "Nam"));
         data.add(new PhongTro(4, "78/12 Làng Tăng Phú, Phường Tăng Nhơn Phú A, Quận 9 Thành Phố Hồ Chí Minh, TPHCM", "78/12 Làng Tăng Phú, Phường Tăng Nhơn Phú A, Quận 9 Thành Phố Hồ Chí Minh, TPHCM", 1520000, 30, 10, 3, "Nam"));
         data.add(new PhongTro(5, "Phòng 5 Sạch Sẽ", "Số 5 Võ Văn Ngân, Quận Thủ Đức, TPHCM", 1600000, 30, 10, 3, "Nữ"));
-        data.add(new PhongTro(6, "Phòng Trọ Sạch Sẽ", "Số 1 Võ Văn Ngân, Quận Thủ Đức, TPHCM", 1200000, 30, 10, 3, "Nam"));
+        data.add(new PhongTro(6, "Phòng Trọ Sạch Sẽ", "Số 1 Võ Văn Ngân, Quận Thủ Đức, TPHCM", 1200000, 30, 10, 3, "Nam"));*/
 
         lstDanhSach = (ListView) v.findViewById(R.id.lstDanhSachTin);
         adapter = new CustomListViewAdapter(getContext(), data);
@@ -110,8 +110,8 @@ public class ListFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), Details.class);
 
                 Bundle bundle = new Bundle();
-                int idItem = data.get(i).getId();
-                bundle.putInt("iditem", idItem);
+                String idItem = data.get(i).getId();
+                bundle.putString("iditem", idItem);
                 intent.putExtra("iditem", bundle);
                 getActivity().startActivity(intent);
 
@@ -156,7 +156,7 @@ public class ListFragment extends Fragment {
         Thread thread = new ThreadFilter();
         thread.start();
     }
-  
+
     public class mHadler extends Handler {
         @Override
         public void handleMessage(Message msg) {
@@ -208,6 +208,7 @@ public class ListFragment extends Fragment {
             } else {
                 ArrayList<PhongTro> aa = new ArrayList<>();
                 aa = (ArrayList<PhongTro>) msg.obj;
+                locDL.setTrang(locDL.getTrang() + 1);
                 if(aa.size() == 0){
                     isnext = false;
                 }
@@ -227,7 +228,6 @@ public class ListFragment extends Fragment {
             ArrayList<PhongTro> mangData = new ArrayList<>();
             DAL_PhongTro sss = new DAL_PhongTro();
             mangData = sss.danhSachPhong(locDL);
-            locDL.setTrang(locDL.getTrang() + 1);
             Message message = handlerFilter.obtainMessage(1, mangData);
             handlerFilter.sendMessage(message);
         }

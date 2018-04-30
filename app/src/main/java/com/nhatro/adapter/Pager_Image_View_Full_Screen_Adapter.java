@@ -12,16 +12,18 @@ import android.widget.LinearLayout;
 import com.nhatro.R;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+
 /**
  * Created by CongHoang on 4/1/2018.
  */
 
 public class Pager_Image_View_Full_Screen_Adapter extends PagerAdapter {
     Context context;
-    String images[];
+    ArrayList<String> images;
     LayoutInflater layoutInflater;
 
-    public Pager_Image_View_Full_Screen_Adapter(Context context,  String images[]) {
+    public Pager_Image_View_Full_Screen_Adapter(Context context,  ArrayList<String> images) {
         this.context = context;
         this.images = images;
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -29,7 +31,7 @@ public class Pager_Image_View_Full_Screen_Adapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return images.length;
+        return images.size();
     }
 
     @Override
@@ -37,7 +39,7 @@ public class Pager_Image_View_Full_Screen_Adapter extends PagerAdapter {
         View itemView = layoutInflater.inflate(R.layout.image_view_full_screen_item_viewpager, container, false);
 
         ImageView imageView = (ImageView) itemView.findViewById(R.id.images);
-        Picasso.with(context).load(images[position]).into(imageView);
+        Picasso.with(context).load(images.get(position)).into(imageView);
 
         //imageView.setImageResource(images[position]);
 
