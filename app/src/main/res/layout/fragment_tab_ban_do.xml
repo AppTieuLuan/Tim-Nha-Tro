@@ -44,6 +44,23 @@
                 android:padding="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:gravity="center"
+                android:orientation="vertical"
+                android:id="@+id/layoutLoad"
+                android:background="@color/transparenttt"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <ProgressBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="25dp" />
+                <TextView
+                    android:textColor="@color/white"
+                    android:text="Đang tải dữ liệu..."
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
         </RelativeLayout>
         
 

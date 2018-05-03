@@ -34,7 +34,7 @@ public class LocDL {
     public LocDL(){
         this.danhsach = 1;
         this.bankinh = 2;
-        this.idtp = 1;
+        this.idtp = 50;
         this.idqh = "";
         this.giamin = 0;
         this.giamax = 10000000;

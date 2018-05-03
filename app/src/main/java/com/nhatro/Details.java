@@ -68,8 +68,8 @@ public class Details extends AppCompatActivity {
         Intent callerIntent = getIntent();
         Bundle bundle = callerIntent.getBundleExtra("iditem");
         String iditem = bundle.getString("iditem");
-
-        getSupportActionBar().setTitle(String.valueOf(iditem));
+        String tieude = bundle.getString("tieude");
+        getSupportActionBar().setTitle(tieude);
 
         images = new ArrayList<>();
         ImageView imageView = new ImageView(getSupportActionBar().getThemedContext());
@@ -91,14 +91,14 @@ public class Details extends AppCompatActivity {
         myCustomPagerAdapter = new MyCustomPagerAdapter(getApplicationContext(), images);
         viewPager.setAdapter(myCustomPagerAdapter);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+       /* FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_SHORT)
                         .setAction("Action", null).show();
             }
-        });
+        });*/
 
         /*mTabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);
         mTabHost.setup(this, getSupportFragmentManager(), android.R.id.tabcontent);

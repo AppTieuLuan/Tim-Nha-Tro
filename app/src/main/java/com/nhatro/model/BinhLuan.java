@@ -5,14 +5,35 @@ package com.nhatro.model;
  */
 
 public class BinhLuan {
-    private int id;
+    private String id;
     private String avatarUser;
     private String userName;
     private String tenUser;
     private String noiDungBl;
     private String ngayViet;
+    private String idPhong;
+    private int idUser;
 
-    public BinhLuan(int id, String avatarUser, String userName, String tenUser, String noiDungBl, String ngayViet) {
+    public int getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(int idUser) {
+        this.idUser = idUser;
+    }
+
+    public String getIdPhong() {
+        return idPhong;
+    }
+
+    public void setIdPhong(String idPhong) {
+        this.idPhong = idPhong;
+    }
+
+    public BinhLuan(){
+
+    }
+    public BinhLuan(String id, String avatarUser, String userName, String tenUser, String noiDungBl, String ngayViet) {
         this.id = id;
         this.avatarUser = avatarUser;
         this.userName = userName;
@@ -21,11 +42,11 @@ public class BinhLuan {
         this.ngayViet = ngayViet;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

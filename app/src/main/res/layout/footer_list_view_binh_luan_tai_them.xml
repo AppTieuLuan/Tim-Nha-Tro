@@ -10,7 +10,7 @@
     <TextView
         android:textSize="12sp"
         android:textColor="@color/colorPrimary"
-        android:text="Tải thêm bình luận..."
+        android:text="Xem bình luận cũ hơn..."
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 </LinearLayout>

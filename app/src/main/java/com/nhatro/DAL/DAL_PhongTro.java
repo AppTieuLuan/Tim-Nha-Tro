@@ -3,6 +3,7 @@ package com.nhatro.DAL;
 import android.util.Log;
 
 import com.nhatro.model.LocDL;
+import com.nhatro.model.Marker_TabBanDo;
 import com.nhatro.model.PhongTro;
 import com.nhatro.model.PhongTros;
 
@@ -27,10 +28,11 @@ import java.util.List;
 
 public class DAL_PhongTro {
     Variable variable = new Variable();
+
     public boolean themTinPhong(PhongTros a, ArrayList<String> listImages) {
         boolean rs = false;
 
-        String URL_NEW = variable + "upTinPhongTro.php";
+        String URL_NEW = variable.getWebservice() + "upTinPhongTro.php";
         //String URL_NEW = "http://192.168.1.9:8080/firebase/upTinPhongTro.php";
         // Tạo danh sách tham số gửi đến máy chủ
         List<NameValuePair> args = new ArrayList<NameValuePair>();
@@ -93,7 +95,7 @@ public class DAL_PhongTro {
 
         /*if (locDL.isDanhsach() == 1) {*/
 
-        String URL_NEW = "https://nhatroservice.000webhostapp.com/danhSachPhong.php";
+        String URL_NEW = variable.getWebservice() + "danhSachPhong.php";
         //String URL_NEW = "http://192.168.1.23:8080/firebase/danhSachPhong.php";
         // Tạo danh sách tham số gửi đến máy chủ
         List<NameValuePair> args = new ArrayList<NameValuePair>();
@@ -119,13 +121,15 @@ public class DAL_PhongTro {
 
         String json = jsonParser.callService(URL_NEW, MyService.POST, args);
 
-        Log.d("JSON LOAD DS", json);
-        Log.d("JSON TRANGSSS",String.valueOf(locDL.getTrang()));
+       /* Log.d("JSON LOAD DS", json);*/
+        Log.d("JSON TRANGSSS", String.valueOf(locDL.getTrang()));
         if (json != null) {
             try {
                 JSONObject jsonObj = new JSONObject(json);
                 if (jsonObj != null) {
                     JSONArray hotros = jsonObj.getJSONArray("phongs");
+
+                    Log.d("JSONNNNNNN", jsonObj.getString("sql"));
                     for (int i = 0; i < hotros.length(); i++) {
                         JSONObject obj = (JSONObject) hotros.get(i);
                         PhongTro pt = new PhongTro();
@@ -194,7 +198,7 @@ public class DAL_PhongTro {
         return dsP;
     }
 
-    public PhongTros thongTinPhong(String id){
+    public PhongTros thongTinPhong(String id) {
         PhongTros a = new PhongTros();
         String URL_NEW = variable.getWebservice() + "layThongTinChiTiet.php";
         //String URL_NEW = "http://192.168.1.23:8080/firebase/layThongTinChiTiet.php";
@@ -240,6 +244,36 @@ public class DAL_PhongTro {
                     a.setGiogiac(jsonObject1.getString("giogiac"));
                     a.setTentp(jsonObject1.getString("tentp"));
                     a.setTenqh(jsonObject1.getString("tenquanhuyen"));
+                    return a;
+                } else {
+                    return null;
+                }
+            } catch (JSONException e) {
+                return null;
+            }
+        }
+        return null;
+    }
+
+    public Marker_TabBanDo layViTriTrenBanDo(String id) {
+        Marker_TabBanDo a = new Marker_TabBanDo();
+        String URL_NEW = variable.getWebservice() + "layViTriTrenBanDo.php";
+
+        List<NameValuePair> args = new ArrayList<NameValuePair>();
+        args.add(new BasicNameValuePair("id", id));
+        MyService jsonParser = new MyService();
+
+        String json = jsonParser.callService(URL_NEW, MyService.POST, args);
+        if (json != null) {
+            try {
+                JSONObject jsonObject = new JSONObject(json);
+                int success = jsonObject.getInt("kq");
+                if (success == 1) {
+                    JSONObject jsonObject1 = jsonObject.getJSONObject("vitri");
+                    a.setDiachi(jsonObject1.getString("diachi") + "," + jsonObject1.getString("tenquanhuyen") + "," + jsonObject1.getString("thanhpho"));
+                    a.setLat(jsonObject1.getDouble("lat"));
+                    a.setLng(jsonObject1.getDouble("lng"));
+                    a.setTieude(jsonObject1.getString("tieude"));
                     return a;
                 } else {
                     return null;

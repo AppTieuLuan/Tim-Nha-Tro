@@ -73,20 +73,20 @@ public class HomeFragment extends Fragment {
         lstChonQuanHuyen = new ArrayList<>();
 
         locDL = new LocDL();
-
+        tinhTP = 50;
         Bundle bundlemap2 = new Bundle();
-        bundlemap2.putInt("giamin",locDL.getGiamin());
-        bundlemap2.putInt("giamax",locDL.getGiamax());
-        bundlemap2.putInt("dientichmin",locDL.getDientichmin());
-        bundlemap2.putInt("dientichmax",locDL.getDientichmax());
-        bundlemap2.putInt("songuoio",locDL.getSonguoio());
-        bundlemap2.putString("loaitin",locDL.getLoaitin());
-        bundlemap2.putString("tiennghi",locDL.getTiennghi());
-        bundlemap2.putInt("doituong",locDL.getDoituong());
-        bundlemap2.putInt("giogiac",locDL.getGiogiac());
-        bundlemap2.putInt("idtp",locDL.getIdtp());
-        bundlemap2.putString("idqh",locDL.getIdqh());
-        bundlemap2.putInt("trang",1);
+        bundlemap2.putInt("giamin", locDL.getGiamin());
+        bundlemap2.putInt("giamax", locDL.getGiamax());
+        bundlemap2.putInt("dientichmin", locDL.getDientichmin());
+        bundlemap2.putInt("dientichmax", locDL.getDientichmax());
+        bundlemap2.putInt("songuoio", locDL.getSonguoio());
+        bundlemap2.putString("loaitin", locDL.getLoaitin());
+        bundlemap2.putString("tiennghi", locDL.getTiennghi());
+        bundlemap2.putInt("doituong", locDL.getDoituong());
+        bundlemap2.putInt("giogiac", locDL.getGiogiac());
+        bundlemap2.putInt("idtp", locDL.getIdtp());
+        bundlemap2.putString("idqh", "");
+        bundlemap2.putInt("trang", 1);
         listFragment.setArguments(bundlemap2);
 
         fragmentManager1 = getChildFragmentManager();
@@ -98,8 +98,8 @@ public class HomeFragment extends Fragment {
         txtCheDoXem = (TextView) v.findViewById(R.id.txtCheDoXem);
         imgBanDo = (ImageView) v.findViewById(R.id.imgBanDo);
 
-        tinhTP = 1;
-        tenTP = "Hà Nội";
+        tinhTP = 50;
+        tenTP = "Hồ Chí Minh";
         timNhaNguyenCan = false;
         timPhongTro = false;
         timTimOGhep = false;
@@ -109,7 +109,7 @@ public class HomeFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), Filter.class);
 
                 Bundle bundle = new Bundle();
-                bundle.putBoolean("giogiac",giogiac);
+                bundle.putBoolean("giogiac", giogiac);
                 bundle.putBoolean("moDanhSach", moDanhSach); // nếu mở danh sách sẽ hiện thị mục chọn tp, quận huyện
                 bundle.putBoolean("timNhaNguyenCan", timNhaNguyenCan);
                 bundle.putBoolean("timPhongTro", timPhongTro);
@@ -184,21 +184,21 @@ public class HomeFragment extends Fragment {
                        /* Bundle bundle = new Bundle();
                         bundle.putString("DocNum", docNum);   //parameters are (key, value).*/
 
-                       // mFrag.setArguments(bundle);
+                        // mFrag.setArguments(bundle);
 
 //                        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 //                        transaction.replace(R.id.framDanhSach, new MapFragment());
 //                        transaction.commit();
                         Bundle bundlemap = new Bundle();
-                        bundlemap.putInt("giamin",locDL.getGiamin());
-                        bundlemap.putInt("giamax",locDL.getGiamax());
-                        bundlemap.putInt("dientichmin",locDL.getDientichmin());
-                        bundlemap.putInt("dientichmax",locDL.getDientichmax());
-                        bundlemap.putInt("songuoio",locDL.getSonguoio());
-                        bundlemap.putString("loaitin",locDL.getLoaitin());
-                        bundlemap.putString("tiennghi",locDL.getTiennghi());
-                        bundlemap.putInt("doituong",locDL.getDoituong());
-                        bundlemap.putInt("giogiac",locDL.getGiogiac());
+                        bundlemap.putInt("giamin", locDL.getGiamin());
+                        bundlemap.putInt("giamax", locDL.getGiamax());
+                        bundlemap.putInt("dientichmin", locDL.getDientichmin());
+                        bundlemap.putInt("dientichmax", locDL.getDientichmax());
+                        bundlemap.putInt("songuoio", locDL.getSonguoio());
+                        bundlemap.putString("loaitin", locDL.getLoaitin());
+                        bundlemap.putString("tiennghi", locDL.getTiennghi());
+                        bundlemap.putInt("doituong", locDL.getDoituong());
+                        bundlemap.putInt("giogiac", locDL.getGiogiac());
 
                         mapFragment.setArguments(bundlemap);
                         fragmentManager1.beginTransaction().add(R.id.framDanhSach, mapFragment).commit();
@@ -269,7 +269,7 @@ public class HomeFragment extends Fragment {
             namnu = bundle.getInt("namnu");
             giogiac = bundle.getBoolean("giogiac");
 
-            if(giogiac){
+            if (giogiac) {
                 locDL.setGiogiac(1);
             }
             locDL.setIdtp(tinhTP);
@@ -300,12 +300,12 @@ public class HomeFragment extends Fragment {
 
             locDL.setLoaitin(tempLocTin);
             String idqh = "";
-            if(lstChonQuanHuyen.size() > 0){
+            if (lstChonQuanHuyen.size() > 0) {
                 idqh = idqh + "(";
                 for (int i = 0; i < lstChonQuanHuyen.size(); i++) {
                     idqh = idqh + lstChonQuanHuyen.get(i) + ",";
                 }
-                idqh = idqh.substring(0,idqh.length() - 1);
+                idqh = idqh.substring(0, idqh.length() - 1);
                 idqh = idqh + ")";
             }
             locDL.setIdqh(idqh);

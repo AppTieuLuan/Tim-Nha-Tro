@@ -33,10 +33,11 @@ public class CardMapViewAdapter extends PagerAdapter implements CardAdapter {
         mData = new ArrayList<>();
         mViews = new ArrayList<>();
     }
+
     public CardMapViewAdapter(ArrayList<ItemOnMapView> data) {
         mData = new ArrayList<>();
         mViews = new ArrayList<>();
-        for (int i=0;i<data.size();i++){
+        for (int i = 0; i < data.size(); i++) {
             mViews.add(null);
         }
         this.mData = data;
@@ -92,8 +93,9 @@ public class CardMapViewAdapter extends PagerAdapter implements CardAdapter {
                 Intent intent = new Intent(view.getContext(), Details.class);
                 Bundle bundle = new Bundle();
                 int idItem = mData.get(position).getId();
-                bundle.putInt("iditem",idItem);
-                intent.putExtra("iditem",bundle);
+                bundle.putInt("iditem", idItem);
+                bundle.putString("tieude", mData.get(position).getTitle());
+                intent.putExtra("iditem", bundle);
                 view.getContext().startActivity(intent);
             }
         });

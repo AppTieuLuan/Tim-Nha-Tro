@@ -4,6 +4,7 @@ package com.nhatro;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -46,7 +47,7 @@ public class ListFragment extends Fragment {
     boolean isnext = true; // Còn dữ liệu để load tiếp
     LinearLayout layoutList;
     ProgressBar loadingData;
-
+    boolean loadnewisdone = false;
     LocDL locDL;
     com.github.clans.fab.FloatingActionButton btnAdd;
 
@@ -54,6 +55,7 @@ public class ListFragment extends Fragment {
 
     mHadler mHadlerr;
     HandlerFilter handlerFilter;
+
     public ListFragment() {
         // Required empty public constructor
     }
@@ -76,8 +78,8 @@ public class ListFragment extends Fragment {
         locDL.setGiogiac(bundle.getInt("giogiac"));
         locDL.setIdtp(bundle.getInt("idtp"));
         locDL.setIdqh("");
+        locDL.setTrang(bundle.getInt("trang"));
         locDL.setTrang(1);
-
 
         footerview = inflater.inflate(R.layout.footer_listivew, null);
         loadingData = v.findViewById(R.id.loadingData);
@@ -90,13 +92,6 @@ public class ListFragment extends Fragment {
         handlerFilter = new HandlerFilter();
 
         data = new ArrayList<>();
-
-        /*data.add(new PhongTro(1, "Phòng Trọ Sạch Sẽ", "Số 1 Võ Văn Ngân, Quận Thủ Đức, TPHCM", 1200000, 30, 10, 3, "Nam"));
-        data.add(new PhongTro(2, "Phòng 2 Sạch Sẽ", "Số 2 Võ Văn Ngân, Quận Thủ Đức, TPHCM", 1300000, 30, 10, 3, "Nam"));
-        data.add(new PhongTro(3, "Phòng 3 Sạch Sẽ", "Số 3 Võ Văn Ngân, Quận Thủ Đức, TPHCM", 1400000, 30, 10, 3, "Nam"));
-        data.add(new PhongTro(4, "78/12 Làng Tăng Phú, Phường Tăng Nhơn Phú A, Quận 9 Thành Phố Hồ Chí Minh, TPHCM", "78/12 Làng Tăng Phú, Phường Tăng Nhơn Phú A, Quận 9 Thành Phố Hồ Chí Minh, TPHCM", 1520000, 30, 10, 3, "Nam"));
-        data.add(new PhongTro(5, "Phòng 5 Sạch Sẽ", "Số 5 Võ Văn Ngân, Quận Thủ Đức, TPHCM", 1600000, 30, 10, 3, "Nữ"));
-        data.add(new PhongTro(6, "Phòng Trọ Sạch Sẽ", "Số 1 Võ Văn Ngân, Quận Thủ Đức, TPHCM", 1200000, 30, 10, 3, "Nam"));*/
 
         lstDanhSach = (ListView) v.findViewById(R.id.lstDanhSachTin);
         adapter = new CustomListViewAdapter(getContext(), data);
@@ -112,6 +107,7 @@ public class ListFragment extends Fragment {
                 Bundle bundle = new Bundle();
                 String idItem = data.get(i).getId();
                 bundle.putString("iditem", idItem);
+                bundle.putString("tieude", data.get(i).getTieude());
                 intent.putExtra("iditem", bundle);
                 getActivity().startActivity(intent);
 
@@ -127,34 +123,47 @@ public class ListFragment extends Fragment {
 
             @Override
             public void onScroll(AbsListView absListView, int i, int i1, int i2) {
-                if (absListView.getLastVisiblePosition() == i2 - 1 && isLoading == false && isnext) {
-                    //data.add(new PhongTro(9,"1111","Số 1 Võ Văn Ngân, Quận Thủ Đức, TPHCM",1200000,30,10,3,"Nam"));
-                    //adapter.notifyDataSetChanged();
-                    isLoading = true;
-                    Thread thread = new ThreadData();
-                    thread.start();
+                if (absListView.getLastVisiblePosition() == i2 - 1) {
+                    if (isLoading == false && isnext && loadnewisdone) {
+                        LoadMoreDataAsyn loadMoreDataAsyn = new LoadMoreDataAsyn();
+                        loadMoreDataAsyn.execute(locDL);
+                    }
                 }
+
+                /*if (i + i1 == i2 && i2 == 0) {
+                    if (isLoading == false && isnext && loadnewisdone) {
+                        LoadMoreDataAsyn loadMoreDataAsyn = new LoadMoreDataAsyn();
+                        loadMoreDataAsyn.execute(locDL);
+                    }
+                }*/
             }
         });
 
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intents = new Intent(getContext(),Newpost.class);
+                Intent intents = new Intent(getContext(), Newpost.class);
                 startActivity(intents);
             }
         });
         filterData(locDL);
+        //loadnewData();
         return v;
     }
 
+    public void LoadNewData(LocDL locDL) {
+
+    }
 
     public void filterData(LocDL locDL) {
        /* Toast.makeText(getContext(),"Đang Lọc DL",Toast.LENGTH_SHORT).show();*/
         this.locDL = locDL;
         isnext = true;
-        Thread thread = new ThreadFilter();
-        thread.start();
+        isLoading = true;
+        /*Thread thread = new ThreadFilter();
+        thread.start();*/
+        LoadNewDataAsyn loadDataAsyn = new LoadNewDataAsyn();
+        loadDataAsyn.execute(locDL);
     }
 
     public class mHadler extends Handler {
@@ -162,14 +171,15 @@ public class ListFragment extends Fragment {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
 
-            if(msg.what == 0) {
+            if (msg.what == 0) {
                 //lstDanhSach.addFooterView(footerview);
                 loadingData.setVisibility(View.VISIBLE);
             } else {
                 ArrayList<PhongTro> tmep = new ArrayList<>();
 
                 tmep = (ArrayList<PhongTro>) msg.obj;
-                if(tmep.size() == 0){
+
+                if (tmep.size() == 0) {
                     isnext = false;
                 }
                 data.addAll(tmep);
@@ -184,12 +194,12 @@ public class ListFragment extends Fragment {
     public class ThreadData extends Thread {
         @Override
         public void run() {
+            isLoading = true;
             mHadlerr.sendEmptyMessage(0);
             ArrayList<PhongTro> mangData = new ArrayList<>();
 
             DAL_PhongTro dal_phongTro = new DAL_PhongTro();
             mangData = dal_phongTro.danhSachPhong(locDL);
-            locDL.setTrang(locDL.getTrang() + 1);
             Message message = mHadlerr.obtainMessage(1, mangData);
             mHadlerr.sendMessage(message);
 
@@ -200,7 +210,7 @@ public class ListFragment extends Fragment {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            if(msg.what == 0) {
+            if (msg.what == 0) {
                 data.clear();
                 adapter.notifyDataSetChanged();
                 layoutList.setVisibility(View.GONE);
@@ -209,7 +219,8 @@ public class ListFragment extends Fragment {
                 ArrayList<PhongTro> aa = new ArrayList<>();
                 aa = (ArrayList<PhongTro>) msg.obj;
                 locDL.setTrang(locDL.getTrang() + 1);
-                if(aa.size() == 0){
+                isLoading = false;
+                if (aa.size() == 0) {
                     isnext = false;
                 }
                 data.addAll(aa);
@@ -225,11 +236,88 @@ public class ListFragment extends Fragment {
         @Override
         public void run() {
             handlerFilter.sendEmptyMessage(0);
+            isLoading = true;
             ArrayList<PhongTro> mangData = new ArrayList<>();
             DAL_PhongTro sss = new DAL_PhongTro();
             mangData = sss.danhSachPhong(locDL);
             Message message = handlerFilter.obtainMessage(1, mangData);
             handlerFilter.sendMessage(message);
+        }
+    }
+
+    public class LoadNewDataAsyn extends AsyncTask<LocDL, Void, ArrayList<PhongTro>> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            data.clear();
+            adapter.notifyDataSetChanged();
+            layoutList.setVisibility(View.GONE);
+            layoutLoading.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<PhongTro> phongTros) {
+            super.onPostExecute(phongTros);
+
+            locDL.setTrang(2);
+            isLoading = false;
+            if (phongTros.size() == 0) {
+                isnext = false;
+            }
+            data.addAll(phongTros);
+            adapter.notifyDataSetChanged();
+            layoutList.setVisibility(View.VISIBLE);
+            layoutLoading.setVisibility(View.GONE);
+            loadnewisdone = true;
+
+            Log.d("JSONN", String.valueOf(locDL.getTrang()) + " --- " + String.valueOf(isnext) + " --- " + String.valueOf(isLoading) + "--- " + String.valueOf(loadnewisdone));
+
+        }
+
+        @Override
+        protected ArrayList<PhongTro> doInBackground(LocDL... locDLS) {
+            ArrayList<PhongTro> phongTros = new ArrayList<>();
+            isLoading = true;
+
+            DAL_PhongTro sss = new DAL_PhongTro();
+            phongTros = sss.danhSachPhong(locDLS[0]);
+            return phongTros;
+        }
+    }
+
+    public class LoadMoreDataAsyn extends AsyncTask<LocDL, Void, ArrayList<PhongTro>> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            loadingData.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<PhongTro> phongTros) {
+            super.onPostExecute(phongTros);
+
+            isLoading = false;
+            if (phongTros.size() == 0) {
+                isnext = false;
+            } else {
+                locDL.setTrang(locDL.getTrang() + 1);
+            }
+            data.addAll(phongTros);
+            adapter.notifyDataSetChanged();
+            isLoading = false;
+            loadingData.setVisibility(View.GONE);
+            Log.d("JSONN", String.valueOf(locDL.getTrang()) + " ____ " + String.valueOf(isnext));
+        }
+
+        @Override
+        protected ArrayList<PhongTro> doInBackground(LocDL... locDLS) {
+            ArrayList<PhongTro> phongTros = new ArrayList<>();
+            isLoading = true;
+            DAL_PhongTro dal_phongTro = new DAL_PhongTro();
+            phongTros = dal_phongTro.danhSachPhong(locDLS[0]);
+            return phongTros;
         }
     }
 
