@@ -234,8 +234,7 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<Token> call, Throwable t) {
-                    Toast.makeText(MainActivity.this, "Vui lòng kiểm tra lại đường truyền mạng!", Toast.LENGTH_SHORT).show();
-
+//                    Toast.makeText(MainActivity.this, "Vui lòng kiểm tra lại đường truyền mạng!", Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -269,7 +268,7 @@ public class MainActivity extends AppCompatActivity {
 
                                     @Override
                                     public void onFailure(Call<String> call, Throwable t) {
-                                        Toast.makeText(MainActivity.this, "Vui lòng kiểm tra lại đường truyền mạng!", Toast.LENGTH_SHORT).show();
+//                                        Toast.makeText(MainActivity.this, "Vui lòng kiểm tra lại đường truyền mạng!", Toast.LENGTH_SHORT).show();
                                     }
                                 });
                             }

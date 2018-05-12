@@ -142,85 +142,78 @@ public class ChangeProfileActivity extends AppCompatActivity {
                     @Override
                     protected String doInBackground(String... params) {
                         try{
-                            publishProgress();// GỌI HÀM onProgressUpdate RUN
                             Thread.sleep(1000);// sleep 1s
                         }catch (InterruptedException e){
                             e.printStackTrace();
                         }
                         return "done";
                     }
-
-                    @Override
-                    protected void onProgressUpdate(String... values) {
-                        fb_url = txtfacebook.getText().toString();
-                        name = txtname.getText().toString();
-                        phone = txtphone.getText().toString();
-                        account = txtaccount.getText().toString();
-                        address = txtaddress.getText().toString();
-
-                        if(fb_url.length() > 0){
-                            if(flag)
-                                run = true;
-                            else
-                                run = false;
-                        }else {
-                            run = true;
-                        }
-
-                        if(name.length() > 0 && phone.length() > 0){
-                            DataClient dataClient = APIUtils.getData();
-                            retrofit2.Call<String> stringCall = dataClient.ChangeInfo(account, name, phone, fb_url, address);
-                            stringCall.enqueue(new Callback<String>() {
-                                @Override
-                                public void onResponse(Call<String> call, Response<String> response) {
-                                    String res = response.body();
-                                    stopAnimation();
-                                    if(res.equals("ok")){
-                                        builder.setTitle("Thông báo")
-                                                .setMessage("Thay đổi thông tin thành công!")
-                                                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                                                    public void onClick(DialogInterface dialog, int which) {
-                                                        // ok
-                                                        //tiến hành cập nhật lại thông tin mới trong shareReference
-                                                        user.setFacebook(fb_url);
-                                                        user.setDiachi(address);
-                                                        user.setHoten(name);
-                                                        user.setSodt(phone);
-
-                                                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                                                        String json = gson.toJson(user);
-                                                        editor.putString("MyUser", json).apply();
-                                                    }
-                                                })
-                                                .show();
-                                    }else{
-                                        Toast.makeText(ChangeProfileActivity.this, "Thay đổi thất bại!\nVui lòng thử lại!", Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-
-                                @Override
-                                public void onFailure(Call<String> call, Throwable t) {
-                                    Toast.makeText(ChangeProfileActivity.this, "Vui lòng kiểm tra lại đường truyền mạng!", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                        }else{
-                            stopAnimation();
-                            builder.setTitle("Thông báo")
-                                    .setMessage("1. Vui lòng nhập đầy đủ thông tin!\n2. Hoặc kiểm tra lại địa chỉ Facebook bằng cách nhấn vào biểu tượng Facebook!")
-                                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            // ok
-                                        }
-                                    })
-                                    .show();
-                        }
-                    }
-
                     @Override
                     protected void onPostExecute(String s) {
                         if(s.equals("done")){
-                            // sau khi run xong animation sẽ được tắt
-                            stopAnimation();
+                            fb_url = txtfacebook.getText().toString();
+                            name = txtname.getText().toString();
+                            phone = txtphone.getText().toString();
+                            account = txtaccount.getText().toString();
+                            address = txtaddress.getText().toString();
+
+                            if(fb_url.length() > 0){
+                                if(flag)
+                                    run = true;
+                                else
+                                    run = false;
+                            }else {
+                                run = true;
+                            }
+
+                            if(name.length() > 0 && phone.length() > 0){
+                                DataClient dataClient = APIUtils.getData();
+                                retrofit2.Call<String> stringCall = dataClient.ChangeInfo(account, name, phone, fb_url, address);
+                                stringCall.enqueue(new Callback<String>() {
+                                    @Override
+                                    public void onResponse(Call<String> call, Response<String> response) {
+                                        String res = response.body();
+                                        stopAnimation();
+                                        if(res.equals("ok")){
+                                            builder.setTitle("Thông báo")
+                                                    .setMessage("Thay đổi thông tin thành công!")
+                                                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                                        public void onClick(DialogInterface dialog, int which) {
+                                                            // ok
+                                                            //tiến hành cập nhật lại thông tin mới trong shareReference
+                                                            user.setFacebook(fb_url);
+                                                            user.setDiachi(address);
+                                                            user.setHoten(name);
+                                                            user.setSodt(phone);
+
+                                                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                                                            String json = gson.toJson(user);
+                                                            editor.putString("MyUser", json).apply();
+                                                        }
+                                                    })
+                                                    .show();
+                                        }else{
+                                            Toast.makeText(ChangeProfileActivity.this, "Thay đổi thất bại!\nVui lòng thử lại!", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<String> call, Throwable t) {
+                                        stopAnimation();
+                                        Toast.makeText(ChangeProfileActivity.this, "Vui lòng kiểm tra lại đường truyền mạng!", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }else{
+                                stopAnimation();
+                                builder.setTitle("Thông báo")
+                                        .setMessage("1. Vui lòng nhập đầy đủ thông tin!\n2. Hoặc kiểm tra lại địa chỉ Facebook bằng cách nhấn vào biểu tượng Facebook!")
+                                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                // ok
+                                            }
+                                        })
+                                        .show();
+                            }
                         }
                     }
                 };

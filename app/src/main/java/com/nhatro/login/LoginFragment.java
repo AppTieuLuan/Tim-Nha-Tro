@@ -52,7 +52,6 @@ public class LoginFragment extends Fragment implements OnLoginListener{
     TextView txtpassword, txtusername;
     String username, password;
     private CallBackListener callBackListener;
-    Boolean stop = true;
 
     AlertDialog.Builder builder;
     CircularProgressButton circularProgressButton;
@@ -157,7 +156,6 @@ public class LoginFragment extends Fragment implements OnLoginListener{
                     @Override
                     protected String doInBackground(String... params) {
                         try{
-                            publishProgress();// GỌI HÀM onProgressUpdate RUN
                             Thread.sleep(1000);// sleep 1s
                         }catch (InterruptedException e){
                             e.printStackTrace();
@@ -166,66 +164,58 @@ public class LoginFragment extends Fragment implements OnLoginListener{
                     }
 
                     @Override
-                    protected void onProgressUpdate(String... values) {
-                        username = txtusername.getText().toString();
-                        password = txtpassword.getText().toString();
-                        if(username.length() > 0 && password.length() > 0){
-                            DataClient dataClient = APIUtils.getData();
-                            retrofit2.Call<Token> callback = dataClient.Login(username, password);
-                            callback.enqueue(new Callback<Token>() {
-                                @Override
-                                public void onResponse(Call<Token> call, Response<Token> response) {
-                                    Token obj = (Token) response.body();
-                                    String token = obj.getToken();
-                                    stopAnimation();
-                                    if(token.equals("Null")){
-                                        stop = true;
-                                        Toast.makeText(getContext(),"Đăng nhập thất bại!", Toast.LENGTH_SHORT).show();
-                                    }else{
-                                        User user = obj.getUser();
-                                        //lưu lại thông tin user dưới dạng json string
-                                        Gson gson = new Gson();
-                                        SharedPreferences mPrefs = getActivity().getSharedPreferences("Mydata", getContext().MODE_PRIVATE);
-                                        SharedPreferences.Editor prefsEditor = mPrefs.edit();
-                                        String userJson = gson.toJson(user);
+                    protected void onPostExecute(String s) {
+                        if(s.equals("done")){
+                            username = txtusername.getText().toString();
+                            password = txtpassword.getText().toString();
+                            if(username.length() > 0 && password.length() > 0){
+                                DataClient dataClient = APIUtils.getData();
+                                retrofit2.Call<Token> callback = dataClient.Login(username, password);
+                                callback.enqueue(new Callback<Token>() {
+                                    @Override
+                                    public void onResponse(Call<Token> call, Response<Token> response) {
+                                        Token obj = (Token) response.body();
+                                        String token = obj.getToken();
+                                        stopAnimation();// dừng animation
+                                        if(token.equals("Null")){
+                                            Toast.makeText(getContext(),"Đăng nhập thất bại!", Toast.LENGTH_SHORT).show();
+                                        }else{
+                                            User user = obj.getUser();
+                                            //lưu lại thông tin user dưới dạng json string
+                                            Gson gson = new Gson();
+                                            SharedPreferences mPrefs = getActivity().getSharedPreferences("Mydata", getContext().MODE_PRIVATE);
+                                            SharedPreferences.Editor prefsEditor = mPrefs.edit();
+                                            String userJson = gson.toJson(user);
 
-                                        prefsEditor.putString("MyToken", token);
-                                        prefsEditor.putString("MyUser", userJson);
-                                        prefsEditor.commit();
+                                            prefsEditor.putString("MyToken", token);
+                                            prefsEditor.putString("MyUser", userJson);
+                                            prefsEditor.commit();
 
-                                        //Toast.makeText(getContext(),user.getHoten(), Toast.LENGTH_SHORT).show();
-                                        if(callBackListener != null){
-                                            stop = false;
-                                            callBackListener.onCallBack();
+                                            //Toast.makeText(getContext(),user.getHoten(), Toast.LENGTH_SHORT).show();
+                                            if(callBackListener != null){
+                                                callBackListener.onCallBack();
+                                            }
                                         }
                                     }
-                                }
 
-                                @Override
-                                public void onFailure(Call<Token> call, Throwable t) {
-                                    Toast.makeText(getContext(), "Vui lòng kiểm tra lại đường truyền mạng!", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                        }else{
-                            stop = true;
-                            builder.setTitle("Thông báo")
-                                    .setMessage("Vui lòng nhập đầy đủ thông tin!")
-                                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            // ok
-                                        }
-                                    })
-                                    .setIcon(android.R.drawable.ic_dialog_alert)
-                                    .show();
-                        }
-                        super.onProgressUpdate(values);
-                    }
-
-                    @Override
-                    protected void onPostExecute(String s) {
-                        if(s.equals("done") && stop == true){
-                            // sau khi run xong animation sẽ được tắt
-                            stopAnimation();
+                                    @Override
+                                    public void onFailure(Call<Token> call, Throwable t) {
+                                        stopAnimation();// dừng animation
+                                        Toast.makeText(getContext(), "Vui lòng kiểm tra lại đường truyền mạng!", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }else{
+                                stopAnimation();//dừng animation
+                                builder.setTitle("Thông báo")
+                                        .setMessage("Vui lòng nhập đầy đủ thông tin!")
+                                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                // ok
+                                            }
+                                        })
+                                        .setIcon(android.R.drawable.ic_dialog_alert)
+                                        .show();
+                            }
                         }
                     }
                 };

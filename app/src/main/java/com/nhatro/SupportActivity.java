@@ -77,7 +77,6 @@ public class SupportActivity extends AppCompatActivity {
                     @Override
                     protected String doInBackground(String... params) {
                         try{
-                            publishProgress();// GỌI HÀM onProgressUpdate RUN
                             Thread.sleep(1000);// sleep 1s
                         }catch (InterruptedException e){
                             e.printStackTrace();
@@ -86,77 +85,74 @@ public class SupportActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    protected void onProgressUpdate(String... values) {
-                        email = txtemail.getText().toString();
-                        content = txtcontent.getText().toString();
-                        if(email.length() > 0 && content.length() > 0){
-                            if(checkEmail(email)){
-                                DataClient dataClient = APIUtils.getData();
-                                retrofit2.Call<String> callback = dataClient.SendSupport(email, content);
-                                callback.enqueue(new Callback<String>() {
-                                    @Override
-                                    public void onResponse(Call<String> call, Response<String> response) {
-                                        String res = response.body();
-                                        if (res.equals("ok")) {
-                                            builder.setTitle("Thông báo")
-                                                    .setMessage("Cảm ơn bạn đã đóng góp ý kiến để chúng tôi có thể hoàn thiện chức năng của ứng dụng!")
-                                                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                                                        public void onClick(DialogInterface dialog, int which) {
-                                                            // ok
-                                                        }
-                                                    })
-                                                    .setIcon(android.R.drawable.ic_dialog_info)
-                                                    .show();
-                                        } else {
-                                            builder.setTitle("Thông báo")
-                                                    .setMessage("Có lỗi xảy ra!\nVui lòng thử lại!")
-                                                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                                                        public void onClick(DialogInterface dialog, int which) {
-                                                            // ok
-                                                        }
-                                                    })
-                                                    .setIcon(android.R.drawable.ic_dialog_alert)
-                                                    .show();
+                    protected void onPostExecute(String s) {
+                        if(s.equals("done")){
+                            email = txtemail.getText().toString();
+                            content = txtcontent.getText().toString();
+                            if(email.length() > 0 && content.length() > 0){
+                                if(checkEmail(email)){
+                                    DataClient dataClient = APIUtils.getData();
+                                    retrofit2.Call<String> callback = dataClient.SendSupport(email, content);
+                                    callback.enqueue(new Callback<String>() {
+                                        @Override
+                                        public void onResponse(Call<String> call, Response<String> response) {
+                                            String res = response.body();
+                                            stopAnimation();
+                                            if (res.equals("ok")) {
+                                                builder.setTitle("Thông báo")
+                                                        .setMessage("Cảm ơn bạn đã đóng góp ý kiến để chúng tôi có thể hoàn thiện chức năng của ứng dụng!")
+                                                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                                            public void onClick(DialogInterface dialog, int which) {
+                                                                // ok
+                                                            }
+                                                        })
+                                                        .setIcon(android.R.drawable.ic_dialog_info)
+                                                        .show();
+                                            } else {
+                                                builder.setTitle("Thông báo")
+                                                        .setMessage("Có lỗi xảy ra!\nVui lòng thử lại!")
+                                                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                                            public void onClick(DialogInterface dialog, int which) {
+                                                                // ok
+                                                            }
+                                                        })
+                                                        .setIcon(android.R.drawable.ic_dialog_alert)
+                                                        .show();
+                                            }
                                         }
-                                    }
 
-                                    @Override
-                                    public void onFailure(Call<String> call, Throwable t) {
-                                        Toast.makeText(SupportActivity.this, "Vui lòng kiểm tra lại đường truyền mạng!", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                            }else {
+                                        @Override
+                                        public void onFailure(Call<String> call, Throwable t) {
+                                            stopAnimation();
+                                            Toast.makeText(SupportActivity.this, "Vui lòng kiểm tra lại đường truyền mạng!", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                }else {
+                                    stopAnimation();
+                                    builder.setTitle("Thông báo")
+                                            .setMessage("Email không đúng định dạng!\nVui lòng nhập lại email")
+                                            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    // ok
+                                                    txtemail.setText("");
+                                                    txtemail.requestFocus();
+                                                }
+                                            })
+                                            .setIcon(android.R.drawable.ic_dialog_alert)
+                                            .show();
+                                }
+                            }else{
+                                stopAnimation();
                                 builder.setTitle("Thông báo")
-                                        .setMessage("Email không đúng định dạng!\nVui lòng nhập lại email")
+                                        .setMessage("Vui lòng nhập đầy đủ thông tin!")
                                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int which) {
                                                 // ok
-                                                txtemail.setText("");
-                                                txtemail.requestFocus();
                                             }
                                         })
                                         .setIcon(android.R.drawable.ic_dialog_alert)
                                         .show();
                             }
-                        }else{
-                            builder.setTitle("Thông báo")
-                                    .setMessage("Vui lòng nhập đầy đủ thông tin!")
-                                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            // ok
-                                        }
-                                    })
-                                    .setIcon(android.R.drawable.ic_dialog_alert)
-                                    .show();
-                        }
-                        super.onProgressUpdate(values);
-                    }
-
-                    @Override
-                    protected void onPostExecute(String s) {
-                        if(s.equals("done")){
-                            // sau khi run xong animation sẽ được tắt
-                            stopAnimation();
                         }
                     }
                 };

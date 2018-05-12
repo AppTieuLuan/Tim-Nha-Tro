@@ -117,7 +117,6 @@ public class SignUpFragment extends Fragment implements OnSignUpListener{
                     @Override
                     protected String doInBackground(String... params) {
                         try{
-                            publishProgress();
                             Thread.sleep(1000);// sleep 1s
                         }catch (InterruptedException e){
                             e.printStackTrace();
@@ -126,75 +125,71 @@ public class SignUpFragment extends Fragment implements OnSignUpListener{
                     }
 
                     @Override
-                    protected void onProgressUpdate(String... values) {
-                        if(name.length() > 0 && username.length() > 0 &&
-                                phone.length() > 0 && password.length() > 0 && cfpassword.length() > 0){
-                            if(password.equals(cfpassword)){//confirm pass correct
-                                DataClient dataClient = APIUtils.getData();
-                                retrofit2.Call<String> callback = dataClient.Register(name, username, phone, password);
-                                callback.enqueue(new Callback<String>() {
-                                    @Override
-                                    public void onResponse(Call<String> call, Response<String> response) {
-                                        String res = response.body();
-                                        stopAnimation();
-                                        if(res.equals("THANH_CONG")){
-                                            Toast.makeText(getContext(), "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
-                                            builder.setTitle("Thông báo")
-                                                    .setMessage("Đăng ký thành công!\nVui lòng quay lại đăng nhập để đăng nhập!")
-                                                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                                                        public void onClick(DialogInterface dialog, int which) {
-                                                            // ok
-                                                            txtname.setText("");
-                                                            txtusername.setText("");
-                                                            txtphone.setText("");
-                                                            txtpassword.setText("");
-                                                            txtcfpassword.setText("");
-                                                            txtname.requestFocus();
-                                                        }
-                                                    })
-                                                    .setIcon(android.R.drawable.ic_dialog_alert)
-                                                    .show();
-                                        }else {
-                                            Toast.makeText(getContext(), "Đăng ký thất bại!", Toast.LENGTH_SHORT).show();
+                    protected void onPostExecute(String s) {
+                        if (s.equals("done")) {
+                            if(name.length() > 0 && username.length() > 0 &&
+                                    phone.length() > 0 && password.length() > 0 && cfpassword.length() > 0){
+                                if(password.equals(cfpassword)){//confirm pass correct
+                                    DataClient dataClient = APIUtils.getData();
+                                    retrofit2.Call<String> callback = dataClient.Register(name, username, phone, password);
+                                    callback.enqueue(new Callback<String>() {
+                                        @Override
+                                        public void onResponse(Call<String> call, Response<String> response) {
+                                            String res = response.body();
+                                            stopAnimation();// dừng
+                                            if(res.equals("THANH_CONG")){
+                                                Toast.makeText(getContext(), "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
+                                                builder.setTitle("Thông báo")
+                                                        .setMessage("Đăng ký thành công!\nVui lòng quay lại đăng nhập để đăng nhập!")
+                                                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                                            public void onClick(DialogInterface dialog, int which) {
+                                                                // ok
+                                                                txtname.setText("");
+                                                                txtusername.setText("");
+                                                                txtphone.setText("");
+                                                                txtpassword.setText("");
+                                                                txtcfpassword.setText("");
+                                                                txtname.requestFocus();
+                                                            }
+                                                        })
+                                                        .setIcon(android.R.drawable.ic_dialog_alert)
+                                                        .show();
+                                            }else {
+                                                Toast.makeText(getContext(), "Đăng ký thất bại!", Toast.LENGTH_SHORT).show();
+                                            }
                                         }
-                                    }
 
-                                    @Override
-                                    public void onFailure(Call<String> call, Throwable t) {
-                                        Toast.makeText(getContext(), "Vui lòng kiểm tra lại đường truyền!", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                            }else{//confirm password incorrect
+                                        @Override
+                                        public void onFailure(Call<String> call, Throwable t) {
+                                            stopAnimation();
+                                            Toast.makeText(getContext(), "Vui lòng kiểm tra lại đường truyền!", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                }else{//confirm password incorrect
+                                    stopAnimation();
+                                    builder.setTitle("Thông báo")
+                                            .setMessage("Xác nhận mật khẩu sai!")
+                                            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    // ok
+                                                    txtcfpassword.setText("");
+                                                }
+                                            })
+                                            .setIcon(android.R.drawable.ic_dialog_alert)
+                                            .show();
+                                }
+                            }else{
                                 stopAnimation();
                                 builder.setTitle("Thông báo")
-                                        .setMessage("Xác nhận mật khẩu sai!")
+                                        .setMessage("Vui lòng nhập đầy đủ thông tin!")
                                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int which) {
                                                 // ok
-                                                txtcfpassword.setText("");
                                             }
                                         })
                                         .setIcon(android.R.drawable.ic_dialog_alert)
                                         .show();
                             }
-                        }else{
-                            builder.setTitle("Thông báo")
-                                    .setMessage("Vui lòng nhập đầy đủ thông tin!")
-                                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            // ok
-                                        }
-                                    })
-                                    .setIcon(android.R.drawable.ic_dialog_alert)
-                                    .show();
-                        }
-                        super.onProgressUpdate(values);
-                    }
-
-                    @Override
-                    protected void onPostExecute(String s) {
-                        if (s.equals("done")) {
-                            stopAnimation();
                         }
                     }
                 };

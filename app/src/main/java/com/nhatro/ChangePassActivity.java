@@ -131,7 +131,6 @@ public class ChangePassActivity extends AppCompatActivity {
                     @Override
                     protected String doInBackground(String... params) {
                         try{
-                            publishProgress();// GỌI HÀM onProgressUpdate RUN
                             Thread.sleep(1000);// sleep 1s
                         }catch (InterruptedException e){
                             e.printStackTrace();
@@ -140,77 +139,72 @@ public class ChangePassActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    protected void onProgressUpdate(String... values) {
-                        oldpass = txtoldpass.getText().toString();
-                        newpass = txtnewpass.getText().toString();
-                        confirmnewpass = txtcfnewpass.getText().toString();
-
-                        if(oldpass.length() > 0 && newpass.length() > 0 && confirmnewpass.length() > 0){
-                            if(newpass.equals(confirmnewpass)) {
-                                SharedPreferences mPrefs = ChangePassActivity.this.getSharedPreferences("Mydata", MODE_PRIVATE);
-                                Gson gson = new Gson();
-                                String json = mPrefs.getString("MyUser", "");
-                                User user = gson.fromJson(json, User.class);
-
-                                DataClient dataClient = APIUtils.getData();
-                                retrofit2.Call<String> callback = dataClient.ChangePass(user.getUsername(), oldpass, newpass);
-                                callback.enqueue(new Callback<String>() {
-                                    @Override
-                                    public void onResponse(Call<String> call, Response<String> response) {
-                                        String res = response.body();
-                                        stopAnimation();
-                                        if(res.equals("ok")){
-                                            builder.setTitle("Thông báo")
-                                                    .setMessage("Thay đổi thành công!")
-                                                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                                                        public void onClick(DialogInterface dialog, int which) {
-                                                            // ok
-                                                            txtoldpass.setText("");
-                                                            txtnewpass.setText("");
-                                                            txtcfnewpass.setText("");
-                                                            txtoldpass.requestFocus();
-                                                        }
-                                                    })
-                                                    .show();
-                                        }else {
-                                            if(res.equals("fail_old_pass")){
-                                                Toast.makeText(ChangePassActivity.this, "Sai mật khẩu cũ!", Toast.LENGTH_SHORT).show();
-                                                txtoldpass.setText("");
-                                                txtoldpass.requestFocus();
-                                            }else {
-                                                Toast.makeText(ChangePassActivity.this, "Thay đổi mật khẩu thất bại!\nVui lòng thử lại!"+res, Toast.LENGTH_LONG).show();
-                                            }
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onFailure(Call<String> call, Throwable t) {
-                                        Toast.makeText(ChangePassActivity.this, "Vui lòng kiểm tra lại đường truyền mạng!", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                            }else{
-                                Toast.makeText(ChangePassActivity.this, "Xác nhận mật khẩu không chính xác!", Toast.LENGTH_SHORT).show();
-                            }
-                        }else{
-                            stopAnimation();
-                            builder.setTitle("Thông báo")
-                                    .setMessage("Vui lòng nhập đầy đủ thông tin!")
-                                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            // ok
-                                        }
-                                    })
-                                    .setIcon(android.R.drawable.ic_dialog_alert)
-                                    .show();
-                        }
-                        super.onProgressUpdate(values);
-                    }
-
-                    @Override
                     protected void onPostExecute(String s) {
                         if(s.equals("done")){
-                            // sau khi run xong animation sẽ được tắt
-                            stopAnimation();
+                            oldpass = txtoldpass.getText().toString();
+                            newpass = txtnewpass.getText().toString();
+                            confirmnewpass = txtcfnewpass.getText().toString();
+
+                            if(oldpass.length() > 0 && newpass.length() > 0 && confirmnewpass.length() > 0){
+                                if(newpass.equals(confirmnewpass)) {
+                                    SharedPreferences mPrefs = ChangePassActivity.this.getSharedPreferences("Mydata", MODE_PRIVATE);
+                                    Gson gson = new Gson();
+                                    String json = mPrefs.getString("MyUser", "");
+                                    User user = gson.fromJson(json, User.class);
+
+                                    DataClient dataClient = APIUtils.getData();
+                                    retrofit2.Call<String> callback = dataClient.ChangePass(user.getUsername(), oldpass, newpass);
+                                    callback.enqueue(new Callback<String>() {
+                                        @Override
+                                        public void onResponse(Call<String> call, Response<String> response) {
+                                            String res = response.body();
+                                            stopAnimation();
+                                            if(res.equals("ok")){
+                                                builder.setTitle("Thông báo")
+                                                        .setMessage("Thay đổi thành công!")
+                                                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                                            public void onClick(DialogInterface dialog, int which) {
+                                                                // ok
+                                                                txtoldpass.setText("");
+                                                                txtnewpass.setText("");
+                                                                txtcfnewpass.setText("");
+                                                                txtoldpass.requestFocus();
+                                                            }
+                                                        })
+                                                        .show();
+                                            }else {
+                                                if(res.equals("fail_old_pass")){
+                                                    Toast.makeText(ChangePassActivity.this, "Sai mật khẩu cũ!", Toast.LENGTH_SHORT).show();
+                                                    txtoldpass.setText("");
+                                                    txtoldpass.requestFocus();
+                                                }else {
+                                                    Toast.makeText(ChangePassActivity.this, "Thay đổi mật khẩu thất bại!\nVui lòng thử lại!"+res, Toast.LENGTH_LONG).show();
+                                                }
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<String> call, Throwable t) {
+                                            stopAnimation();
+                                            Toast.makeText(ChangePassActivity.this, "Vui lòng kiểm tra lại đường truyền mạng!", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                }else{
+                                    stopAnimation();
+                                    Toast.makeText(ChangePassActivity.this, "Xác nhận mật khẩu không chính xác!", Toast.LENGTH_SHORT).show();
+                                }
+                            }else{
+                                stopAnimation();
+                                builder.setTitle("Thông báo")
+                                        .setMessage("Vui lòng nhập đầy đủ thông tin!")
+                                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                // ok
+                                            }
+                                        })
+                                        .setIcon(android.R.drawable.ic_dialog_alert)
+                                        .show();
+                            }
                         }
                     }
                 };
