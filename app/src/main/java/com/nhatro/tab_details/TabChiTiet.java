@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,7 +44,7 @@ public class TabChiTiet extends Fragment {
     ExpandableHeightGridView gridTienNghi;
     ArrayList<Item_Grid_Facilities> lstTienNghi;
     Grid_Facilities_Adapter myAdapter;
-
+    LinearLayout layoutReport;
     ConstraintLayout loadlayoutThongTinChiTiet;
     PhongTros phongTros;
     ScrollView scrollChiTiet;
@@ -99,6 +100,12 @@ public class TabChiTiet extends Fragment {
             //grid.setAdapter(adapter);
             gridTienNghi.setAdapter(myAdapter);
 
+            layoutReport.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(getContext(), "REPORT", Toast.LENGTH_SHORT).show();
+                }
+            });
 
             phongTros = new PhongTros();
             LoadData loadData = new LoadData();
@@ -129,6 +136,7 @@ public class TabChiTiet extends Fragment {
         btnCall = v.findViewById(R.id.iconCall);
         btnFacebook = v.findViewById(R.id.iconfacebook);
         btnSMS = v.findViewById(R.id.iconSMS);
+        layoutReport = v.findViewById(R.id.layoutReport);
     }
 
     public class LoadData extends AsyncTask<String, Void, Void> {

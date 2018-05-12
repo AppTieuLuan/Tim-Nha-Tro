@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    tools:context="com.nhatro.Filter2">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/layoutChonKV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:paddingTop="8dp"
+                    android:id="@+id/lableKhuVuc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:text="KHU VỰC"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:gravity="center"
+                    android:paddingLeft="5dp"
+                    android:paddingBottom="8dp"
+                    android:paddingTop="8dp"
+                    android:background="@drawable/background_click_textview"
+                    android:layout_marginRight="10dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:orientation="horizontal"
+                    android:id="@+id/lblTinh"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/txtTPHT"
+                        android:paddingRight="8dp"
+                        android:text="TP.Hồ Chí Minh"
+                        android:textStyle="bold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <ImageView
+                        android:layout_gravity="center"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/icon_arrow_right"
+                        />
+                </LinearLayout>
+
+                <com.nhatro.adapter.ExpandableHeightGridView
+                    android:id="@+id/gridQuan"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:isScrollContainer="false"
+                    android:numColumns="3"
+                    android:stretchMode="columnWidth"
+                    app:layout_constraintTop_toBottomOf="@id/lblTinh" />
+
+                <View
+                    android:id="@+id/divider11"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@android:color/darker_gray"
+                    app:layout_constraintTop_toBottomOf="@id/gridQuan" />
+            </android.support.constraint.ConstraintLayout>
+
+
+
+            <TextView
+                app:layout_constraintTop_toBottomOf="@id/layoutChonKV"
+                android:id="@+id/lableGia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:paddingTop="8dp"
+                android:text="GIÁ"
+                android:textStyle="bold" />
+
+            <io.apptik.widget.MultiSlider
+                android:id="@+id/sliderArea"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                app:drawThumbsApart="true"
+                app:layout_constraintTop_toBottomOf="@id/lableGia"
+                app:rangeColor="@color/red"
+                app:scaleMax="10000000"
+                app:scaleStep="100"
+                app:stepsThumbsApart="1"
+                app:thumbColor="@color/colorPrimary"
+                app:thumbNumber="1" />
+
+            <TextView
+                android:id="@+id/minValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
+                android:text="0 vnđ"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/sliderArea" />
+
+            <View
+                android:id="@+id/divider6"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:background="@android:color/darker_gray"
+                app:layout_constraintTop_toBottomOf="@id/minValue" />
+
+
+
+            <TextView
+                android:id="@+id/lblGT"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:paddingTop="8dp"
+                android:text="LOẠI TIN TỨC"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/divider6" />
+
+            <CheckBox
+                app:layout_constraintStart_toStartOf="@id/sliderArea"
+                android:text="Cho Thuê Phòng Trọ"
+                app:layout_constraintTop_toBottomOf="@id/lblGT"
+                android:id="@+id/checkPhongTro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <CheckBox
+                app:layout_constraintStart_toStartOf="@id/sliderArea"
+                android:text="Cho Thuê Nhà Nguyên Căn"
+                app:layout_constraintTop_toBottomOf="@id/checkPhongTro"
+                android:id="@+id/checkNhaNguyenCan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <CheckBox
+                app:layout_constraintStart_toStartOf="@id/sliderArea"
+                android:text="Tìm Bạn Ở Ghép"
+                app:layout_constraintTop_toBottomOf="@id/checkNhaNguyenCan"
+                android:id="@+id/checkTimOGhep"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            />
+            <View
+                android:id="@+id/divider5"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:background="@android:color/darker_gray"
+                app:layout_constraintTop_toBottomOf="@id/checkTimOGhep" />
+
+
+            <TextView
+                android:id="@+id/txtGioGiac"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:paddingTop="8dp"
+                android:text="Giờ giấc"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/divider5" />
+            <CheckBox
+                app:layout_constraintStart_toStartOf="@id/sliderArea"
+                android:text="Tự do"
+                app:layout_constraintTop_toBottomOf="@id/txtGioGiac"
+                android:id="@+id/checkGioGiac"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <View
+                android:id="@+id/divider55"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:background="@android:color/darker_gray"
+                app:layout_constraintTop_toBottomOf="@id/checkGioGiac" />
+
+            <TextView
+                android:id="@+id/tblFacilities"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:paddingTop="8dp"
+                android:text="CÁC TIỆN NGHI"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/divider55" />
+
+            <com.nhatro.adapter.ExpandableHeightGridView
+                android:id="@+id/gridFacilities"
+                android:layout_width="match_parent"
+
+                android:layout_height="wrap_content"
+                android:isScrollContainer="false"
+                android:numColumns="5"
+                android:stretchMode="columnWidth"
+                app:layout_constraintTop_toBottomOf="@id/tblFacilities" />
+
+            <View
+                android:id="@+id/divider2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:background="@android:color/darker_gray"
+                app:layout_constraintTop_toBottomOf="@id/gridFacilities" />
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/layoutGioiTinh"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="7dp"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/divider2">
+
+                <TextView
+                    android:id="@+id/lableGioiTinh"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:text="ĐỐI TƯỢNG"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <info.hoang8f.android.segmented.SegmentedGroup xmlns:segmentedgroup="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/segmented2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_margin="5dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    segmentedgroup:layout_constraintStart_toEndOf="@id/lableGioiTinh"
+                    segmentedgroup:sc_border_width="2dp"
+                    segmentedgroup:sc_corner_radius="10dp">
+
+                    <RadioButton
+                        android:id="@+id/radNam"
+                        style="@style/RadioButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Nam" />
+
+                    <RadioButton
+                        android:id="@+id/radNu"
+                        style="@style/RadioButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Nữ" />
+                    <RadioButton
+                        android:id="@+id/radCa2"
+                        style="@style/RadioButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Cả 2" />
+                </info.hoang8f.android.segmented.SegmentedGroup>
+            </android.support.constraint.ConstraintLayout>
+
+            <View
+                android:id="@+id/divider3"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="7dp"
+                android:background="@android:color/darker_gray"
+                app:layout_constraintTop_toBottomOf="@id/layoutGioiTinh" />
+
+        </android.support.constraint.ConstraintLayout>
+    </ScrollView>
+
+    <View
+        android:id="@+id/divider4"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="7dp"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintTop_toBottomOf="@id/layoutGioiTinh" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_weight="0"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <TextView
+            android:background="@drawable/background_click_textview"
+            android:id="@+id/btnTimKiem"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Đồng ý" />
+
+
+        <TextView
+            android:background="@drawable/background_click_textview"
+            android:id="@+id/btnHuy"
+            android:textStyle="bold"
+            android:padding="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Hủy" />
+    </LinearLayout>
+</LinearLayout>

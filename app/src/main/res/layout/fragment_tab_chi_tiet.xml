@@ -726,7 +726,30 @@ Tiền phòng: 1 triệu 6, điện 3k, nước 5k, wifi 50k.\n
 
                 </android.support.constraint.ConstraintLayout>
 
+                <LinearLayout
+                    android:id="@+id/layoutReport"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/background_click_textview"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="10dp"
+                    app:layout_constraintTop_toBottomOf="@id/layoutmotathems">
 
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_report" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:paddingLeft="5dp"
+                        android:text="Báo cáo lỗi" />
+
+                </LinearLayout>
             </LinearLayout>
 
 

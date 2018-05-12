@@ -29,6 +29,7 @@ public class tim_o_ghep extends Fragment {
 
     private ListView listTinTimPhong;
     private List_Tin_Tim_Phong_Adapter list_tin_tim_phong_adapter;
+    LinearLayout btnBoLoc;
     ArrayList<TinTimPhongItemList> data;
     boolean dangLoadDL = false;
     boolean conDL = true;
@@ -37,6 +38,21 @@ public class tim_o_ghep extends Fragment {
     ProgressBar loadingData;
     //FloatingActionButton iconAdd;
 
+
+    /// Lưu các bộ lọc
+    private boolean[] chontiennghi = {false, false, false, false, false, false, false, false, false, false, false, false, false, false, false};
+    private boolean giogiac = true;
+    int namnu = 3;
+    int gia = 0;
+    boolean tinnhatro = false;
+    boolean tinoghep = false;
+    boolean tinnhanguyencan = false;
+    int idtp = 50;
+    private String tenTP = "TP.HCM";
+    int idqh = 0;
+    private String tiennghi = "";
+
+    ///////////////
 
     com.github.clans.fab.FloatingActionButton iconAdd;
     LinearLayout layoutOverlay;
@@ -52,20 +68,22 @@ public class tim_o_ghep extends Fragment {
         // Inflate the layout for this fragment
         final View v;
         v = inflater.inflate(R.layout.fragment_tim_o_ghep, container, false);
+
+
         layoutOverlay = v.findViewById(R.id.layoutOverlay);
         iconAdd = v.findViewById(R.id.iconAdd);
-
+        btnBoLoc = v.findViewById(R.id.btnBoLoc);
         //iconAdd = v.findViewById(R.id.iconAdd);
         loadingData = v.findViewById(R.id.loadingData);
         mHadlerr = new mHadler();
         data = new ArrayList<>();
 
-        data.add(new TinTimPhongItemList(1, "Cần thuê phòng trọ tại quận thủ đức", 1, 1, "Quận Thủ Đức / Hồ Chí Mình", 3, "1.500.000 - 1.800.000"));
-        data.add(new TinTimPhongItemList(2, "Cần tìm phòng ở ghép tại quận 2", 3, 2, "Quận 2 / Hồ Chí Mình", 1, "1.500.000 - 1.700.000"));
-        data.add(new TinTimPhongItemList(3, "Cần thuê phòng trọ tại quận 7", 1, 1, "Quận 7 / Hồ Chí Mình", 3, "1.500.000 - 1.800.000"));
-        data.add(new TinTimPhongItemList(4, "Tìm nhà nguyên căn tại quận 9", 2, 3, "Quận Thử Đức / Hồ Chí Mình", 3, "1.500.000 - 1.800.000"));
-        data.add(new TinTimPhongItemList(5, "Cần thuê phòng trọ tại quận 9", 1, 0, "Quận Thử Đức / Hồ Chí Mình", 3, "1.500.000 - 1.800.000"));
-        data.add(new TinTimPhongItemList(6, "Cần thuê phòng trọ tại quận 9", 1, 1, "Quận Thử Đức / Hồ Chí Mình", 3, "1.500.000 - 1.800.000"));
+        data.add(new TinTimPhongItemList(1, "Cần thuê phòng trọ tại quận thủ đức", 1, 1, "Quận Thủ Đức / Hồ Chí Mình", "3-4", "1.500.000 - 1.800.000", "10/2/2018"));
+        data.add(new TinTimPhongItemList(2, "Cần tìm phòng ở ghép tại quận 2", 3, 2, "Quận 2 / Hồ Chí Mình", "1-2", "1.500.000 - 1.700.000", "10/2/2018"));
+        data.add(new TinTimPhongItemList(3, "Cần thuê phòng trọ tại quận 7", 1, 1, "Quận 7 / Hồ Chí Mình", "1-3", "1.500.000 - 1.800.000", "10/2/2018"));
+        data.add(new TinTimPhongItemList(4, "Tìm nhà nguyên căn tại quận 9", 2, 3, "Quận Thử Đức / Hồ Chí Mình", "2-4", "1.500.000 - 1.800.000", "10/2/2018"));
+        data.add(new TinTimPhongItemList(5, "Cần thuê phòng trọ tại quận 9", 1, 0, "Quận Thử Đức / Hồ Chí Mình", "2-5", "1.500.000 - 1.800.000", "10/2/2018"));
+        data.add(new TinTimPhongItemList(6, "Cần thuê phòng trọ tại quận 9", 1, 1, "Quận Thử Đức / Hồ Chí Mình", "2-4", "1.500.000 - 1.800.000", "10/2/2018"));
 
         listTinTimPhong = v.findViewById(R.id.listTinTimPhong);
 
@@ -103,7 +121,6 @@ public class tim_o_ghep extends Fragment {
                     int idItem = data.get(position).getId();
                     bundle.putInt("iditem", idItem);
                     bundle.putString("tieude", data.get(position).getTieude());
-
                     intent.putExtra("data", bundle);
                     getActivity().startActivity(intent);
                 }
@@ -118,16 +135,58 @@ public class tim_o_ghep extends Fragment {
                 startActivityForResult(intent, 777);
             }
         });
+        btnBoLoc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                Bundle bundle = new Bundle();
+                bundle.putInt("idtp", idtp);
+                bundle.putString("tentp", tenTP);
+                bundle.putInt("idqh", idqh);
+                bundle.putInt("gia", gia);
+                bundle.putBoolean("tinnhatro", tinnhatro);
+                bundle.putBoolean("tinoghep", tinoghep);
+                bundle.putBoolean("tinnhanguyencan", tinnhanguyencan);
+                bundle.putBoolean("giogiac", giogiac);
+                bundle.putBooleanArray("chontiennghi", chontiennghi);
+                bundle.putInt("namnu", namnu);
+                Intent intents = new Intent(getActivity(), Filter2.class);
+
+                intents.putExtra("data", bundle);
+                startActivityForResult(intents, 77);
+            }
+        });
         return v;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data != null) {
+            if (resultCode == 1112) {
+                Bundle bundle = data.getBundleExtra("data");
+                idtp = bundle.getInt("idtp");
+                tenTP = bundle.getString("tentp");
+                namnu = bundle.getInt("namnu");
+                gia = bundle.getInt("gia");
+                idqh = bundle.getInt("idqh");
+                chontiennghi = bundle.getBooleanArray("chontiennghi");
+                giogiac = bundle.getBoolean("giogiac");
+                tinnhanguyencan = bundle.getBoolean("tinnhanguyencan");
+                tinnhatro = bundle.getBoolean("tinnhatro");
+                tinoghep = bundle.getBoolean("tinoghep");
+
+
+            }
+        }
     }
 
     public ArrayList<TinTimPhongItemList> getData() {
         ArrayList<TinTimPhongItemList> tmp = new ArrayList<>();
-        tmp.add(new TinTimPhongItemList(1, "Cần thuê phòng trọ tại quận thủ đức", 1, 1, "Quận Thủ Đức / Hồ Chí Mình", 3, "1.500.000 - 1.800.000"));
+       /* tmp.add(new TinTimPhongItemList(1, "Cần thuê phòng trọ tại quận thủ đức", 1, 1, "Quận Thủ Đức / Hồ Chí Mình", 3, "1.500.000 - 1.800.000"));
         tmp.add(new TinTimPhongItemList(2, "Cần tìm phòng ở ghép tại quận 2", 3, 2, "Quận 2 / Hồ Chí Mình", 1, "1.500.000 - 1.700.000"));
         tmp.add(new TinTimPhongItemList(3, "Cần thuê phòng trọ tại quận 7", 1, 1, "Quận 7 / Hồ Chí Mình", 3, "1.500.000 - 1.800.000"));
-
+*/
         return tmp;
     }
 
@@ -149,7 +208,6 @@ public class tim_o_ghep extends Fragment {
                 loadingData.setVisibility(View.GONE);
             }
         }
-
     }
 
     public class ThreadData extends Thread {

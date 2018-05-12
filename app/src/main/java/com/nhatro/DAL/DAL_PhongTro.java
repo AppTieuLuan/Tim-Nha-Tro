@@ -99,7 +99,7 @@ public class DAL_PhongTro {
         //String URL_NEW = "http://192.168.1.23:8080/firebase/danhSachPhong.php";
         // Tạo danh sách tham số gửi đến máy chủ
         List<NameValuePair> args = new ArrayList<NameValuePair>();
-
+        args.add(new BasicNameValuePair("orderby", String.valueOf(locDL.getOrderby())));
         args.add(new BasicNameValuePair("idtp", String.valueOf(locDL.getIdtp())));
         args.add(new BasicNameValuePair("idqh", locDL.getIdqh()));
         args.add(new BasicNameValuePair("giamin", String.valueOf(locDL.getGiamin())));
@@ -130,71 +130,47 @@ public class DAL_PhongTro {
                     JSONArray hotros = jsonObj.getJSONArray("phongs");
 
                     Log.d("JSONNNNNNN", jsonObj.getString("sql"));
-                    for (int i = 0; i < hotros.length(); i++) {
-                        JSONObject obj = (JSONObject) hotros.get(i);
-                        PhongTro pt = new PhongTro();
-                        pt.setId(obj.getString("id"));
-                        pt.setTieude(obj.getString("tieude"));
-                        pt.setGia(Integer.parseInt(obj.getString("gia")));
-                        pt.setDiachi(obj.getString("diachi"));
-                        pt.setDientich(Integer.parseInt(obj.getString("dientich")));
-                        pt.setChieudai(Integer.parseInt(obj.getString("chieudai")));
-                        pt.setChieurong(Integer.parseInt(obj.getString("chieurong")));
-                        pt.setHinhanh(obj.getString("hinhanh"));
-                        pt.setGioitinh(obj.getString("doituong"));
-                        dsP.add(pt);
+                    if (locDL.isDanhsach() == 1) {
+                        for (int i = 0; i < hotros.length(); i++) {
+                            JSONObject obj = (JSONObject) hotros.get(i);
+                            PhongTro pt = new PhongTro();
+                            pt.setId(obj.getString("id"));
+                            pt.setTieude(obj.getString("tieude"));
+                            pt.setGia(Integer.parseInt(obj.getString("gia")));
+                            pt.setDiachi(obj.getString("diachi"));
+                            pt.setDientich(Integer.parseInt(obj.getString("dientich")));
+                            pt.setChieudai(Integer.parseInt(obj.getString("chieudai")));
+                            pt.setChieurong(Integer.parseInt(obj.getString("chieurong")));
+                            pt.setHinhanh(obj.getString("hinhanh"));
+                            pt.setGioitinh(obj.getString("doituong"));
+                            pt.setLoaitintuc(obj.getInt("loaitintuc"));
+                            dsP.add(pt);
+                        }
+                    } else {
+                        for (int i = 0; i < hotros.length(); i++) {
+                            JSONObject obj = (JSONObject) hotros.get(i);
+                            PhongTro pt = new PhongTro();
+                            pt.setId(obj.getString("id"));
+                            pt.setTieude(obj.getString("tieude"));
+                            pt.setGia(Integer.parseInt(obj.getString("gia")));
+                            pt.setDiachi(obj.getString("diachi"));
+                            pt.setDientich(Integer.parseInt(obj.getString("dientich")));
+                            pt.setChieudai(Integer.parseInt(obj.getString("chieudai")));
+                            pt.setChieurong(Integer.parseInt(obj.getString("chieurong")));
+                            pt.setHinhanh(obj.getString("hinhanh"));
+                            pt.setGioitinh(obj.getString("doituong"));
+                            pt.setLoaitintuc(obj.getInt("loaitintuc"));
+                            pt.setLat(obj.getDouble("lat"));
+                            pt.setLng(obj.getDouble("lng"));
+                            dsP.add(pt);
+                        }
                     }
+
                 }
             } catch (JSONException e) {
                 return dsP;
             }
         }
-        /*} else {
-
-            try {
-
-                String link = "https://nhatroservice.000webhostapp.com/danhSachPhong.php";
-                String data = URLEncoder.encode("idtp", "UTF-8") + "=" + URLEncoder.encode(String.valueOf(locDL.getIdtp()), "UTF-8");
-                data += "&" + URLEncoder.encode("giamin", "UTF-8") + "=" + URLEncoder.encode(String.valueOf(locDL.getGiamin()), "UTF-8");
-                data += "&" + URLEncoder.encode("giamax", "UTF-8") + "=" + URLEncoder.encode(String.valueOf(locDL.getGiamax()), "UTF-8");
-                data += "&" + URLEncoder.encode("dientichmin", "UTF-8") + "=" + URLEncoder.encode(String.valueOf(locDL.getDientichmin()), "UTF-8");
-                data += "&" + URLEncoder.encode("dientichmax", "UTF-8") + "=" + URLEncoder.encode(String.valueOf(locDL.getDientichmax()), "UTF-8");
-                data += "&" + URLEncoder.encode("songuoio", "UTF-8") + "=" + URLEncoder.encode(String.valueOf(locDL.getSonguoio()), "UTF-8");
-                data += "&" + URLEncoder.encode("loaitin", "UTF-8") + "=" + URLEncoder.encode(locDL.getLoaitin(), "UTF-8");
-                data += "&" + URLEncoder.encode("tiennghi", "UTF-8") + "=" + URLEncoder.encode(locDL.getTiennghi(), "UTF-8");
-                data += "&" + URLEncoder.encode("doituong", "UTF-8") + "=" + URLEncoder.encode(String.valueOf(locDL.getDoituong()), "UTF-8");
-                data += "&" + URLEncoder.encode("giogiac", "UTF-8") + "=" + URLEncoder.encode(String.valueOf(locDL.getGiogiac()), "UTF-8");
-                data += "&" + URLEncoder.encode("danhsach", "UTF-8") + "=" + URLEncoder.encode(String.valueOf(locDL.isDanhsach()), "UTF-8");
-                data += "&" + URLEncoder.encode("lat", "UTF-8") + "=" + URLEncoder.encode(String.valueOf(locDL.getLat()), "UTF-8");
-                data += "&" + URLEncoder.encode("lng", "UTF-8") + "=" + URLEncoder.encode(String.valueOf(locDL.getLng()), "UTF-8");
-                data += "&" + URLEncoder.encode("bankinh", "UTF-8") + "=" + URLEncoder.encode(String.valueOf(locDL.getBankinh()), "UTF-8");
-                data += "&" + URLEncoder.encode("trang", "UTF-8") + "=" + URLEncoder.encode(String.valueOf(locDL.getTrang()), "UTF-8");
-
-
-                URL url = new URL(link);
-                URLConnection conn = url.openConnection();
-
-                conn.setDoOutput(true);
-                OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-
-                wr.write(data);
-                wr.flush();
-
-                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-
-                StringBuilder sb = new StringBuilder();
-                String line = null;
-
-                // Read Server Response
-                while ((line = reader.readLine()) != null) {
-                    sb.append(line);
-                    break;
-                }
-                return sb.toString();
-            } catch (Exception e) {
-                return new String("Exception: " + e.getMessage());
-            }
-        }*/
         return dsP;
     }
 

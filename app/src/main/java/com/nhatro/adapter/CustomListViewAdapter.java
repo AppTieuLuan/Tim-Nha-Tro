@@ -25,6 +25,7 @@ public class CustomListViewAdapter extends BaseAdapter {
 
     Context context;
     ArrayList<PhongTro> data;
+
     public CustomListViewAdapter(Context activity, ArrayList<PhongTro> data) {
         this.context = activity;
         this.data = data;
@@ -59,13 +60,9 @@ public class CustomListViewAdapter extends BaseAdapter {
         TextView sex = (TextView) view.findViewById(R.id.sex);
         ImageView img = (ImageView) view.findViewById(R.id.imageItemListView);
 
+        TextView type = (TextView) view.findViewById(R.id.type);
         ImageView imgSave = (ImageView) view.findViewById(R.id.iconSavePost);
         LinearLayout buttonSavePost = (LinearLayout) view.findViewById(R.id.layoutIconSavePost);
-
-
-
-
-
 
 
         // getting movie data for the row
@@ -75,13 +72,25 @@ public class CustomListViewAdapter extends BaseAdapter {
         title.setText(pt.getTieude());
         address.setText(pt.getDiachi());
         price.setText(String.valueOf(pt.getGia()));
-        area.setText("Diện tích: "+ String.valueOf(pt.getDientich()) + "("+ String.valueOf(pt.getChieudai())+ "m x " +
-                        String.valueOf(pt.getChieurong()) + "m)");
+        area.setText("Diện tích: " + String.valueOf(pt.getDientich()) + "(" + String.valueOf(pt.getChieudai()) + "m x " +
+                String.valueOf(pt.getChieurong()) + "m)");
 
-        if(pt.getGioitinh().equals("3")){
+
+        if (pt.getLoaitintuc() == 1) {
+            type.setText("Nhà trọ cho thuê");
+        } else {
+            if (pt.getLoaitintuc() == 2) {
+                type.setText("Tìm bạn ở ghép");
+            } else {
+                if (pt.getLoaitintuc() == 3) {
+                    type.setText("Nhà nguyên căn");
+                }
+            }
+        }
+        if (pt.getGioitinh().equals("3")) {
             sex.setVisibility(View.INVISIBLE);
         } else {
-            if(pt.getGioitinh().equals("1")){
+            if (pt.getGioitinh().equals("1")) {
                 sex.setText("Nam");
             } else {
                 sex.setText("Nữ");
@@ -89,7 +98,7 @@ public class CustomListViewAdapter extends BaseAdapter {
         }
 
 
-        if(pt.isDaluu()) {
+        if (pt.isDaluu()) {
             imgSave.setColorFilter(Color.parseColor("#008efc"));
         } else {
             imgSave.setColorFilter(Color.parseColor("#ffffff"));
@@ -98,16 +107,16 @@ public class CustomListViewAdapter extends BaseAdapter {
         buttonSavePost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(pt.isDaluu()) {
+                if (pt.isDaluu()) {
                     imgSave.setColorFilter(Color.parseColor("#ffffff"));
                     pt.setDaluu(false);
 
-                    Toast.makeText(v.getContext(),"Hủy lưu",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(v.getContext(), "Hủy lưu", Toast.LENGTH_SHORT).show();
                 } else {
                     imgSave.setColorFilter(Color.parseColor("#008efc"));
                     pt.setDaluu(true);
 
-                    Toast.makeText(v.getContext(),"Đã lưu",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(v.getContext(), "Đã lưu", Toast.LENGTH_SHORT).show();
                 }
             }
         });

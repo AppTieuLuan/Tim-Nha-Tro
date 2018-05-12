@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:focusable="true"
+    android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true">
 
     <LinearLayout
@@ -254,12 +254,88 @@
 
                 </LinearLayout>
 
+
                 <View
                     android:id="@+id/divider4"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@android:color/darker_gray"
                     app:layout_constraintTop_toBottomOf="@id/layoutGia" />
+                />
+
+                <TextView
+                    android:id="@+id/txtGT"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/paddingIteminDetailScreen"
+                    android:paddingEnd="30dp"
+                    android:text="Giới tính"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@id/divider4" />
+                <RadioGroup
+                    app:layout_constraintTop_toBottomOf="@id/txtGT"
+                    android:id="@+id/radGt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <RadioButton
+                        android:id="@+id/radNam"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Nam"
+                        app:layout_constraintTop_toBottomOf="@id/txtLoaiNhaO" />
+
+                    <RadioButton
+                        android:id="@+id/radNu"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Nữ"
+                        app:layout_constraintStart_toStartOf="@id/valueTieuDe"
+                        app:layout_constraintTop_toBottomOf="@id/checkPhongTro" />
+
+                    <RadioButton
+                        android:id="@+id/radCa2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Cả 2"
+                        app:layout_constraintTop_toBottomOf="@id/checkNhaNguyenCan" />
+
+                </RadioGroup>
+
+
+                <View
+                    android:id="@+id/divider22"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@android:color/darker_gray"
+                    app:layout_constraintTop_toBottomOf="@id/radGt" />
+                />
+
+
+                <TextView
+                    android:id="@+id/giogiac"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/paddingIteminDetailScreen"
+                    android:paddingEnd="30dp"
+                    android:text="Giờ giấc"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@id/divider22" />
+                <CheckBox
+                    android:text="Tự do"
+                    android:id="@+id/checkTD"
+                    app:layout_constraintTop_toTopOf="@id/divider22"
+                    app:layout_constraintBottom_toBottomOf="@id/giogiac"
+                    app:layout_constraintStart_toEndOf="@id/giogiac"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <View
+                    android:id="@+id/divider30"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@android:color/darker_gray"
+                    app:layout_constraintTop_toBottomOf="@id/giogiac" />
                 />
 
                 <TextView
@@ -271,7 +347,7 @@
                     android:text="Khu vực mong muốn"
                     android:textColor="@color/black"
                     android:textStyle="bold"
-                    app:layout_constraintTop_toBottomOf="@id/divider4" />
+                    app:layout_constraintTop_toBottomOf="@id/divider30" />
 
                 <Spinner
                     android:id="@+id/spinnerTinhTP"

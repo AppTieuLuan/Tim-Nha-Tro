@@ -10,10 +10,19 @@ public class TinTimPhongItemList {
     private int loai;
     private int gioitinh;
     private String quanhuyen;
-    private int songuoi;
+    private String songuoi;
     private String giaTu;
+    private String ngaydang;
 
-    public TinTimPhongItemList(int id, String tieude, int loai, int gioitinh, String quanhuyen, int songuoi, String giaTu) {
+    public String getNgaydang() {
+        return ngaydang;
+    }
+
+    public void setNgaydang(String ngaydang) {
+        this.ngaydang = ngaydang;
+    }
+
+    public TinTimPhongItemList(int id, String tieude, int loai, int gioitinh, String quanhuyen, String songuoi, String giaTu, String ngaydang) {
         this.id = id;
         this.tieude = tieude;
         this.loai = loai;
@@ -21,6 +30,7 @@ public class TinTimPhongItemList {
         this.quanhuyen = quanhuyen;
         this.songuoi = songuoi;
         this.giaTu = giaTu;
+        this.ngaydang = ngaydang;
     }
 
     public int getId() {
@@ -64,11 +74,11 @@ public class TinTimPhongItemList {
         this.quanhuyen = quanhuyen;
     }
 
-    public int getSonguoi() {
+    public String getSonguoi() {
         return songuoi;
     }
 
-    public void setSonguoi(int songuoi) {
+    public void setSonguoi(String songuoi) {
         this.songuoi = songuoi;
     }
 

@@ -130,4 +130,13 @@
         android:layout_height="wrap_content"
         android:text="Giá từ: 1.0000.000 - 1.500.000 vnđ"
         />
+
+    <TextView
+        android:id="@+id/txtDangNgay"
+        app:layout_constraintTop_toBottomOf="@id/valueGiaTu"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="11sp"
+        android:text="Đăng ngày 11/5/2018"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 </android.support.constraint.ConstraintLayout>

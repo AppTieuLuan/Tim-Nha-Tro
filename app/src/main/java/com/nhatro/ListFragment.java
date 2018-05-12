@@ -157,6 +157,7 @@ public class ListFragment extends Fragment {
 
     public void filterData(LocDL locDL) {
        /* Toast.makeText(getContext(),"Đang Lọc DL",Toast.LENGTH_SHORT).show();*/
+        lstDanhSach.smoothScrollToPosition(0);
         this.locDL = locDL;
         isnext = true;
         isLoading = true;

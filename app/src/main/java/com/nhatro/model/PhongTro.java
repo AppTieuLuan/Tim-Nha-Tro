@@ -41,6 +41,33 @@ public class PhongTro {
     private float chieurong;
     private String gioitinh;
     private boolean daluu;
+    private int loaitintuc;
+    private double lat;
+    private double lng;
+
+    public double getLat() {
+        return lat;
+    }
+
+    public void setLat(double lat) {
+        this.lat = lat;
+    }
+
+    public double getLng() {
+        return lng;
+    }
+
+    public void setLng(double lng) {
+        this.lng = lng;
+    }
+
+    public int getLoaitintuc() {
+        return loaitintuc;
+    }
+
+    public void setLoaitintuc(int loaitintuc) {
+        this.loaitintuc = loaitintuc;
+    }
 
     public PhongTro(String id, String tieude, String diachi, float gia, float dientich, float chieudai, float chieurong, String gioitinh, boolean daluu) {
         this.id = id;

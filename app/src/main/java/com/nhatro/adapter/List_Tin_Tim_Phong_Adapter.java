@@ -54,10 +54,10 @@ public class List_Tin_Tim_Phong_Adapter extends ArrayAdapter {
         TextView txttype = v.findViewById(R.id.txttype);
         TextView txtSex = v.findViewById(R.id.txtSex);
 
-        if(data.get(i).getGioitinh() == 0){
+        if (data.get(i).getGioitinh() == 0) {
             txtSex.setText("Nữ");
         } else {
-            if(data.get(i).getGioitinh() == 1) {
+            if (data.get(i).getGioitinh() == 1) {
                 txtSex.setText("Nam");
             } else {
                 txtSex.setVisibility(View.GONE);
@@ -68,11 +68,11 @@ public class List_Tin_Tim_Phong_Adapter extends ArrayAdapter {
         TextView txtAddress = v.findViewById(R.id.txtAddress);
         TextView txtSoNguoi = v.findViewById(R.id.txtSoNguoi);
         TextView valueGiaTu = v.findViewById(R.id.valueGiaTu);
-
-        if(data.get(i).getLoai() == 1) {
+        TextView txtDangNgay = v.findViewById(R.id.txtDangNgay);
+        if (data.get(i).getLoai() == 1) {
             txttype.setText("Cần tìm nhà trọ");
         } else {
-            if(data.get(i).getLoai() == 2){
+            if (data.get(i).getLoai() == 2) {
                 txttype.setText("Tìm nhà nguyên căn ");
             } else {
                 txttype.setText("Tìm phòng ở ghép");
@@ -83,7 +83,7 @@ public class List_Tin_Tim_Phong_Adapter extends ArrayAdapter {
         txtAddress.setText(data.get(i).getQuanhuyen());
         txtSoNguoi.setText("Số lượng: " + String.valueOf(data.get(i).getSonguoi()) + " người");
         valueGiaTu.setText("Giá từ: " + data.get(i).getGiaTu() + " vnđ");
-
+        txtDangNgay.setText("Đăng ngày " + data.get(i).getNgaydang());
         return v;
     }
 }

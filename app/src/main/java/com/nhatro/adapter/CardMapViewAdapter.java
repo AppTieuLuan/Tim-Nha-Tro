@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.nhatro.Details;
 import com.nhatro.R;
 import com.nhatro.model.ItemOnMapView;
+import com.nhatro.model.PhongTro;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ import java.util.List;
 
 public class CardMapViewAdapter extends PagerAdapter implements CardAdapter {
     private List<CardView> mViews;
-    private ArrayList<ItemOnMapView> mData;
+    private ArrayList<PhongTro> mData;
     private float mBaseElevation;
 
     public CardMapViewAdapter() {
@@ -34,7 +35,7 @@ public class CardMapViewAdapter extends PagerAdapter implements CardAdapter {
         mViews = new ArrayList<>();
     }
 
-    public CardMapViewAdapter(ArrayList<ItemOnMapView> data) {
+    public CardMapViewAdapter(ArrayList<PhongTro> data) {
         mData = new ArrayList<>();
         mViews = new ArrayList<>();
         for (int i = 0; i < data.size(); i++) {
@@ -44,12 +45,20 @@ public class CardMapViewAdapter extends PagerAdapter implements CardAdapter {
 
     }
 
-    public void addCardItem(ItemOnMapView item) {
+    public void addCardItem(PhongTro item) {
         mViews.add(null);
         mData.add(item);
     }
 
-    public ItemOnMapView getItem(int position) {
+    public void removeall() {
+        for (int i = 0; i < mData.size(); i++) {
+            mViews.set(i, null);
+        }
+        mData.clear();
+        notifyDataSetChanged();
+    }
+
+    public PhongTro getItem(int position) {
         return mData.get(position);
     }
 
@@ -92,9 +101,9 @@ public class CardMapViewAdapter extends PagerAdapter implements CardAdapter {
                 //Toast.makeText(view.getContext(),String.valueOf(mData.get(position).getId()),Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(view.getContext(), Details.class);
                 Bundle bundle = new Bundle();
-                int idItem = mData.get(position).getId();
-                bundle.putInt("iditem", idItem);
-                bundle.putString("tieude", mData.get(position).getTitle());
+                String idItem = mData.get(position).getId();
+                bundle.putString("iditem", idItem);
+                bundle.putString("tieude", mData.get(position).getTieude());
                 intent.putExtra("iditem", bundle);
                 view.getContext().startActivity(intent);
             }
@@ -108,18 +117,47 @@ public class CardMapViewAdapter extends PagerAdapter implements CardAdapter {
         mViews.set(position, null);
     }
 
-    private void bind(ItemOnMapView item, View view) {
+    private void bind(PhongTro item, View view) {
         TextView titleTextView = (TextView) view.findViewById(R.id.txtTitle);
         TextView address = (TextView) view.findViewById(R.id.txtAddress);
         ImageView avatar = (ImageView) view.findViewById(R.id.avatar);
         TextView price = (TextView) view.findViewById(R.id.txtPrice);
+        TextView txttype = (TextView) view.findViewById(R.id.txttype);
+        TextView txtSex = (TextView) view.findViewById(R.id.txtSex);
+        TextView area = (TextView) view.findViewById(R.id.area);
 
-        titleTextView.setText(item.getTitle());
-        address.setText(item.getAddress());
-        price.setText(String.valueOf(Math.round(item.getPrice())) + " VNĐ");
+        titleTextView.setText(item.getTieude());
+        address.setText(item.getDiachi());
+        price.setText(String.valueOf(Math.round(item.getGia())) + " VNĐ");
 
+        if (item.getLoaitintuc() == 1) {
+            txttype.setText("Phòng trọ cho thuê");
+        } else {
+            if (item.getLoaitintuc() == 2) {
+                txttype.setText("Tìm bạn ở ghép");
+            } else {
+                if (item.getLoaitintuc() == 3) {
+                    txttype.setText("Nhà nguyên căn");
+                }
+            }
+        }
 
-        Picasso.with(view.getContext()).load("https://i-thethao.vnecdn.net/2018/02/27/Untitled-1531-1519693943_500x300.jpg").into(avatar);
+        if (item.getGioitinh().equals("3")) {
+            txtSex.setVisibility(View.INVISIBLE);
+        } else {
+            if (item.getGioitinh().equals("1")) {
+                txtSex.setText("Nam");
+            } else {
+                txtSex.setText("Nữ");
+            }
+        }
+
+        area.setText("Diện tích: " + item.getDiachi() + "m2 " + "(" + item.getChieudai() + "m x " + item.getChieurong() + "m)");
+        try {
+            Picasso.with(view.getContext()).load(item.getHinhanh()).into(avatar);
+        } catch (Exception e) {
+
+        }
 
 
         //price.setText(String.valueOf(item.getPrice()));

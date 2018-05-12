@@ -14,6 +14,8 @@ import android.os.Message;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.SpannableStringBuilder;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
@@ -39,10 +41,16 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.ui.IconGenerator;
 import com.nhatro.DAL.DAL_PhongTro;
+import com.nhatro.adapter.CardAdapter;
 import com.nhatro.adapter.CardMapViewAdapter;
+import com.nhatro.adapter.HorizontalSnapRecyclerView;
+import com.nhatro.adapter.Horizontal_Recycle_Map_Adapter;
+import com.nhatro.adapter.Horizontal_Recycle_Map_Adapter$ItemHolder_ViewBinding;
 import com.nhatro.adapter.ShadowTransformer;
 import com.nhatro.model.ItemOnMapView;
+import com.nhatro.model.LoadMap;
 import com.nhatro.model.LocDL;
+import com.nhatro.model.PhongTro;
 import com.warkiz.widget.IndicatorSeekBar;
 
 import java.util.ArrayList;
@@ -60,18 +68,25 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
     private MapView mapView;
     private GoogleMap map;
     private LatLng currentSelected;
-    private ArrayList<ItemOnMapView> item;
+    private ArrayList<PhongTro> item;
 
     private Marker selectedMarker;
     private int indexSelected;
     private int banKinh;
     private ArrayList<Marker> lstMarker;
 
-    private CardMapViewAdapter mCardAdapter;
-    private ShadowTransformer mCardShadowTransformer;
+    HorizontalSnapRecyclerView recyclerView;
+    Horizontal_Recycle_Map_Adapter horizontal_recycle_map_adapter;
+
+    ArrayList<PhongTro> tem = new ArrayList<>();
+    //private CardMapViewAdapter mCardAdapter;
+    //private ShadowTransformer mCardShadowTransformer;
+    //private ViewPager mViewPager;
+
+
     //    private CardFragmentPagerAdapter mFragmentCardAdapter;
 //    private ShadowTransformer mFragmentCardShadowTransformer;
-    private ViewPager mViewPager;
+
 
     private TextView txtBanKinh;
     private Circle currentCircle;
@@ -79,6 +94,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
     private IndicatorSeekBar seekBarBanKinh;
     LocDL locDL;
     private boolean isGestured; // Xác định có phải là người di chuyển map để di chuyển circle
+    com.rey.material.widget.ProgressView loadingbar;
+
+    int tes = 1;
 
     public MapFragment() {
         // Required empty public constructor
@@ -91,112 +109,205 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
         // Inflate the layout for this fragment
 
         /*if (view == null) {*/
-            View view = inflater.inflate(R.layout.fragment_map, container, false);
-            locDL = new LocDL();
-            Bundle bundle = getArguments();
-            locDL.setBankinh(2);
-            locDL.setGiamin(bundle.getInt("giamin"));
-            locDL.setGiamax(bundle.getInt("giamax"));
-            locDL.setDientichmin(bundle.getInt("dientichmin"));
-            locDL.setDientichmax(bundle.getInt("dientichmax"));
-            locDL.setSonguoio(bundle.getInt("songuoio"));
-            locDL.setLoaitin(bundle.getString("loaitin"));
-            locDL.setTiennghi(bundle.getString("tiennghi"));
-            locDL.setDoituong(bundle.getInt("doituong"));
-            locDL.setGiogiac(bundle.getInt("giogiac"));
-            locDL.setDanhsach(0);
+        View view = inflater.inflate(R.layout.fragment_map, container, false);
+        locDL = new LocDL();
+        Bundle bundle = getArguments();
+        locDL.setBankinh(1);
+        locDL.setGiamin(bundle.getInt("giamin"));
+        locDL.setGiamax(bundle.getInt("giamax"));
+        locDL.setDientichmin(bundle.getInt("dientichmin"));
+        locDL.setDientichmax(bundle.getInt("dientichmax"));
+        locDL.setSonguoio(bundle.getInt("songuoio"));
+        locDL.setLoaitin(bundle.getString("loaitin"));
+        locDL.setTiennghi(bundle.getString("tiennghi"));
+        locDL.setDoituong(bundle.getInt("doituong"));
+        locDL.setGiogiac(bundle.getInt("giogiac"));
+        locDL.setDanhsach(0);
+
+        findViewId(view);
+        lstMarker = new ArrayList<>();
+        item = new ArrayList<>();
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        horizontal_recycle_map_adapter = new Horizontal_Recycle_Map_Adapter(getContext(), item);
+        recyclerView.setAdapter(horizontal_recycle_map_adapter);
+        recyclerView.setSnap(true);
+
+        banKinh = 1;
+        isGestured = false;
 
 
-            banKinh = 2;
-            isGestured = false;
+        mapView.onCreate(savedInstanceState);
+        mapView.onResume();
+        mapView.getMapAsync(this);
 
-            txtBanKinh = (TextView) view.findViewById(R.id.txtBanKinh);
-            seekBarBanKinh = (IndicatorSeekBar) view.findViewById(R.id.bubbleSeekBar);
+        seekBarBanKinh.setOnSeekChangeListener(new IndicatorSeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(IndicatorSeekBar seekBar, int progress, float progressFloat, boolean fromUserTouch) {
 
-            mapView = (MapView) view.findViewById(R.id.mymap);
-            mapView.onCreate(savedInstanceState);
-            mapView.onResume();
-            mapView.getMapAsync(this);
-            lstMarker = new ArrayList<>();
+            }
 
-            item = new ArrayList<>();
-            item = getDS();
-            mViewPager = (ViewPager) view.findViewById(R.id.viewPager);
-            mCardAdapter = new CardMapViewAdapter(this.item);
+            @Override
+            public void onSectionChanged(IndicatorSeekBar seekBar, int thumbPosOnTick, String textBelowTick, boolean fromUserTouch) {
 
-//            mCardAdapter.addCardItem(new ItemOnMapView(1, "Phòng trọ 1", "Địa chỉ 1", 1555, 10.85064713, 106.77209787));
+                txtBanKinh.setText(String.valueOf(Math.round(seekBarBanKinh.getProgressFloat())) + " KM");
+                banKinh = Integer.parseInt(String.valueOf(Math.round(seekBarBanKinh.getProgressFloat())));
 
-            mCardShadowTransformer = new ShadowTransformer(mViewPager, mCardAdapter);
-            mViewPager.setAdapter(mCardAdapter);
+                map.animateCamera(CameraUpdateFactory.newLatLngZoom(
+                        currentCircle.getCenter(), getZoomLevel(currentCircle)));
 
-            mViewPager.setPageTransformer(false, mCardShadowTransformer);
-            mViewPager.setOffscreenPageLimit(3);
-            mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-                @Override
-                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                }
+                loadData(locDL);
+            }
 
-                @Override
-                public void onPageSelected(int position) {
+            @Override
+            public void onStartTrackingTouch(IndicatorSeekBar seekBar, int thumbPosOnTick) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(IndicatorSeekBar seekBar) {
+
+            }
+        });
+        recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerVieww, int newState) {
+                super.onScrollStateChanged(recyclerVieww, newState);
+
+                //Toast.makeText(getContext(), String.valueOf(newState), Toast.LENGTH_SHORT).show();
+                if (newState == 0 && item.size() > 0) {
+                    //Toast.makeText(getContext(), String.valueOf(recyclerView.getmCurrentPosition(0)), Toast.LENGTH_LONG).show();
 
                     Marker tmp = lstMarker.get(indexSelected);
                     IconGenerator icon = new IconGenerator(getContext());
                     icon.setStyle(IconGenerator.STYLE_DEFAULT);
-                    tmp.setIcon(BitmapDescriptorFactory.fromBitmap(icon.makeIcon(makeCharSequence(String.valueOf(item.get(indexSelected).getPrice()) + " vnđ"))));
-                    indexSelected = position;
-                    selectedMarker = lstMarker.get(position);
+                    tmp.setIcon(BitmapDescriptorFactory.fromBitmap(icon.makeIcon(makeCharSequence(String.valueOf(item.get(indexSelected).getGia()) + " vnđ"))));
+                    indexSelected = recyclerView.getmCurrentPosition(0);
+                    selectedMarker = lstMarker.get(indexSelected);
 
                     Marker tmp2 = lstMarker.get(indexSelected);
                     IconGenerator icon2 = new IconGenerator(getContext());
                     icon2.setStyle(IconGenerator.STYLE_BLUE);
-                    tmp2.setIcon(BitmapDescriptorFactory.fromBitmap(icon2.makeIcon(makeCharSequence(String.valueOf(item.get(indexSelected).getPrice()) + " vnđ"))));
+                    tmp2.setIcon(BitmapDescriptorFactory.fromBitmap(icon2.makeIcon(makeCharSequence(String.valueOf(item.get(indexSelected).getGia()) + " vnđ"))));
                     CameraPosition temp = new CameraPosition.Builder()
-                            .target(new LatLng(mCardAdapter.getItem(position).getLat(), mCardAdapter.getItem(position).getLng()))      // Sets the center of the map to location user
+                            .target(new LatLng(item.get(indexSelected).getLat(), item.get(indexSelected).getLng()))      // Sets the center of the map to location user
                             .zoom(14)                   // Sets the zoom
                             .build();                   // Creates a CameraPosition from the builder
                     map.animateCamera(CameraUpdateFactory.newCameraPosition(temp));
 
-
-
                 }
-
-                @Override
-                public void onPageScrollStateChanged(int state) {
-
-                }
-            });
-
-            seekBarBanKinh.setOnSeekChangeListener(new IndicatorSeekBar.OnSeekBarChangeListener() {
-                @Override
-                public void onProgressChanged(IndicatorSeekBar seekBar, int progress, float progressFloat, boolean fromUserTouch) {
-
-                }
-
-                @Override
-                public void onSectionChanged(IndicatorSeekBar seekBar, int thumbPosOnTick, String textBelowTick, boolean fromUserTouch) {
-
-                    txtBanKinh.setText(String.valueOf(Math.round(seekBarBanKinh.getProgressFloat())) + " KM");
-                    banKinh = Integer.parseInt(String.valueOf(Math.round(seekBarBanKinh.getProgressFloat())));
-
-                    loadData(locDL);
-                }
-
-                @Override
-                public void onStartTrackingTouch(IndicatorSeekBar seekBar, int thumbPosOnTick) {
-
-                }
-
-                @Override
-                public void onStopTrackingTouch(IndicatorSeekBar seekBar) {
-
-                }
-            });
-
+            }
+        });
         return view;
     }
 
-    private void setUpViewPager(){
+    private void setUpViewPager() {
 
+    }
+
+    public void getDataaaaa(int test) {
+        if (test == 1) {
+            ArrayList<PhongTro> a = new ArrayList<>();
+            PhongTro s = new PhongTro();
+            s.setLng(106.7720977217);
+            s.setLat(10.850647124617);
+            s.setLoaitintuc(3);
+            s.setGioitinh("1");
+            s.setHinhanh("");
+            s.setChieudai(1);
+            s.setChieurong(2);
+            s.setId("1");
+            s.setTieude("234234");
+            s.setGia(234234);
+            s.setDiachi("35345345");
+
+            a.add(s);
+
+            PhongTro s1 = new PhongTro();
+            s1.setLng(106.767866);
+            s1.setLat(10.845266);
+            s1.setLoaitintuc(3);
+            s1.setGioitinh("1");
+            s1.setHinhanh("");
+            s1.setChieudai(1);
+            s1.setChieurong(2);
+            s1.setId("1");
+            s1.setTieude("234234");
+            s1.setGia(234234);
+            s1.setDiachi("35345345");
+
+            a.add(s1);
+
+            tem.addAll(a);
+
+            // item.clear();
+
+            item.addAll(a);
+            horizontal_recycle_map_adapter.notifyDataSetChanged();
+            //recyclerView.setVisibility(View.GONE);
+            /*item.addAll(tem);
+            horizontal_recycle_map_adapter.notifyDataSetChanged();*/
+           /* horizontal_recycle_map_adapter = new Horizontal_Recycle_Map_Adapter(item);
+            recyclerView.setAdapter(horizontal_recycle_map_adapter);*/
+            this.tes = test + 1;
+        } else {
+            if (tes == 2) {
+                ArrayList<PhongTro> a = new ArrayList<>();
+                PhongTro s = new PhongTro();
+                s.setLng(106.8720977217);
+                s.setLat(10.850647124617);
+                s.setLoaitintuc(3);
+                s.setGioitinh("1");
+                s.setHinhanh("");
+                s.setChieudai(1);
+                s.setChieurong(2);
+                s.setId("1");
+                s.setTieude("MOI LOADDD ");
+                s.setGia(234234);
+                s.setDiachi("vo van kiet");
+
+                a.add(s);
+                item.clear();
+                item.addAll(a);
+                horizontal_recycle_map_adapter.notifyDataSetChanged();
+
+                //tes = tes + 1;
+            } else {
+                PhongTro s1 = new PhongTro();
+                s1.setLng(106.767866);
+                s1.setLat(10.545266);
+                s1.setLoaitintuc(3);
+                s1.setGioitinh("1");
+                s1.setHinhanh("");
+                s1.setChieudai(1);
+                s1.setChieurong(2);
+                s1.setId("1");
+                s1.setTieude("234234");
+                s1.setGia(234234);
+                s1.setDiachi("35345345");
+
+
+                /*ArrayList<PhongTro> temp = new ArrayList<>();
+                temp = item;
+                temp.add(s1);*/
+                item.clear();
+                horizontal_recycle_map_adapter.notifyDataSetChanged();
+
+                /*item.addAll(temp);
+                horizontal_recycle_map_adapter.notifyDataSetChanged();*/
+            }
+
+        }
+    }
+
+    public int getZoomLevel(Circle circle) {
+        int zoomLevel = 11;
+        if (circle != null) {
+            double radius = circle.getRadius() + circle.getRadius() / 2;
+            double scale = radius / 500;
+            zoomLevel = (int) (16 - Math.log(scale) / Math.log(2));
+        }
+        return zoomLevel;
     }
 
     public void filterData(LocDL locDL) {
@@ -207,6 +318,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
         //String tsss = dal_phongTro.danhSachPhong(locDL);
 
         //Log.d("KẾT QUẢ : ", tsss);
+    }
+
+    private void findViewId(View view) {
+        txtBanKinh = (TextView) view.findViewById(R.id.txtBanKinh);
+        seekBarBanKinh = (IndicatorSeekBar) view.findViewById(R.id.bubbleSeekBar);
+        mapView = (MapView) view.findViewById(R.id.mymap);
+        //mViewPager = (ViewPager) view.findViewById(R.id.viewPager);
+        loadingbar = view.findViewById(R.id.loadingbar);
+        recyclerView = view.findViewById(R.id.recyclerView);
     }
 
     private void drawCircle(LatLng point, int banKinh) {
@@ -224,24 +344,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
         currentCircle = map.addCircle(circleOptions);
     }
 
-    public ArrayList<ItemOnMapView> getDS(){
-        ArrayList<ItemOnMapView> temp = new ArrayList<>();
 
-        temp.add(new ItemOnMapView(1, "Phòng trọ 1", "Địa chỉ 1", 1200000, 10.85064713, 106.77209787));
-        temp.add(new ItemOnMapView(2, "Phòng trọ 2", "Địa chỉ 2", 1100000, 10.84986079, 106.77403353));
-        temp.add(new ItemOnMapView(3, "Phòng trọ 3", "Địa chỉ 3", 550000, 10.84739511, 106.77034281));
-        temp.add(new ItemOnMapView(4, "Phòng trọ 4", "Địa chỉ 4", 450000, 10.84636247, 106.77435539));
-        temp.add(new ItemOnMapView(5, "Phòng trọ 5", "Địa chỉ 5", 2100000, 10.84440583, 106.76908467));
-        temp.add(new ItemOnMapView(6, "Phòng trọ 6", "Địa chỉ 6", 1800000, 10.84484839, 106.77485678));
-
-        return temp;
-    }
-
-
-    public void dataMoveCamera(){
+    public void dataMoveCamera() {
         Toast.makeText(getContext(), "Đang Lọc DL cmr", Toast.LENGTH_SHORT).show();
 
     }
+
+    public void update(ArrayList<PhongTro> a) {
+        this.item = a;
+        horizontal_recycle_map_adapter.notifyDataSetChanged();
+    }
+
     public void loadData(LocDL loc) {
         Toast.makeText(getContext(), "Đang Lọc DL", Toast.LENGTH_SHORT).show();
 
@@ -253,81 +366,31 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
         /*ThreadFilter threadFilter = new ThreadFilter();
         threadFilter.run();*/
 
+
         GetDataAsync getDataAsync = new GetDataAsync();
         getDataAsync.execute(locDL);
 
-        this.item.clear();
-        map.clear();
-
-        // Tạo lại marker khi di chuyển map
-        BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.tmpmarker);
-        LatLng latLng = new LatLng(map.getCameraPosition().target.latitude, map.getCameraPosition().target.longitude);
-        MarkerOptions markerOptionsss = new MarkerOptions().position(latLng)
-                .icon(icon);
-
-        tempMarker = map.addMarker(markerOptionsss);
-        tempMarker.setVisible(false);
-        ////
-
-        drawCircle(new LatLng(map.getCameraPosition().target.latitude, map.getCameraPosition().target.longitude), seekBarBanKinh.getProgress());
+        //getDataaaaa(tes);
 
 
-        this.item.add(new ItemOnMapView(1, "Phòng trọ 1", "Địa chỉ 1", 1200000, 10.85064713, 106.77209787));
-        this.item.add(new ItemOnMapView(2, "Phòng trọ 2", "Địa chỉ 2", 1100000, 10.84986079, 106.77403353));
-        mCardAdapter = new CardMapViewAdapter(this.item);
-        mViewPager.setAdapter(mCardAdapter);
-        //mCardAdapter.notifyDataSetChanged();
-
-        lstMarker.clear();
-
-
-        for (int i = 0; i < this.item.size(); i++) {
-            LatLng temp = new LatLng(item.get(i).getLat(), item.get(i).getLng());
-
-            IconGenerator iconFactory = new IconGenerator(getContext());
-            if (i == 0) {
-                iconFactory.setStyle(IconGenerator.STYLE_BLUE);
-                //scurrentSelected = new LatLng(item.get(i).getLat(),item.get(i).getLng());
-            } else {
-                iconFactory.setStyle(IconGenerator.STYLE_DEFAULT);
-            }
-
-            MarkerOptions markerOptions = new MarkerOptions().
-                    icon(BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon(makeCharSequence(String.valueOf(item.get(i).getPrice()) + " vnđ")))).
-                    position(temp).
-                    anchor(iconFactory.getAnchorU(), iconFactory.getAnchorV());
-
-            //map.addMarker(markerOptions);
-
-            Marker m = map.addMarker(markerOptions);
-            lstMarker.add(m);
-            if (i == 0) {
-                selectedMarker = lstMarker.get(0);
-                indexSelected = 0;
-            }
-
-
-        }
-
-        indexSelected = 0;
-        selectedMarker = lstMarker.get(0);
         //drawCircle(new LatLng(map.getCameraPosition().target.latitude,map.getCameraPosition().target.longitude),Integer.parseInt(String.valueOf(seekBarBanKinh.getProgressFloat())));
 
 
-
     }
 
-    public LatLng getLatLong(){
+    public LatLng getLatLong() {
         return tempMarker.getPosition();
     }
-    public int banKinh(){
+
+    public int banKinh() {
         return banKinh;
     }
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.map = googleMap;
 
-        if(tempMarker == null){
+        if (tempMarker == null) {
             BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.tmpmarker);
             LatLng latLng = new LatLng(map.getCameraPosition().target.latitude, map.getCameraPosition().target.longitude);
             MarkerOptions markerOptions = new MarkerOptions().position(latLng)
@@ -353,8 +416,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
                         tempMarker = map.addMarker(markerOptions);
                     }
                 }
-
-
             }
         });
 
@@ -365,6 +426,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
                     isGestured = true;
                     //Toast.makeText(getContext(), "USER TÁC ĐỘNG LÊN MAP.", Toast.LENGTH_SHORT).show();
                 } else if (i == GoogleMap.OnCameraMoveStartedListener.REASON_API_ANIMATION) {
+                    isGestured = false;
                     //Toast.makeText(getContext(), "The user tapped something on the map.",Toast.LENGTH_SHORT).show();
                 } else if (i == GoogleMap.OnCameraMoveStartedListener.REASON_DEVELOPER_ANIMATION) {
                     //Toast.makeText(getContext(), "APP TỰ TÁC ĐỘNG LÊN MAP", Toast.LENGTH_SHORT).show();
@@ -372,6 +434,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
                 }
             }
         });
+
+
 
         map.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
             @Override
@@ -422,7 +486,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
 
 
             MarkerOptions markerOptions = new MarkerOptions().
-                    icon(BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon(makeCharSequence(String.valueOf(item.get(i).getPrice()) + " vnđ")))).
+                    icon(BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon(makeCharSequence(String.valueOf(item.get(i).getGia()) + " vnđ")))).
                     position(temp).
                     anchor(iconFactory.getAnchorU(), iconFactory.getAnchorV());
 
@@ -439,13 +503,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
         map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
+                isGestured = false;
                 if (marker.equals(selectedMarker)) {
                     return false;
                 } else {
                     Marker tmp = lstMarker.get(indexSelected);
                     IconGenerator icon = new IconGenerator(getContext());
                     icon.setStyle(IconGenerator.STYLE_DEFAULT);
-                    tmp.setIcon(BitmapDescriptorFactory.fromBitmap(icon.makeIcon(makeCharSequence(String.valueOf(item.get(indexSelected).getPrice()) + " vnđ"))));
+                    tmp.setIcon(BitmapDescriptorFactory.fromBitmap(icon.makeIcon(makeCharSequence(String.valueOf(item.get(indexSelected).getGia()) + " vnđ"))));
 
 
                     for (int i = 0; i < lstMarker.size(); i++) {
@@ -456,12 +521,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
                             Marker tmp2 = lstMarker.get(indexSelected);
                             IconGenerator icon2 = new IconGenerator(getContext());
                             icon2.setStyle(IconGenerator.STYLE_BLUE);
-                            tmp2.setIcon(BitmapDescriptorFactory.fromBitmap(icon2.makeIcon(makeCharSequence(String.valueOf(item.get(indexSelected).getPrice()) + " vnđ"))));
+                            tmp2.setIcon(BitmapDescriptorFactory.fromBitmap(icon2.makeIcon(makeCharSequence(String.valueOf(item.get(indexSelected).getGia()) + " vnđ"))));
                             break;
                         }
                     }
-
-                    mViewPager.setCurrentItem(indexSelected);
+                    recyclerView.smoothScrollToPosition(indexSelected);
+                    //mViewPager.setCurrentItem(indexSelected);
                 }
                 return false;
             }
@@ -493,13 +558,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
             }
 
             MarkerOptions markerOptions = new MarkerOptions().
-                    icon(BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon(makeCharSequence(String.valueOf(item.get(i).getPrice()) + " vnđ")))).
+                    icon(BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon(makeCharSequence(String.valueOf(item.get(i).getGia()) + " vnđ")))).
                     position(temp).
                     anchor(iconFactory.getAnchorU(), iconFactory.getAnchorV());
             map.addMarker(markerOptions);
         }
     }
-
 
     private void getLocation() {
         LocationManager locationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
@@ -534,10 +598,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
 //        mViewPager.setPageTransformer(false, mCardShadowTransformer);
     }
 
-    public static float dpToPixels(int dp, Context context) {
-        return dp * (context.getResources().getDisplayMetrics().density);
-    }
-
     private CharSequence makeCharSequence(String str) {
         SpannableStringBuilder ssb = new SpannableStringBuilder(str);
         ssb.setSpan(new RelativeSizeSpan(0.6f), 0, str.length(), 0);
@@ -545,23 +605,101 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
         return ssb;
     }
 
-    public class GetDataAsync extends AsyncTask<LocDL,String,Void>{
+    public class GetDataAsync extends AsyncTask<LocDL, String, ArrayList<PhongTro>> {
 
         @Override
-        protected Void doInBackground(LocDL... locDLS) {
-            DAL_PhongTro dal_phongTro = new DAL_PhongTro();
-            String ss = String.valueOf(dal_phongTro.danhSachPhong(locDLS[0]).size());
+        protected void onPreExecute() {
+            super.onPreExecute();
+            loadingbar.setVisibility(View.VISIBLE);
+            // Tạo lại marker khi di chuyển map
+            item.clear();
+            map.clear();
+            BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.tmpmarker);
+            LatLng latLng = new LatLng(map.getCameraPosition().target.latitude, map.getCameraPosition().target.longitude);
+            MarkerOptions markerOptionsss = new MarkerOptions().position(latLng)
+                    .icon(icon);
 
-            publishProgress(ss);
-            return null;
+            tempMarker = map.addMarker(markerOptionsss);
+            tempMarker.setVisible(false);
+            ////
+
+            drawCircle(new LatLng(map.getCameraPosition().target.latitude, map.getCameraPosition().target.longitude), seekBarBanKinh.getProgress());
         }
-        @Override
-        protected void onProgressUpdate(String... strings) {
-            // TODO Auto-generated method stub
-            super.onProgressUpdate(strings);
 
-            Log.d("Chuỗi DL NHẬN ĐC ", strings[0]);
+        @Override
+        protected ArrayList<PhongTro> doInBackground(LocDL... locDLS) {
+            DAL_PhongTro dal_phongTro = new DAL_PhongTro();
+
+            ArrayList<PhongTro> a = new ArrayList<>();
+            a = dal_phongTro.danhSachPhong(locDLS[0]);
+
+            return a;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<PhongTro> a) {
+            super.onPostExecute(a);
+            loadingbar.setVisibility(View.GONE);
+            item = a;
+            if (a.size() > 0) {
+                indexSelected = 0;
+                recyclerView.setVisibility(View.VISIBLE);
+                horizontal_recycle_map_adapter = new Horizontal_Recycle_Map_Adapter(getContext(), a);
+                recyclerView.setAdapter(horizontal_recycle_map_adapter);
+            } else {
+                recyclerView.setVisibility(View.GONE);
+            }
+
+            //update(a);
+            //loadMap.getCardMapViewAdapter().notifyDataSetChanged();
+            //mCardAdapter = new CardMapViewAdapter(item);
+            //mViewPager.setAdapter(mCardAdapter);
+            //mCardAdapter.notifyDataSetChanged();
+            //mViewPager.requestLayout();
+            /*mCardAdapter = new CardMapViewAdapter(item);
+            mCardAdapter.notifyDataSetChanged();
+            mViewPager.setAdapter(mCardAdapter);*/
+
+            //refreshViewPager(loadMap.getPhongTros());
+            //mCardAdapter.removeAll();
+
+            //getDataaaaa(item);
+            lstMarker.clear();
+
+            for (int i = 0; i < item.size(); i++) {
+                LatLng temp = new LatLng(item.get(i).getLat(), item.get(i).getLng());
+
+                IconGenerator iconFactory = new IconGenerator(getContext());
+                if (i == 0) {
+                    iconFactory.setStyle(IconGenerator.STYLE_BLUE);
+                    //scurrentSelected = new LatLng(item.get(i).getLat(),item.get(i).getLng());
+                } else {
+                    iconFactory.setStyle(IconGenerator.STYLE_DEFAULT);
+                }
+
+                MarkerOptions markerOptions = new MarkerOptions().
+                        icon(BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon(makeCharSequence(String.valueOf(item.get(i).getGia()) + " vnđ")))).
+                        position(temp).
+                        anchor(iconFactory.getAnchorU(), iconFactory.getAnchorV());
+
+                //map.addMarker(markerOptions);
+
+                Marker m = map.addMarker(markerOptions);
+                lstMarker.add(m);
+                if (i == 0) {
+                    selectedMarker = lstMarker.get(0);
+                    indexSelected = 0;
+                }
+
+
+            }
+
+            if (item.size() > 0) {
+                indexSelected = 0;
+                selectedMarker = lstMarker.get(0);
+            }
         }
     }
+
 
 }

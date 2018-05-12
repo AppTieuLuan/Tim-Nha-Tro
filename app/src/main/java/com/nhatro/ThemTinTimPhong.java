@@ -15,6 +15,7 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -35,6 +36,7 @@ import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.nhatro.DAL.DAL_TinTimPhong;
 import com.nhatro.adapter.AdapterRecyclerViewChonQuan;
 import com.nhatro.adapter.ExpandableHeightGridView;
 import com.nhatro.adapter.Grid_Facilities_Adapter;
@@ -42,6 +44,7 @@ import com.nhatro.adapter.SpinnerQuanHuyen_Adapter;
 import com.nhatro.adapter.SpinnerTinhTP;
 import com.nhatro.model.Item_Grid_Facilities;
 import com.nhatro.model.QuanHuyen;
+import com.nhatro.model.TinTimPhong;
 import com.nhatro.model.TinhTP;
 import com.nhatro.sqlite.SQLite_QuanHuyen;
 import com.nhatro.sqlite.SQLite_TinhTP;
@@ -62,6 +65,7 @@ public class ThemTinTimPhong extends AppCompatActivity implements OnMapReadyCall
     Spinner spinnerTinhTP;
 
     SQLite_TinhTP sqLite_tinhTP;
+    int idtp;
     SpinnerTinhTP spinnerTinhTPAdapter;
     SQLite_QuanHuyen sqLite_quanHuyen;
     //int indexSpinnerTinhTp;
@@ -73,12 +77,12 @@ public class ThemTinTimPhong extends AppCompatActivity implements OnMapReadyCall
     AdapterRecyclerViewChonQuan adapterRecyclerViewChonQuan;
 
     int bankinh;
-
+    double lat, lng;
     private MapView mapView;
     private GoogleMap map;
     private Circle currentCircle;
 
-
+    CheckBox checkNhanTB, checkTD;
     ExpandableHeightGridView gridTienNghi;
     ArrayList<Item_Grid_Facilities> lstFacilities = new ArrayList<>();
     Grid_Facilities_Adapter myAdapter;
@@ -89,11 +93,14 @@ public class ThemTinTimPhong extends AppCompatActivity implements OnMapReadyCall
     ThemTinTimPhong.mHadler mHadler;
     Toast toastError;
 
-    EditText valueTieuDe;
-    RadioButton checkPhongTro, checkNhaNguyenCan, checkTimOGhep;
+    EditText valueTieuDe, valueKV, edtNhapBl;
+    RadioButton checkPhongTro, checkNhaNguyenCan, checkTimOGhep, radCa2, radNam, radNu;
+
 
     ArrayList<Integer> lstChonQH;
     AlertDialog.Builder alertDialogBuilder;
+
+    String idqh = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,12 +108,19 @@ public class ThemTinTimPhong extends AppCompatActivity implements OnMapReadyCall
         setContentView(R.layout.activity_them_tin_tim_phong);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Thêm tin mới");
+        idtp = 0;
         lstChonQH = new ArrayList<>();
+        radCa2 = findViewById(R.id.radCa2);
+        radCa2.setChecked(true);
+        radNam = findViewById(R.id.radNam);
+        radNu = findViewById(R.id.radNu);
         seekGia = findViewById(R.id.seekGia);
         minGia = findViewById(R.id.minGia);
         maxGia = findViewById(R.id.maxGia);
         mapView = (MapView) findViewById(R.id.mapViTri);
         gridTienNghi = findViewById(R.id.gridTienNghi);
+        edtNhapBl = findViewById(R.id.edtNhapBl);
+        valueKV = findViewById(R.id.valueKV);
         valueTieuDe = findViewById(R.id.valueTieuDe);
         bankinh = 1;
         layoutTransparent = findViewById(R.id.layoutTransparent);
@@ -114,6 +128,8 @@ public class ThemTinTimPhong extends AppCompatActivity implements OnMapReadyCall
         minSoNguoi = findViewById(R.id.minSoNguoi);
         maxSoNguoi = findViewById(R.id.maxSoNguoi);
         layoutButtonOK = findViewById(R.id.layoutButtonOK);
+        checkNhanTB = findViewById(R.id.checkNhanTB);
+        checkTD = findViewById(R.id.checkTD);
         sqLite_quanHuyen = new SQLite_QuanHuyen(ThemTinTimPhong.this);
         quanHuyens = new ArrayList<>();
 
@@ -132,6 +148,7 @@ public class ThemTinTimPhong extends AppCompatActivity implements OnMapReadyCall
         seekSoNguoi.setOnRangeSeekbarChangeListener(new OnRangeSeekbarChangeListener() {
             @Override
             public void valueChanged(Number minValue, Number maxValue) {
+                valueTieuDe.clearFocus();
                 minSoNguoi.setText(String.valueOf(minValue));
                 maxSoNguoi.setText(String.valueOf(maxValue));
             }
@@ -145,7 +162,7 @@ public class ThemTinTimPhong extends AppCompatActivity implements OnMapReadyCall
         seekGia.setOnRangeSeekbarChangeListener(new OnRangeSeekbarChangeListener() {
             @Override
             public void valueChanged(Number minValue, Number maxValue) {
-
+                valueTieuDe.clearFocus();
                 DecimalFormat formatter = new DecimalFormat("###,###,###");
                 String tmp = formatter.format(minValue) + " VNĐ";
                 minGia.setText(tmp);
@@ -161,7 +178,8 @@ public class ThemTinTimPhong extends AppCompatActivity implements OnMapReadyCall
         spinnerTinhTP.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+                valueTieuDe.clearFocus();
+                idtp = arrTinhTP.get(position).getId();
 
                 quanHuyens = sqLite_quanHuyen.getDSQH(arrTinhTP.get(position).getId());
                 adapterRecyclerViewChonQuan = new AdapterRecyclerViewChonQuan(quanHuyens, getApplicationContext());
@@ -184,7 +202,6 @@ public class ThemTinTimPhong extends AppCompatActivity implements OnMapReadyCall
 
         adapterRecyclerViewChonQuan = new AdapterRecyclerViewChonQuan(quanHuyens, getApplicationContext());
         recycleQH.setAdapter(adapterRecyclerViewChonQuan);
-
 
         mapView.onCreate(savedInstanceState);
         mapView.onResume();
@@ -273,6 +290,9 @@ public class ThemTinTimPhong extends AppCompatActivity implements OnMapReadyCall
             //map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latt, lngg), getZoomLevel(currentCircle)));
             map.animateCamera(CameraUpdateFactory.newLatLngZoom(
                     currentCircle.getCenter(), getZoomLevel(currentCircle)));
+
+            this.lat = latt;
+            this.lng = lngg;
         }
     }
 
@@ -388,7 +408,7 @@ public class ThemTinTimPhong extends AppCompatActivity implements OnMapReadyCall
             } else {
                 //isposting = false;
                 layoutTransparent.setVisibility(View.GONE);
-                if ((int) msg.obj == 1) {
+                if ((boolean) msg.obj) {
                     lt.success();
                 } else {
                     //lt.error();
@@ -405,14 +425,171 @@ public class ThemTinTimPhong extends AppCompatActivity implements OnMapReadyCall
         public void run() {
             mHadler.sendEmptyMessage(0);
 
+            TinTimPhong tinTimPhong = new TinTimPhong();
+            tinTimPhong.setTieude(valueTieuDe.getText().toString());
+            if (checkPhongTro.isChecked()) {
+                tinTimPhong.setLoaitin(1);
+            } else {
+                if (checkTimOGhep.isChecked()) {
+                    tinTimPhong.setLoaitin(2);
+                } else {
+                    if (checkNhaNguyenCan.isChecked()) {
+                        tinTimPhong.setLoaitin(3);
+                    }
+                }
+            }
+
+            tinTimPhong.setSonguoimin(Integer.parseInt(minSoNguoi.getText().toString()));
+            tinTimPhong.setSonguoimax(Integer.parseInt(maxSoNguoi.getText().toString()));
+            tinTimPhong.setGiamin(seekGia.getSelectedMinValue().intValue());
+            tinTimPhong.setGiamax(seekGia.getSelectedMaxValue().intValue());
+            tinTimPhong.setIdtp(idtp);
+
+            idqh = "(";
+            for (int i = 0; i < quanHuyens.size(); i++) {
+                if (quanHuyens.get(i).isSelect()) {
+                    idqh = idqh + quanHuyens.get(i).getId() + ",";
+                }
+            }
+            if (idqh.length() > 1) {
+                idqh = idqh.substring(0, idqh.length() - 1);
+            }
+            idqh = idqh + ")";
+
+            tinTimPhong.setIdqh(idqh);
+            tinTimPhong.setKhuvuc(valueKV.getText().toString());
+
+            tinTimPhong.setLat(lat);
+            tinTimPhong.setLng(lng);
+            tinTimPhong.setBankinh(bankinh);
+
+            String tiennghi = "";
+            for (int i = 0; i < lstFacilities.size(); i++) {
+                if (i == 0) {
+                    if (lstFacilities.get(i).isSelected() == true) {
+                        tiennghi = "wifi,";
+                    }
+                } else {
+                    if (i == 1) {
+                        if (lstFacilities.get(i).isSelected() == true) {
+                            tiennghi = tiennghi + "gac,";
+                        }
+                    } else {
+                        if (i == 2) {
+                            if (lstFacilities.get(i).isSelected() == true) {
+                                tiennghi = tiennghi + "toilet,";
+                            }
+                        } else {
+                            if (i == 3) {
+                                if (lstFacilities.get(i).isSelected() == true) {
+                                    tiennghi = tiennghi + "phongtam,";
+                                }
+                            } else {
+                                if (i == 4) {
+                                    if (lstFacilities.get(i).isSelected() == true) {
+                                        tiennghi = tiennghi + "giuong,";
+                                    }
+                                } else {
+                                    if (i == 5) {
+                                        if (lstFacilities.get(i).isSelected() == true) {
+                                            tiennghi = tiennghi + "tv,";
+                                        }
+                                    } else {
+                                        if (i == 6) {
+                                            if (lstFacilities.get(i).isSelected() == true) {
+                                                tiennghi = tiennghi + "tulanh,";
+                                            }
+                                        } else {
+                                            if (i == 7) {
+                                                if (lstFacilities.get(i).isSelected() == true) {
+                                                    tiennghi = tiennghi + "bepga,";
+                                                }
+                                            } else {
+                                                if (i == 8) {
+                                                    if (lstFacilities.get(i).isSelected() == true) {
+                                                        tiennghi = tiennghi + "quat,";
+                                                    }
+                                                } else {
+                                                    if (i == 9) {
+                                                        if (lstFacilities.get(i).isSelected() == true) {
+                                                            tiennghi = tiennghi + "tudo,";
+                                                        }
+                                                    } else {
+                                                        if (i == 10) {
+                                                            if (lstFacilities.get(i).isSelected() == true) {
+                                                                tiennghi = tiennghi + "maylanh,";
+                                                            }
+                                                        } else {
+                                                            if (i == 11) {
+                                                                if (lstFacilities.get(i).isSelected() == true) {
+                                                                    tiennghi = tiennghi + "den,";
+                                                                }
+                                                            } else {
+                                                                if (i == 12) {
+                                                                    if (lstFacilities.get(i).isSelected() == true) {
+                                                                        tiennghi = tiennghi + "baove,";
+                                                                    }
+                                                                } else {
+                                                                    if (i == 13) {
+                                                                        if (lstFacilities.get(i).isSelected() == true) {
+                                                                            tiennghi = tiennghi + "camera,";
+                                                                        }
+                                                                    } else {
+                                                                        if (i == 14) {
+                                                                            if (lstFacilities.get(i).isSelected() == true) {
+                                                                                tiennghi = tiennghi + "khudexe,";
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            tinTimPhong.setIduser(1);
+
+            if (tiennghi.length() > 0) {
+                tiennghi = tiennghi.substring(0, tiennghi.length() - 1);
+            }
+
+            tinTimPhong.setTiennghi(tiennghi);
+            tinTimPhong.setMotathem(edtNhapBl.getText().toString());
+
+            if (radCa2.isChecked()) {
+                tinTimPhong.setGioitinh(2);
+            } else {
+                if (radNam.isChecked()) {
+                    tinTimPhong.setGioitinh(0);
+                } else {
+                    tinTimPhong.setGioitinh(1);
+                }
+            }
+            if (checkNhanTB.isChecked()) {
+                tinTimPhong.setNhanthongbao(1);
+            } else {
+                tinTimPhong.setNhanthongbao(0);
+            }
+
+            if (checkTD.isChecked()) {
+                tinTimPhong.setGiogiac(0);
+            } else {
+                tinTimPhong.setGiogiac(1);
+            }
 
             // Xử lý thêm ở đây ở đây
-            int kq = 1;
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
+            DAL_TinTimPhong dal_tinTimPhong = new DAL_TinTimPhong();
+            boolean kq = dal_tinTimPhong.themTinMoi(tinTimPhong);
 
             Message message = mHadler.obtainMessage(1, kq);
             mHadler.sendMessage(message);

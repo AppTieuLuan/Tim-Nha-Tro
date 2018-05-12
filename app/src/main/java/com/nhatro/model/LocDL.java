@@ -5,6 +5,16 @@ package com.nhatro.model;
  */
 
 public class LocDL {
+    int orderby;
+
+    public int getOrderby() {
+        return orderby;
+    }
+
+    public void setOrderby(int orderby) {
+        this.orderby = orderby;
+    }
+
     int idtp;
     String idqh;
     int giamin;
@@ -32,6 +42,7 @@ public class LocDL {
     }
 
     public LocDL(){
+        this.orderby = 1;
         this.danhsach = 1;
         this.bankinh = 2;
         this.idtp = 50;

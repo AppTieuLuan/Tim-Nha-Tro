@@ -68,7 +68,7 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View v = inflater.inflate(R.layout.fragment_home, container, false);
-        final CharSequence[] sapXep = new CharSequence[]{"Mặc định", "Giá từ thấp đến cao", "Giá từ cao xuống thấp"};
+        final CharSequence[] sapXep = new CharSequence[]{"Mới nhất", "Giá từ thấp đến cao", "Giá từ cao xuống thấp"};
 
         lstChonQuanHuyen = new ArrayList<>();
 
@@ -147,7 +147,9 @@ public class HomeFragment extends Fragment {
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                locDL.setTrang(1);
                                 chonSapXep = tempChon;
+                                locDL.setOrderby(chonSapXep + 1);
                                 if (moDanhSach) {
                                     listFragment.filterData(locDL);
                                 } else {
@@ -308,6 +310,7 @@ public class HomeFragment extends Fragment {
                 idqh = idqh.substring(0, idqh.length() - 1);
                 idqh = idqh + ")";
             }
+            locDL.setTiennghi(bundle.getString("tiennghi"));
             locDL.setIdqh(idqh);
 
             if (moDanhSach) {
