@@ -10,6 +10,15 @@ public class TinTimPhong {
     private String hoten;
     private String sdt;
     private String facebook;
+    private String avatar;
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
 
     private int loaitin;
     private int songuoimin;
@@ -27,6 +36,24 @@ public class TinTimPhong {
     private String motathem;
     private int iduser;
     private int gioitinh;
+    private String qh;
+    private String tentp;
+
+    public String getTentp() {
+        return tentp;
+    }
+
+    public void setTentp(String tentp) {
+        this.tentp = tentp;
+    }
+
+    public String getQh() {
+        return qh;
+    }
+
+    public void setQh(String qh) {
+        this.qh = qh;
+    }
 
     private String ngay;
 

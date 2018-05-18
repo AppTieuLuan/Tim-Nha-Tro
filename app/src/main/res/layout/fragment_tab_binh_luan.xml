@@ -21,7 +21,7 @@
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <android.support.v4.widget.NestedScrollView
                 android:layout_width="match_parent"
@@ -88,10 +88,18 @@
                         android:windowSoftInputMode="adjustPan"
                         app:layout_constraintEnd_toStartOf="@id/btnSend"
                         app:layout_constraintStart_toStartOf="parent"
-
-
                         />
+
                 </android.support.constraint.ConstraintLayout>
+                <ProgressBar
+                    android:visibility="gone"
+                    android:id="@+id/progressloadbl"
+                    android:indeterminateOnly="true"
+                    android:padding="@dimen/paddingIteminDetailScreen"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    app:layout_constraintTop_toBottomOf="@id/layoutNhapBL"
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp" />
             </LinearLayout>
 
         </LinearLayout>
@@ -116,6 +124,19 @@
                 android:gravity="center"
                 android:text="Đang tải dữ liệu...." />
         </LinearLayout>
+        <LinearLayout
+            android:visibility="gone"
+            android:background="@color/transparenttt"
+            android:id="@+id/loadingXoaBL"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:paddingTop="20dp">
 
+            <ProgressBar
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center" />
+        </LinearLayout>
     </FrameLayout>
 </RelativeLayout>

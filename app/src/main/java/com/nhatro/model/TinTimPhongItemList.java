@@ -5,7 +5,7 @@ package com.nhatro.model;
  */
 
 public class TinTimPhongItemList {
-    private int id;
+    private String id;
     private String tieude;
     private int loai;
     private int gioitinh;
@@ -13,6 +13,10 @@ public class TinTimPhongItemList {
     private String songuoi;
     private String giaTu;
     private String ngaydang;
+
+    public TinTimPhongItemList() {
+
+    }
 
     public String getNgaydang() {
         return ngaydang;
@@ -22,7 +26,7 @@ public class TinTimPhongItemList {
         this.ngaydang = ngaydang;
     }
 
-    public TinTimPhongItemList(int id, String tieude, int loai, int gioitinh, String quanhuyen, String songuoi, String giaTu, String ngaydang) {
+    public TinTimPhongItemList(String id, String tieude, int loai, int gioitinh, String quanhuyen, String songuoi, String giaTu, String ngaydang) {
         this.id = id;
         this.tieude = tieude;
         this.loai = loai;
@@ -33,12 +37,12 @@ public class TinTimPhongItemList {
         this.ngaydang = ngaydang;
     }
 
-    public int getId() {
+    public String getId() {
 
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

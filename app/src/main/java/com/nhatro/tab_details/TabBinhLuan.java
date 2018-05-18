@@ -2,24 +2,31 @@ package com.nhatro.tab_details;
 
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.nhatro.DAL.BinhLuans;
 import com.nhatro.R;
+import com.nhatro.XemTinTimPhong;
 import com.nhatro.adapter.Adapter_List_View_Binh_Luan;
 import com.nhatro.model.BinhLuan;
 
@@ -39,18 +46,30 @@ public class TabBinhLuan extends Fragment {
     Adapter_List_View_Binh_Luan adapter_list_view_binh_luan;
 
     ListView listViewBinhLuan;
-    ImageView imgSend;
+    ImageView imgSend, btnSendSuaBL;
     View footerView;
     View footerTaiThemBl;
     int trang = 1;
     LinearLayout layoutTaiDL, layoutND;
+    ProgressBar progressloadbl, progresSuabl;
+    boolean issuaxoapost;
+    BottomSheetDialog bottomSheetDialog;
+    View sheetView;
+    LinearLayout layoutSua, layoutXoa, loadingXoaBL;
+    AlertDialog.Builder alertDialogBuilder;
+
+    BottomSheetDialog bottomSheetDialogSua;
+    View sheetViewSua;
+
+    int iduser = 2;
 
     public TabBinhLuan() {
         // Required empty public constructor
     }
 
     String iditem = "";
-    EditText edt;
+    EditText edt, edtSuaBL;
+    int index;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,8 +77,11 @@ public class TabBinhLuan extends Fragment {
         // Inflate the layout for this fragment
 
         v = inflater.inflate(R.layout.fragment_tab_binh_luan, container, false);
+        issuaxoapost = false;
         layoutTaiDL = v.findViewById(R.id.layoutTaiDL);
         layoutND = v.findViewById(R.id.layoutND);
+        progressloadbl = v.findViewById(R.id.progressloadbl);
+        loadingXoaBL = v.findViewById(R.id.loadingXoaBL);
         Bundle bundle = this.getArguments();
         if (bundle != null && v != null) {
             iditem = bundle.getString("id");
@@ -68,13 +90,6 @@ public class TabBinhLuan extends Fragment {
             data = new ArrayList<>();
             listViewBinhLuan = (ListView) v.findViewById(R.id.lstBinhLuan);
             imgSend = (ImageView) v.findViewById(R.id.btnSend);
-        /*data.add(new BinhLuan(1, "https://i-vnexpress.vnecdn.net/2018/03/30/khaidonpng-1522370624_90x90.png", "user1", "Nguyễn Văn Thanh", "Với công trình không thể thi công hệ thống hút khói, thành phố đề xuất thay thế cửa mở ra hành lang bằng cửa chống cháy tự động đóng", "30/3/2018 15:20"));
-        data.add(new BinhLuan(2, "https://i-vnexpress.vnecdn.net/2018/03/30/TongThienMa-1522389654_140x84.jpg", "user2", "Lê Thị Thiên Hương", "Tiền của nhà nước là tiền của dân, nhưng doanh nghiệp nhà nước thì chưa vì dân.", "30/3/2018 15:26"));
-        data.add(new BinhLuan(3, "https://i-giaitri.vnecdn.net/2018/03/30/huynh-hieu-minh-5271-1522397016_140x84.jpg", "user3", "Phạm Trung Tuyến", "Nền văn hóa Á Đông tạo ra thói quen cho dân chơi cờ bạc: báo nhà trả nợ.", "30/3/2018 15:10"));
-        data.add(new BinhLuan(4, "https://i-giadinh.vnecdn.net/2018/03/30/embe-1522379139-2335-1522379159_140x84.jpg", "user4", "Trần Hương Thùy", "Học sinh phổ thông có vấn đề về tâm lý, các con biết tìm ai để chia sẻ?", "30/3/2018 15:09"));
-        data.add(new BinhLuan(5, "https://i-vnexpress.vnecdn.net/2018/03/29/dinhlathangtuyenan-1522292274-5901-1522292323_140x84.jpg", "user5", "Ngô Trọng Thanh", "Nếu chỉ dùng một từ để nói về anh Sáu Khải, đó là từ gì?", "30/3/2018 15:08"));
-        data.add(new BinhLuan(6, "https://i-giaitri.vnecdn.net/2018/03/29/carolinesunshinet-1522293273-8229-1522294510_180x108.jpg", "user6", "Đinh Hồng Kỳ", "Kẻ thù lớn nhất của kiến thức không phải là sự ngu dốt, mà chính là ảo tưởng.", "30/3/2018 15:05"));
-*/
             adapter_list_view_binh_luan = new Adapter_List_View_Binh_Luan(getContext(), R.layout.layout_item_list_binh_luan, data);
             //adapter_list_view_binh_luan.notifyDataSetChanged();
 
@@ -106,33 +121,19 @@ public class TabBinhLuan extends Fragment {
                         Snackbar.make(getView(), "Nhập nội dung", Snackbar.LENGTH_SHORT)
                                 .setAction("Action", null).show();
                     } else {
-                        /*BinhLuan blt = new BinhLuan(6, "https://i-giaitri.vnecdn.net/2018/03/29/carolinesunshinet-1522293273-8229-1522294510_180x108.jpg", "user6", "Đinh Hồng Kỳ", "Kẻ thù lớn nhất của kiến thức không phải là sự ngu dốt, mà chính là ảo tưởng.", "30/3/2018 15:05");
+                        if (issuaxoapost) {
+                            Toast.makeText(getContext(), "Đang xử lý dữ liệu..vui lòng chờ giây lát...", Toast.LENGTH_SHORT).show();
+                        } else {
+                            issuaxoapost = true;
+                            BinhLuan newbl = new BinhLuan();
+                            newbl.setNoiDungBl(edt.getText().toString());
+                            newbl.setIdPhong(iditem);
+                            newbl.setIdUser(2);
 
-                        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-                        Date date = new Date();
-                        //System.out.println(dateFormat.format(date));
+                            themBinhLuan themBinhLuan = new themBinhLuan();
+                            themBinhLuan.execute(newbl);
+                        }
 
-                    *//*blt.setNgayViet(String.valueOf(date.getDay()) + "/" + String.valueOf(date.getMonth()) + "/" + String.valueOf(date.getYear()) + " " +
-                                    String.valueOf(date.getHours()) + ":" + String.valueOf(date.getMinutes()));*//*
-
-                        DateFormat dateFormat2 = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-
-                        blt.setNgayViet(dateFormat2.format(date).toString());
-
-
-                        data.add(0, blt);
-
-                        adapter_list_view_binh_luan.notifyDataSetChanged();
-
-                        edt.setText("");*/
-
-                        BinhLuan newbl = new BinhLuan();
-                        newbl.setNoiDungBl(edt.getText().toString());
-                        newbl.setIdPhong(iditem);
-                        newbl.setIdUser(1);
-
-                        themBinhLuan themBinhLuan = new themBinhLuan();
-                        themBinhLuan.execute(newbl);
                     }
 
 
@@ -141,6 +142,114 @@ public class TabBinhLuan extends Fragment {
 
             LoadBL loadBL = new LoadBL();
             loadBL.execute(iditem);
+
+            bottomSheetDialog = new BottomSheetDialog(getContext());
+            sheetView = getLayoutInflater().inflate(R.layout.menu_suaxoa_binhluan, null);
+            bottomSheetDialog.setContentView(sheetView);
+
+            alertDialogBuilder = new AlertDialog.Builder(getContext());
+            alertDialogBuilder.setTitle("Xác nhận xóa..!!!");
+            alertDialogBuilder.setMessage("Bạn có chắc chắn xóa bình luận này không ???");
+            alertDialogBuilder.setCancelable(true);
+            alertDialogBuilder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface arg0, int arg1) {
+                    bottomSheetDialog.dismiss();
+                    arg0.cancel();
+                    /*XemTinTimPhong.XoaBL xoaBL = new XemTinTimPhong.XoaBL();
+                    xoaBL.execute(data.get(indexxoa).getId());*/
+                    if (issuaxoapost) {
+                        Toast.makeText(getContext(), "Đang xử lý dữ liệu.. Thử lại trong giây lát...", Toast.LENGTH_SHORT).show();
+                    } else {
+                        XoaBL xoaBL = new XoaBL();
+                        xoaBL.execute(data.get(index).getId());
+                    }
+                }
+            });
+            alertDialogBuilder.setNegativeButton("no", new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface arg0, int arg1) {
+                    arg0.cancel();
+                }
+            });
+
+            alertDialogBuilder.create();
+
+            listViewBinhLuan.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                    if (data.get(position).getIdUser() == iduser && !issuaxoapost) {
+                        index = position;
+                        bottomSheetDialog.show();
+                    }
+                    return false;
+                }
+            });
+
+            layoutSua = sheetView.findViewById(R.id.layoutSua);
+            layoutXoa = sheetView.findViewById(R.id.layoutXoa);
+
+            layoutXoa.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    alertDialogBuilder.show();
+                }
+            });
+
+            layoutSua.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    /*bottomSheetDialog.dismiss();
+                    bottomSheetDialogSua.show();
+                    edtSuaBL.setText(data.get(indexxoa).getNoiDungBl());*/
+                }
+            });
+
+            bottomSheetDialogSua = new BottomSheetDialog(getContext());
+            sheetViewSua = getLayoutInflater().inflate(R.layout.dialog_sua_binhluan, null);
+            bottomSheetDialogSua.setContentView(sheetViewSua);
+            btnSendSuaBL = sheetViewSua.findViewById(R.id.btnSendSuaBL);
+            edtSuaBL = sheetViewSua.findViewById(R.id.edtSuaBL);
+            progresSuabl = sheetViewSua.findViewById(R.id.progresSuabl);
+
+
+            layoutSua.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    bottomSheetDialog.dismiss();
+                    bottomSheetDialogSua.show();
+                    edtSuaBL.setText(data.get(index).getNoiDungBl());
+                }
+            });
+            btnSendSuaBL.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    InputMethodManager inputManager = (InputMethodManager)
+                            getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+
+                    inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
+                            InputMethodManager.HIDE_NOT_ALWAYS);
+
+                    if (edtSuaBL.getText().toString().equals("")) {
+                        Toast.makeText(getContext(), "Nhập nội dung sửa bình luận ...", Toast.LENGTH_SHORT).show();
+                    } else {
+                        if (issuaxoapost) {
+                            Toast.makeText(getContext(), "Đang xử lý dữ liệu, vui lòng chờ...", Toast.LENGTH_SHORT).show();
+                        } else {
+                            BinhLuan temp = new BinhLuan();
+                            temp.setId(data.get(index).getId());
+                            temp.setNoiDungBl(edtSuaBL.getText().toString());
+
+                            SuaBL suaBL = new SuaBL();
+                            suaBL.execute(temp);
+                        }
+                    }
+                }
+            });
+
+
         }
         return v;
     }
@@ -198,6 +307,13 @@ public class TabBinhLuan extends Fragment {
     public class themBinhLuan extends AsyncTask<BinhLuan, Void, String> {
 
         @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            issuaxoapost = true;
+            progressloadbl.setVisibility(View.VISIBLE);
+        }
+
+        @Override
         protected String doInBackground(BinhLuan... binhLuans) {
             BinhLuans bl = new BinhLuans();
             String rs = bl.themBL(binhLuans[0]);
@@ -211,17 +327,84 @@ public class TabBinhLuan extends Fragment {
             super.onPostExecute(s);
 
             if (s != "-1") {
+                ;
                 Date date = new Date();
                 DateFormat dateFormat2 = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
                 BinhLuan binhLuan = new BinhLuan(s, "https://nhatroservice.000webhostapp.com/images/20180425224228ythfghv.jpg", "usernameDemo", "Công", edt.getText().toString(), dateFormat2.format(date).toString());
-
+                binhLuan.setIdUser(2);
                 data.add(0, binhLuan);
                 adapter_list_view_binh_luan.notifyDataSetChanged();
                 edt.setText("");
             } else {
                 Toast.makeText(getContext(), "Thêm thất bại, thử lại sau ...", Toast.LENGTH_SHORT);
             }
+
+            progressloadbl.setVisibility(View.GONE);
+            issuaxoapost = false;
+        }
+    }
+
+    public class XoaBL extends AsyncTask<String, Void, Integer> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            issuaxoapost = true;
+            loadingXoaBL.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected Integer doInBackground(String... strings) {
+            BinhLuans binhLuans = new BinhLuans();
+
+            return binhLuans.xoaBinhLuan(strings[0], 0);
+        }
+
+        @Override
+        protected void onPostExecute(Integer integer) {
+            super.onPostExecute(integer);
+            if (integer == 0) {
+                Toast.makeText(getContext(), "Xóa thất bại, thử lại sau ...", Toast.LENGTH_SHORT).show();
+            } else {
+                data.remove(index);
+                adapter_list_view_binh_luan.notifyDataSetChanged();
+            }
+            loadingXoaBL.setVisibility(View.GONE);
+            issuaxoapost = false;
+        }
+    }
+
+    public class SuaBL extends AsyncTask<BinhLuan, Void, Integer> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progresSuabl.setVisibility(View.VISIBLE);
+            bottomSheetDialogSua.setCancelable(false);
+            issuaxoapost = true;
+        }
+
+        @Override
+        protected Integer doInBackground(BinhLuan... binhLuans) {
+            BinhLuans binhLuansss = new BinhLuans();
+            return binhLuansss.suaBL(binhLuans[0].getId(), 0, binhLuans[0].getNoiDungBl());
+        }
+
+        @Override
+        protected void onPostExecute(Integer integer) {
+            super.onPostExecute(integer);
+
+            if (integer == 0) {
+                Toast.makeText(getContext(), "Thất bại, thử lại sau ...", Toast.LENGTH_SHORT).show();
+            } else {
+                data.get(index).setNoiDungBl(edtSuaBL.getText().toString());
+                adapter_list_view_binh_luan.notifyDataSetChanged();
+                bottomSheetDialogSua.cancel();
+            }
+
+            issuaxoapost = false;
+            bottomSheetDialogSua.setCancelable(true);
+            progresSuabl.setVisibility(View.GONE);
         }
     }
 

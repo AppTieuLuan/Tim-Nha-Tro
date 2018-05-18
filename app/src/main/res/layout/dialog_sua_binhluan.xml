@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="15dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <android.support.constraint.ConstraintLayout
+        app:layout_constraintTop_toBottomOf="@id/txtBL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:id="@+id/layoutNhapBL"
+        android:background="@drawable/back_ground_item_list_view_comment"
+        android:gravity="bottom"
+        android:orientation="horizontal"
+        android:padding="4dp">
+
+        <ImageView
+            android:id="@+id/btnSendSuaBL"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:background="@drawable/background_click_textview"
+            android:padding="5dp"
+            android:src="@drawable/icon_sent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/edtSuaBL"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:backgroundTint="@android:color/transparent"
+            android:textColor="#000000"
+            android:textSize="13sp"
+            android:layout_marginEnd="50dp"
+            android:windowSoftInputMode="adjustPan"
+            app:layout_constraintEnd_toStartOf="@id/btnSend"
+            app:layout_constraintStart_toStartOf="parent"
+
+
+            />
+    </android.support.constraint.ConstraintLayout>
+
+    <ProgressBar
+        android:layout_marginTop="5dp"
+        android:visibility="gone"
+        android:id="@+id/progresSuabl"
+        android:indeterminateOnly="true"
+        android:padding="@dimen/paddingIteminDetailScreen"
+        style="?android:attr/progressBarStyleHorizontal"
+        app:layout_constraintTop_toBottomOf="@id/layoutNhapBL"
+        android:layout_width="match_parent"
+        android:layout_height="10dp" />
+
+</android.support.constraint.ConstraintLayout>

@@ -36,7 +36,7 @@ public class Filter2 extends AppCompatActivity {
     boolean tinnhatro;
     boolean tinoghep;
     boolean tinnhanguyencan;
-    boolean giogiac;
+    int giogiac;
     int namnu;
     RadioButton radNam, radNu, radCa2;
 
@@ -90,14 +90,14 @@ public class Filter2 extends AppCompatActivity {
         tinnhatro = bundle.getBoolean("tinnhatro");
         tinnhanguyencan = bundle.getBoolean("tinnhanguyencan");
         tinoghep = bundle.getBoolean("tinoghep");
-        giogiac = bundle.getBoolean("giogiac");
+        giogiac = bundle.getInt("giogiac");
         namnu = bundle.getInt("namnu");
         chontiennghi = bundle.getBooleanArray("chontiennghi");
     }
 
     public void setViewAfterGetData() {
         listQuanHuyen = getDsQH(idtp);
-        if (idqh != 0) {
+        if (idqh != -1) {
             for (int i = 0; i < listQuanHuyen.size(); i++) {
                 if (listQuanHuyen.get(i).getId() == idqh) {
                     listQuanHuyen.get(i).setSelect(true);
@@ -133,7 +133,7 @@ public class Filter2 extends AppCompatActivity {
         //
 
         //CHECK GIỜ GIẤC
-        if (giogiac) {
+        if (giogiac == 1) {
             checkGioGiac.setChecked(true);
         }
 
@@ -210,7 +210,7 @@ public class Filter2 extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 if (indexqh == i) {
-                    idqh = 0;
+                    idqh = -1;
                     indexqh = -1;
                     listQuanHuyen.get(i).setSelect(false);
                 } else {
@@ -260,9 +260,9 @@ public class Filter2 extends AppCompatActivity {
                 bundle.putInt("idqh", idqh);
                 bundle.putBooleanArray("chontiennghi", chontiennghi);
                 if (checkGioGiac.isChecked()) {
-                    bundle.putBoolean("giogiac", true);
+                    bundle.putInt("giogiac", 1);
                 } else {
-                    bundle.putBoolean("giogiac", false);
+                    bundle.putInt("giogiac", 0);
                 }
 
                 if (checkNhaNguyenCan.isChecked()) {

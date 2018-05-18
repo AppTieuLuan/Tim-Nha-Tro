@@ -445,17 +445,20 @@ public class ThemTinTimPhong extends AppCompatActivity implements OnMapReadyCall
             tinTimPhong.setGiamax(seekGia.getSelectedMaxValue().intValue());
             tinTimPhong.setIdtp(idtp);
 
-            idqh = "(";
+            idqh = "";
+            String tenqh = "";
             for (int i = 0; i < quanHuyens.size(); i++) {
                 if (quanHuyens.get(i).isSelect()) {
-                    idqh = idqh + quanHuyens.get(i).getId() + ",";
+                    idqh = idqh + '"' + quanHuyens.get(i).getId() + '"' + ",";
+                    tenqh = tenqh + quanHuyens.get(i).getTen() + ", ";
                 }
             }
             if (idqh.length() > 1) {
                 idqh = idqh.substring(0, idqh.length() - 1);
+                tenqh = tenqh.substring(0, tenqh.length() - 2);
             }
-            idqh = idqh + ")";
 
+            tinTimPhong.setQh(tenqh);
             tinTimPhong.setIdqh(idqh);
             tinTimPhong.setKhuvuc(valueKV.getText().toString());
 

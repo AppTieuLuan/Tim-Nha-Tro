@@ -24,6 +24,7 @@
         android:layout_height="wrap_content"
         >
         <TextView
+            android:textColor="@color/black"
             android:id="@+id/txtTenNguoiDung"
             android:text="Nguyễn Chí Cường"
             android:textStyle="bold"
@@ -32,6 +33,7 @@
             android:layout_height="wrap_content" />
 
         <TextView
+            android:textColor="@color/black"
             android:id="@+id/txtbinhluan"
             android:textSize="12sp"
             android:text="Ông nào xem ABL thì biết thằng cao kều này của đội Thái trận đánh với Saigon Heat kinh dị vl , như kiểu tạt cánh đánh đầu trong bóng đá ấy"
@@ -39,6 +41,7 @@
             android:layout_height="wrap_content" />
 
         <TextView
+            android:textColor="@color/black"
             android:id="@+id/ngaybl"
             android:paddingTop="3dp"
             android:textSize="12sp"

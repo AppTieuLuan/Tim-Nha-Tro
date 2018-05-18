@@ -1,10 +1,13 @@
 package com.nhatro;
 
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,9 +17,12 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionMenu;
+import com.nhatro.DAL.DAL_TinTimPhong;
 import com.nhatro.adapter.List_Tin_Tim_Phong_Adapter;
+import com.nhatro.model.LocDLTinTimPhong;
 import com.nhatro.model.TinTimPhongItemList;
 
 import java.util.ArrayList;
@@ -29,19 +35,22 @@ public class tim_o_ghep extends Fragment {
 
     private ListView listTinTimPhong;
     private List_Tin_Tim_Phong_Adapter list_tin_tim_phong_adapter;
-    LinearLayout btnBoLoc;
+    LinearLayout btnBoLoc, layoutOverlay2;
     ArrayList<TinTimPhongItemList> data;
     boolean dangLoadDL = false;
     boolean conDL = true;
     boolean openmenu = false;
-    mHadler mHadlerr;
+
     ProgressBar loadingData;
     //FloatingActionButton iconAdd;
 
+    int trang;
+    boolean first = false; // đánh dấu đã load xong lần đầu hay chưa để load tiếp
+    LocDLTinTimPhong locDLTinTimPhong;
 
     /// Lưu các bộ lọc
     private boolean[] chontiennghi = {false, false, false, false, false, false, false, false, false, false, false, false, false, false, false};
-    private boolean giogiac = true;
+    private int giogiac = 0;
     int namnu = 3;
     int gia = 0;
     boolean tinnhatro = false;
@@ -49,13 +58,13 @@ public class tim_o_ghep extends Fragment {
     boolean tinnhanguyencan = false;
     int idtp = 50;
     private String tenTP = "TP.HCM";
-    int idqh = 0;
-    private String tiennghi = "";
+    int idqh = -1;
 
     ///////////////
 
     com.github.clans.fab.FloatingActionButton iconAdd;
     LinearLayout layoutOverlay;
+
 
     public tim_o_ghep() {
         // Required empty public constructor
@@ -69,29 +78,22 @@ public class tim_o_ghep extends Fragment {
         final View v;
         v = inflater.inflate(R.layout.fragment_tim_o_ghep, container, false);
 
-
+        locDLTinTimPhong = new LocDLTinTimPhong();
+        locDLTinTimPhong.setLoaitin("(1,2,3)");
         layoutOverlay = v.findViewById(R.id.layoutOverlay);
         iconAdd = v.findViewById(R.id.iconAdd);
         btnBoLoc = v.findViewById(R.id.btnBoLoc);
+        layoutOverlay2 = v.findViewById(R.id.layoutOverlay2);
+
         //iconAdd = v.findViewById(R.id.iconAdd);
         loadingData = v.findViewById(R.id.loadingData);
-        mHadlerr = new mHadler();
+
         data = new ArrayList<>();
-
-        data.add(new TinTimPhongItemList(1, "Cần thuê phòng trọ tại quận thủ đức", 1, 1, "Quận Thủ Đức / Hồ Chí Mình", "3-4", "1.500.000 - 1.800.000", "10/2/2018"));
-        data.add(new TinTimPhongItemList(2, "Cần tìm phòng ở ghép tại quận 2", 3, 2, "Quận 2 / Hồ Chí Mình", "1-2", "1.500.000 - 1.700.000", "10/2/2018"));
-        data.add(new TinTimPhongItemList(3, "Cần thuê phòng trọ tại quận 7", 1, 1, "Quận 7 / Hồ Chí Mình", "1-3", "1.500.000 - 1.800.000", "10/2/2018"));
-        data.add(new TinTimPhongItemList(4, "Tìm nhà nguyên căn tại quận 9", 2, 3, "Quận Thử Đức / Hồ Chí Mình", "2-4", "1.500.000 - 1.800.000", "10/2/2018"));
-        data.add(new TinTimPhongItemList(5, "Cần thuê phòng trọ tại quận 9", 1, 0, "Quận Thử Đức / Hồ Chí Mình", "2-5", "1.500.000 - 1.800.000", "10/2/2018"));
-        data.add(new TinTimPhongItemList(6, "Cần thuê phòng trọ tại quận 9", 1, 1, "Quận Thử Đức / Hồ Chí Mình", "2-4", "1.500.000 - 1.800.000", "10/2/2018"));
-
         listTinTimPhong = v.findViewById(R.id.listTinTimPhong);
 
         list_tin_tim_phong_adapter = new List_Tin_Tim_Phong_Adapter(getContext(), R.layout.item_list_tin_tim_phong, data);
 
         listTinTimPhong.setAdapter(list_tin_tim_phong_adapter);
-
-
         listTinTimPhong.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView absListView, int i) {
@@ -100,12 +102,12 @@ public class tim_o_ghep extends Fragment {
 
             @Override
             public void onScroll(AbsListView absListView, int i, int i1, int i2) {
-                if (absListView.getLastVisiblePosition() == i2 - 1 && dangLoadDL == false && conDL) {
+                if (absListView.getLastVisiblePosition() == i2 - 1 && !dangLoadDL && conDL && first) {
                     //data.add(new PhongTro(9,"1111","Số 1 Võ Văn Ngân, Quận Thủ Đức, TPHCM",1200000,30,10,3,"Nam"));
                     //adapter.notifyDataSetChanged();
                     dangLoadDL = true;
-                    Thread thread = new ThreadData();
-                    thread.start();
+                    LoadMoreData loadMoreData = new LoadMoreData();
+                    loadMoreData.execute(locDLTinTimPhong);
                     //lstDanhSach.addFooterView(footerview);
                 }
             }
@@ -118,8 +120,8 @@ public class tim_o_ghep extends Fragment {
                     Intent intent = new Intent(getActivity(), XemTinTimPhong.class);
 
                     Bundle bundle = new Bundle();
-                    int idItem = data.get(position).getId();
-                    bundle.putInt("iditem", idItem);
+                    String idItem = data.get(position).getId();
+                    bundle.putString("iditem", idItem);
                     bundle.putString("tieude", data.get(position).getTieude());
                     intent.putExtra("data", bundle);
                     getActivity().startActivity(intent);
@@ -147,7 +149,7 @@ public class tim_o_ghep extends Fragment {
                 bundle.putBoolean("tinnhatro", tinnhatro);
                 bundle.putBoolean("tinoghep", tinoghep);
                 bundle.putBoolean("tinnhanguyencan", tinnhanguyencan);
-                bundle.putBoolean("giogiac", giogiac);
+                bundle.putInt("giogiac", giogiac);
                 bundle.putBooleanArray("chontiennghi", chontiennghi);
                 bundle.putInt("namnu", namnu);
                 Intent intents = new Intent(getActivity(), Filter2.class);
@@ -156,6 +158,9 @@ public class tim_o_ghep extends Fragment {
                 startActivityForResult(intents, 77);
             }
         });
+
+        LoadNewData loadNewData = new LoadNewData();
+        loadNewData.execute(locDLTinTimPhong);
         return v;
     }
 
@@ -171,12 +176,39 @@ public class tim_o_ghep extends Fragment {
                 gia = bundle.getInt("gia");
                 idqh = bundle.getInt("idqh");
                 chontiennghi = bundle.getBooleanArray("chontiennghi");
-                giogiac = bundle.getBoolean("giogiac");
+                giogiac = bundle.getInt("giogiac");
                 tinnhanguyencan = bundle.getBoolean("tinnhanguyencan");
                 tinnhatro = bundle.getBoolean("tinnhatro");
                 tinoghep = bundle.getBoolean("tinoghep");
+                String temp1 = "(";
+                if (tinnhatro) {
+                    temp1 = temp1 + "1,";
+                }
+                if (tinoghep) {
+                    temp1 = temp1 + "2,";
+                }
+                if (tinnhanguyencan) {
+                    temp1 = temp1 + "3,";
+                }
+                if (temp1.length() > 1) {
+                    temp1 = temp1.substring(0, temp1.length() - 1);
+                }
 
+                temp1 = temp1 + ")";
 
+                locDLTinTimPhong.setIdtp(idtp);
+                locDLTinTimPhong.setIdqh(idqh);
+                locDLTinTimPhong.setDoituong(namnu);
+                locDLTinTimPhong.setGia(gia);
+                locDLTinTimPhong.setGiogiac(giogiac);
+                locDLTinTimPhong.setLoaitin(temp1);
+                locDLTinTimPhong.setTrang(1);
+                locDLTinTimPhong.setTiennghi(bundle.getString("tiennghi"));
+
+                /*ThreadData threadData = new ThreadData();
+                threadData.run();*/
+                LoadNewData loadNewData = new LoadNewData();
+                loadNewData.execute(locDLTinTimPhong);
             }
         }
     }
@@ -190,41 +222,99 @@ public class tim_o_ghep extends Fragment {
         return tmp;
     }
 
-    public class mHadler extends Handler {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
+    public class LoadNewData extends AsyncTask<LocDLTinTimPhong, Void, ArrayList<TinTimPhongItemList>> {
 
-            if (msg.what == 0) {
-                //lstDanhSach.addFooterView(footerview);
-                loadingData.setVisibility(View.VISIBLE);
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            dangLoadDL = true;
+            //loadingData.setVisibility(View.VISIBLE);
+            layoutOverlay2.setVisibility(View.VISIBLE);
+            data.clear();
+            list_tin_tim_phong_adapter.notifyDataSetChanged();
+        }
+
+        @Override
+        protected ArrayList<TinTimPhongItemList> doInBackground(LocDLTinTimPhong... locDLTinTimPhongs) {
+            DAL_TinTimPhong dal_tinTimPhong = new DAL_TinTimPhong();
+            ArrayList<TinTimPhongItemList> tinTimPhongItemLists = new ArrayList<>();
+            tinTimPhongItemLists = dal_tinTimPhong.danhSachTin(locDLTinTimPhongs[0]);
+            return tinTimPhongItemLists;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<TinTimPhongItemList> tinTimPhongItemLists) {
+            super.onPostExecute(tinTimPhongItemLists);
+            if (tinTimPhongItemLists == null) {
+                Toast.makeText(getContext(), "Có lỗi xảy ra ... Thử lại sau..", Toast.LENGTH_SHORT).show();
             } else {
-                //data.addAll(getData());
+                if (tinTimPhongItemLists.size() > 0) {
+                    conDL = true;
+                    locDLTinTimPhong.setTrang(2);
+
+                } else {
+                    conDL = false;
+                }
+
                 data.clear();
-                data.addAll(getData());
+                data.addAll(tinTimPhongItemLists);
+                //list_tin_tim_phong_adapter = new List_Tin_Tim_Phong_Adapter(getContext(), R.layout.item_list_tin_tim_phong, data);
+                //listTinTimPhong.setAdapter(list_tin_tim_phong_adapter);
+
                 list_tin_tim_phong_adapter.notifyDataSetChanged();
                 dangLoadDL = false;
-                conDL = false;
+                first = true;
+                //loadingData.setVisibility(View.GONE);
+
+                layoutOverlay2.setVisibility(View.GONE);
+
+
+            }
+        }
+    }
+
+    public class LoadMoreData extends AsyncTask<LocDLTinTimPhong, Void, ArrayList<TinTimPhongItemList>> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dangLoadDL = true;
+            loadingData.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected ArrayList<TinTimPhongItemList> doInBackground(LocDLTinTimPhong... locDLTinTimPhongs) {
+            ArrayList<TinTimPhongItemList> tinTimPhongItemLists = new ArrayList<>();
+            DAL_TinTimPhong dal_tinTimPhong = new DAL_TinTimPhong();
+            tinTimPhongItemLists = dal_tinTimPhong.danhSachTin(locDLTinTimPhongs[0]);
+            return tinTimPhongItemLists;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<TinTimPhongItemList> tinTimPhongItemLists) {
+            super.onPostExecute(tinTimPhongItemLists);
+            if (tinTimPhongItemLists == null) {
+                Toast.makeText(getContext(), "Có lỗi xảy ra, thử lại sau..", Toast.LENGTH_SHORT).show();
+            } else {
+                if (tinTimPhongItemLists.size() > 0) {
+                    conDL = true;
+                    locDLTinTimPhong.setTrang(locDLTinTimPhong.getTrang() + 1);
+                } else {
+                    conDL = false;
+                }
+
+                dangLoadDL = false;
+
+                data.addAll(tinTimPhongItemLists);
+                //list_tin_tim_phong_adapter = new List_Tin_Tim_Phong_Adapter(getContext(), R.layout.item_list_tin_tim_phong, data);
+                //listTinTimPhong.setAdapter(list_tin_tim_phong_adapter);
+                list_tin_tim_phong_adapter.notifyDataSetChanged();
+                first = true;
                 loadingData.setVisibility(View.GONE);
             }
         }
     }
 
-    public class ThreadData extends Thread {
-        @Override
-        public void run() {
-            mHadlerr.sendEmptyMessage(0);
-            //
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            Message message = mHadlerr.obtainMessage(1, 1);
-            mHadlerr.sendMessage(message);
-
-        }
-    }
 
 }

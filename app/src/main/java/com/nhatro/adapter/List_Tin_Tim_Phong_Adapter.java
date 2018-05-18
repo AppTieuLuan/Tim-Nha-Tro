@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.nhatro.R;
 import com.nhatro.model.TinTimPhongItemList;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 /**
@@ -40,7 +41,7 @@ public class List_Tin_Tim_Phong_Adapter extends ArrayAdapter {
 
     @Override
     public long getItemId(int i) {
-        return this.data.get(i).getId();
+        return 0;
     }
 
     @Override
@@ -54,11 +55,11 @@ public class List_Tin_Tim_Phong_Adapter extends ArrayAdapter {
         TextView txttype = v.findViewById(R.id.txttype);
         TextView txtSex = v.findViewById(R.id.txtSex);
 
-        if (data.get(i).getGioitinh() == 0) {
-            txtSex.setText("Nữ");
+        if (data.get(i).getGioitinh() == 1) {
+            txtSex.setText("Nam");
         } else {
-            if (data.get(i).getGioitinh() == 1) {
-                txtSex.setText("Nam");
+            if (data.get(i).getGioitinh() == 2) {
+                txtSex.setText("Nữ");
             } else {
                 txtSex.setVisibility(View.GONE);
             }
@@ -82,6 +83,10 @@ public class List_Tin_Tim_Phong_Adapter extends ArrayAdapter {
         txtTitle.setText(data.get(i).getTieude());
         txtAddress.setText(data.get(i).getQuanhuyen());
         txtSoNguoi.setText("Số lượng: " + String.valueOf(data.get(i).getSonguoi()) + " người");
+
+        /*DecimalFormat formatter = new DecimalFormat("###,###,###");
+        String tmp = formatter.format(data.get(i).get) + " VNĐ";*/
+
         valueGiaTu.setText("Giá từ: " + data.get(i).getGiaTu() + " vnđ");
         txtDangNgay.setText("Đăng ngày " + data.get(i).getNgaydang());
         return v;

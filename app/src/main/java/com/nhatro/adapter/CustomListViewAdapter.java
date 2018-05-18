@@ -15,6 +15,7 @@ import com.nhatro.R;
 import com.nhatro.model.PhongTro;
 import com.squareup.picasso.Picasso;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 /**
@@ -71,7 +72,12 @@ public class CustomListViewAdapter extends BaseAdapter {
         // title
         title.setText(pt.getTieude());
         address.setText(pt.getDiachi());
-        price.setText(String.valueOf(pt.getGia()));
+
+
+        DecimalFormat formatter = new DecimalFormat("###,###,###");
+        String tmp = formatter.format(pt.getGia()) + " VNĐ";
+        price.setText(tmp);
+
         area.setText("Diện tích: " + String.valueOf(pt.getDientich()) + "(" + String.valueOf(pt.getChieudai()) + "m x " +
                 String.valueOf(pt.getChieurong()) + "m)");
 

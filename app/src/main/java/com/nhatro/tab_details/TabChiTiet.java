@@ -78,9 +78,9 @@ public class TabChiTiet extends Fragment {
 
             lstTienNghi.add(new Item_Grid_Facilities("Wifi", R.drawable.icons_wi_fi, false));
             lstTienNghi.add(new Item_Grid_Facilities("Gác", R.drawable.icon_gac, false));
-            lstTienNghi.add(new Item_Grid_Facilities("Toilet riêng", R.drawable.icon_toilet, true));
-            lstTienNghi.add(new Item_Grid_Facilities("Phòng tắm riêng", R.drawable.icon_bathroom, true));
-            lstTienNghi.add(new Item_Grid_Facilities("Giường", R.drawable.icon_giuong, true));
+            lstTienNghi.add(new Item_Grid_Facilities("Toilet riêng", R.drawable.icon_toilet, false));
+            lstTienNghi.add(new Item_Grid_Facilities("Phòng tắm riêng", R.drawable.icon_bathroom, false));
+            lstTienNghi.add(new Item_Grid_Facilities("Giường", R.drawable.icon_giuong, false));
             lstTienNghi.add(new Item_Grid_Facilities("Tivi", R.drawable.icon_tv, false));
             lstTienNghi.add(new Item_Grid_Facilities("Tủ lạnh", R.drawable.icon_tulanh, false));
             lstTienNghi.add(new Item_Grid_Facilities("Bếp gas", R.drawable.icon_bepga, false));
@@ -90,7 +90,7 @@ public class TabChiTiet extends Fragment {
             lstTienNghi.add(new Item_Grid_Facilities("Đèn điện", R.drawable.icon_bongden, false));
 
             lstTienNghi.add(new Item_Grid_Facilities("Bảo vệ", R.drawable.icon_baove, false));
-            lstTienNghi.add(new Item_Grid_Facilities("Camera", R.drawable.icon_camera, true));
+            lstTienNghi.add(new Item_Grid_Facilities("Camera", R.drawable.icon_camera, false));
             lstTienNghi.add(new Item_Grid_Facilities("Khu để xe riêng", R.drawable.icon_doxe, false));
 
 
@@ -192,6 +192,72 @@ public class TabChiTiet extends Fragment {
 
                 txtbinhluan.setText(phongTros.getMotathem());
 
+                String[] array = phongTros.getTiennghi().split(",", -1);
+                for (int i = 0; i < array.length; i++) {
+                    if (array[i].equals("wifi")) {
+                        lstTienNghi.get(0).setSelected(true);
+                    } else {
+                        if (array[i].equals("gac")) {
+                            lstTienNghi.get(1).setSelected(true);
+                        } else {
+                            if (array[i].equals("toilet")) {
+                                lstTienNghi.get(2).setSelected(true);
+                            } else {
+                                if (array[i].equals("phongtam")) {
+                                    lstTienNghi.get(3).setSelected(true);
+                                } else {
+                                    if (array[i].equals("giuong")) {
+                                        lstTienNghi.get(4).setSelected(true);
+                                    } else {
+                                        if (array[i].equals("tv")) {
+                                            lstTienNghi.get(5).setSelected(true);
+                                        } else {
+                                            if (array[i].equals("tulanh")) {
+                                                lstTienNghi.get(6).setSelected(true);
+                                            } else {
+                                                if (array[i].equals("bepga")) {
+                                                    lstTienNghi.get(7).setSelected(true);
+                                                } else {
+                                                    if (array[i].equals("quat")) {
+                                                        lstTienNghi.get(8).setSelected(true);
+                                                    } else {
+                                                        if (array[i].equals("tudo")) {
+                                                            lstTienNghi.get(9).setSelected(true);
+                                                        } else {
+                                                            if (array[i].equals("maylanh")) {
+                                                                lstTienNghi.get(10).setSelected(true);
+                                                            } else {
+                                                                if (array[i].equals("den")) {
+                                                                    lstTienNghi.get(11).setSelected(true);
+                                                                } else {
+                                                                    if (array[i].equals("baove")) {
+                                                                        lstTienNghi.get(12).setSelected(true);
+                                                                    } else {
+                                                                        if (array[i].equals("camera")) {
+                                                                            lstTienNghi.get(13).setSelected(true);
+                                                                        } else {
+                                                                            if (array[i].equals("khudexe")) {
+                                                                                lstTienNghi.get(14).setSelected(true);
+                                                                            } else {
+
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                myAdapter.notifyDataSetChanged();
+
 
                 loadlayoutThongTinChiTiet.setVisibility(View.GONE);
                 scrollChiTiet.setVisibility(View.VISIBLE);
@@ -199,9 +265,7 @@ public class TabChiTiet extends Fragment {
                 if (!phongTros.getFacebook().equals("")) {
                     setClickFacebook(phongTros.getFacebook());
                 }
-
             }
-
         }
     }
 
