@@ -1,10 +1,12 @@
 package com.nhatro.model;
 
+import java.io.Serializable;
+
 /**
  * Created by CongHoang on 5/10/2018.
  */
 
-public class TinTimPhong {
+public class TinTimPhong implements Serializable {
     private String id;
     private String tieude;
     private String hoten;

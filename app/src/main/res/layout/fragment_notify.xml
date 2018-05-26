@@ -1,13 +1,32 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context="com.nhatro.NotifyFragment">
-
+    <LinearLayout
+        android:id="@+id/layout1"
+        android:visibility="gone"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
         <TextView
-            android:text="Fragment thông báo"
+            android:textSize="15sp"
+            android:padding="10dp"
+            android:textStyle="bold"
+            android:text="Cần đăng nhập để xem các thông báo dành cho bạn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+    </LinearLayout>
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/contain"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-</LinearLayout>
+        <ListView
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </ListView>
+    </android.support.constraint.ConstraintLayout>
+</android.support.constraint.ConstraintLayout>

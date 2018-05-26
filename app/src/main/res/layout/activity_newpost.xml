@@ -34,7 +34,7 @@
                     android:textColor="@color/black"
                     android:textStyle="bold" />
 
-                <EditText
+                <!--<EditText
                     android:id="@+id/valueTieuDe"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -50,7 +50,24 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/txtThongTin"
 
-                    />
+                    />-->
+
+                <EditText
+                    android:id="@+id/valueTieuDe"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginStart="85dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/border_edittext"
+                    android:hint="* Tiêu đề"
+                    android:maxLines="3"
+                    android:padding="8dp"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/txtTieuDe"
+                    app:layout_constraintTop_toBottomOf="@+id/txtThongTin" />
 
                 <TextView
                     android:id="@+id/txtTieuDe"
@@ -70,6 +87,7 @@
                     android:id="@+id/divider1"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
+                    android:layout_marginTop="5dp"
                     android:background="@android:color/darker_gray"
                     app:layout_constraintTop_toBottomOf="@id/valueTieuDe" />
 
@@ -96,7 +114,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Cho Thuê Nhà Nguyên Căn"
-                    app:layout_constraintStart_toStartOf="@id/valueTieuDe"
                     app:layout_constraintTop_toBottomOf="@id/checkPhongTro" />
 
                 <CheckBox
@@ -187,7 +204,7 @@
                     app:layout_constraintTop_toBottomOf="@id/layoutSoNguoi" />
                 />
 
-                <EditText
+                <!--<EditText
                     android:id="@+id/valueGia"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -203,6 +220,27 @@
                     android:textSize="13sp"
                     android:windowSoftInputMode="adjustPan"
                     app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/divider22" />-->
+                <EditText
+                    android:id="@+id/valueGia"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginStart="75dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/border_edittext"
+                    android:hint=" * Giá thuê 1 tháng"
+                    android:inputType="number"
+                    android:maxLength="8"
+                    android:maxLines="1"
+                    android:padding="8dp"
+                    android:paddingLeft="90dp"
+                    android:textColor="#000000"
+                    android:textSize="13sp"
+                    android:windowSoftInputMode="adjustPan"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/txtGia"
                     app:layout_constraintTop_toBottomOf="@id/divider22" />
 
                 <TextView
@@ -216,7 +254,7 @@
                     android:textSize="13sp"
                     app:layout_constraintBottom_toBottomOf="@id/valueGia"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/divider22" />
+                    app:layout_constraintTop_toTopOf="@id/valueGia" />
 
                 <TextView
                     android:id="@+id/txtGia"
@@ -234,11 +272,12 @@
                     android:id="@+id/divider3"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
+                    android:layout_marginTop="5dp"
                     android:background="@android:color/darker_gray"
                     app:layout_constraintTop_toBottomOf="@id/valueGia" />
                 />
 
-                <EditText
+                <!--<EditText
                     android:id="@+id/valueDatCoc"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -254,7 +293,30 @@
                     android:textSize="13sp"
                     android:windowSoftInputMode="adjustPan"
                     app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/divider3" />-->
+
+                <EditText
+                    android:id="@+id/valueDatCoc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginStart="75dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/border_edittext"
+                    android:hint=" * Tiền đặt cọc"
+                    android:inputType="number"
+                    android:maxLength="8"
+                    android:maxLines="1"
+                    android:padding="8dp"
+                    android:paddingLeft="90dp"
+                    android:textColor="#000000"
+                    android:textSize="13sp"
+                    android:windowSoftInputMode="adjustPan"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/txtDatCoc"
                     app:layout_constraintTop_toBottomOf="@id/divider3" />
+
                 <TextView
                     android:id="@+id/txtDatCoc"
                     android:layout_width="wrap_content"
@@ -274,9 +336,8 @@
                     android:gravity="center"
                     android:orientation="horizontal"
                     app:layout_constraintBottom_toBottomOf="@id/valueDatCoc"
-                    app:layout_constraintTop_toTopOf="@id/valueDatCoc"
                     app:layout_constraintEnd_toEndOf="parent"
-                    >
+                    app:layout_constraintTop_toTopOf="@id/valueDatCoc">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -304,6 +365,7 @@
                     android:id="@+id/divider4"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
+                    android:layout_marginTop="5dp"
                     android:background="@android:color/darker_gray"
                     app:layout_constraintTop_toBottomOf="@id/valueDatCoc" />
                 />
@@ -325,16 +387,17 @@
                     android:windowSoftInputMode="adjustPan"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/divider4" />
+
                 <TextView
-                    android:paddingLeft="5dp"
                     android:id="@+id/txtm1"
-                    android:text="m    x"
-                    android:textSize="13sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingLeft="5dp"
+                    android:text="m    x"
+                    android:textSize="13sp"
                     app:layout_constraintBottom_toBottomOf="@id/valueChieuDai"
-                    app:layout_constraintTop_toTopOf="@id/valueChieuDai"
                     app:layout_constraintStart_toEndOf="@id/valueChieuDai"
+                    app:layout_constraintTop_toTopOf="@id/valueChieuDai"
 
                     />
 
@@ -353,20 +416,20 @@
                     android:textColor="#000000"
                     android:textSize="13sp"
                     android:windowSoftInputMode="adjustPan"
-                    app:layout_constraintTop_toTopOf="@id/valueChieuDai"
-                    app:layout_constraintStart_toEndOf="@id/txtm1" />
+                    app:layout_constraintStart_toEndOf="@id/txtm1"
+                    app:layout_constraintTop_toTopOf="@id/valueChieuDai" />
 
 
                 <TextView
-                    android:paddingLeft="5dp"
                     android:id="@+id/txtm2"
-                    android:text="m "
-                    android:textSize="13sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingLeft="5dp"
+                    android:text="m "
+                    android:textSize="13sp"
                     app:layout_constraintBottom_toBottomOf="@id/valueChieuDai"
-                    app:layout_constraintTop_toTopOf="@id/valueChieuDai"
                     app:layout_constraintStart_toEndOf="@id/valueChieuRong"
+                    app:layout_constraintTop_toTopOf="@id/valueChieuDai"
 
                     />
 
@@ -391,9 +454,7 @@
                 />
 
 
-
-
-                <EditText
+                <!--<EditText
                     android:id="@+id/valueTienDien"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -409,7 +470,30 @@
                     android:textSize="13sp"
                     android:windowSoftInputMode="adjustPan"
                     app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/divider5" />-->
+
+                <EditText
+                    android:id="@+id/valueTienDien"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginStart="75dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/border_edittext"
+                    android:hint=" * Tiền điện"
+                    android:inputType="number"
+                    android:maxLength="8"
+                    android:maxLines="1"
+                    android:padding="8dp"
+                    android:paddingLeft="90dp"
+                    android:textColor="#000000"
+                    android:textSize="13sp"
+                    android:windowSoftInputMode="adjustPan"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/txtTienDien"
                     app:layout_constraintTop_toBottomOf="@id/divider5" />
+
                 <TextView
                     android:id="@+id/txtTienDien"
                     android:layout_width="wrap_content"
@@ -429,9 +513,8 @@
                     android:gravity="center"
                     android:orientation="horizontal"
                     app:layout_constraintBottom_toBottomOf="@id/valueTienDien"
-                    app:layout_constraintTop_toTopOf="@id/valueTienDien"
                     app:layout_constraintEnd_toEndOf="parent"
-                    >
+                    app:layout_constraintTop_toTopOf="@id/valueTienDien">
 
                     <TextView
                         android:id="@+id/donViTienDien"
@@ -458,13 +541,13 @@
                     android:id="@+id/divider6"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
+                    android:layout_marginTop="5dp"
                     android:background="@android:color/darker_gray"
                     app:layout_constraintTop_toBottomOf="@id/valueTienDien" />
                 />
 
 
-
-                <EditText
+                <!--<EditText
                     android:id="@+id/valueTienNuoc"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -480,7 +563,30 @@
                     android:textSize="13sp"
                     android:windowSoftInputMode="adjustPan"
                     app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/divider6" />-->
+
+                <EditText
+                    android:id="@+id/valueTienNuoc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginStart="75dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/border_edittext"
+                    android:hint=" * Tiền nước"
+                    android:inputType="number"
+                    android:maxLength="8"
+                    android:maxLines="1"
+                    android:padding="8dp"
+                    android:paddingLeft="90dp"
+                    android:textColor="#000000"
+                    android:textSize="13sp"
+                    android:windowSoftInputMode="adjustPan"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/txtTienNuoc"
                     app:layout_constraintTop_toBottomOf="@id/divider6" />
+
                 <TextView
                     android:id="@+id/txtTienNuoc"
                     android:layout_width="wrap_content"
@@ -500,9 +606,8 @@
                     android:gravity="center"
                     android:orientation="horizontal"
                     app:layout_constraintBottom_toBottomOf="@id/valueTienNuoc"
-                    app:layout_constraintTop_toTopOf="@id/valueTienNuoc"
                     app:layout_constraintEnd_toEndOf="parent"
-                    >
+                    app:layout_constraintTop_toTopOf="@id/valueTienNuoc">
 
                     <TextView
                         android:id="@+id/donViTienNuoc"
@@ -530,76 +635,76 @@
                     android:id="@+id/divider7"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
+                    android:layout_marginTop="5dp"
                     android:background="@android:color/darker_gray"
                     app:layout_constraintTop_toBottomOf="@id/valueTienNuoc" />
                 />
+
                 <TextView
                     android:id="@+id/txtGioGiac"
-                    android:textSize="13sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:textStyle="bold"
-                    android:text="Giờ giấc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:padding="@dimen/paddingIteminDetailScreen"
                     android:paddingEnd="25dp"
-                    app:layout_constraintTop_toBottomOf="@id/divider7"
+                    android:text="Giờ giấc"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/divider7" />
+
+
+                <RadioButton
+                    android:id="@+id/radTuDo"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:text="Tự do"
+                    android:textSize="15sp"
+                    app:layout_constraintStart_toEndOf="@id/txtGioGiac"
+                    app:layout_constraintTop_toBottomOf="@id/divider7" />
 
-
-                    <RadioButton
-                        app:layout_constraintTop_toBottomOf="@id/divider7"
-                        app:layout_constraintStart_toEndOf="@id/txtGioGiac"
-                        android:id="@+id/radTuDo"
-                        android:text="Tự do"
-                        android:textSize="15sp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <RadioButton
-                        app:layout_constraintStart_toStartOf="@id/radTuDo"
-                        app:layout_constraintTop_toBottomOf="@id/radTuDo"
-                        android:id="@+id/radGio"
-                        android:text="Đóng cửa từ"
-                        android:textSize="15sp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-                    </RadioButton>
+                <RadioButton
+                    android:id="@+id/radGio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Đóng cửa từ"
+                    android:textSize="15sp"
+                    app:layout_constraintStart_toStartOf="@id/radTuDo"
+                    app:layout_constraintTop_toBottomOf="@id/radTuDo"></RadioButton>
 
                 <TextView
+                    android:id="@+id/valueGioDongCua"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
                     android:background="@drawable/background_gio_dong_cua"
+                    android:padding="8dp"
+                    android:text="00:00"
                     android:textColor="@color/white"
                     android:textSize="13sp"
                     android:textStyle="bold"
-                    android:layout_marginLeft="10dp"
-                    android:padding="8dp"
-                    app:layout_constraintStart_toEndOf="@id/radGio"
-                    app:layout_constraintTop_toTopOf="@id/radGio"
                     app:layout_constraintBottom_toBottomOf="@id/radGio"
-                    android:id="@+id/valueGioDongCua"
-                    android:text="00:00"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    app:layout_constraintStart_toEndOf="@id/radGio"
+                    app:layout_constraintTop_toTopOf="@id/radGio" />
 
                 <View
                     android:id="@+id/divider8"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@android:color/darker_gray"
-                    app:layout_constraintTop_toBottomOf="@id/valueGioDongCua"
-                    android:paddingTop="7dp"
                     android:layout_marginTop="7dp"
-                    />
+                    android:background="@android:color/darker_gray"
+                    android:paddingTop="7dp"
+                    app:layout_constraintTop_toBottomOf="@id/valueGioDongCua" />
 
 
                 <info.hoang8f.android.segmented.SegmentedGroup xmlns:segmentedgroup="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/valueGioiTinh"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
-                    android:paddingLeft="85dp"
                     android:layout_margin="8dp"
                     android:orientation="horizontal"
-                    segmentedgroup:layout_constraintTop_toBottomOf="@id/divider8"
+                    android:paddingLeft="85dp"
                     segmentedgroup:layout_constraintStart_toEndOf="@id/lableGioiTinh"
+                    segmentedgroup:layout_constraintTop_toBottomOf="@id/divider8"
                     segmentedgroup:sc_border_width="2dp"
                     segmentedgroup:sc_corner_radius="10dp">
 
@@ -616,6 +721,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Nữ" />
+
                     <RadioButton
                         android:id="@+id/radCa2"
                         style="@style/RadioButton"
@@ -640,99 +746,214 @@
                     android:id="@+id/divider9"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@android:color/darker_gray"
-                    app:layout_constraintTop_toBottomOf="@id/valueGioiTinh"
-                    android:paddingTop="8dp"
                     android:layout_marginTop="7dp"
-                    />
+                    android:background="@android:color/darker_gray"
+                    android:paddingTop="8dp"
+                    app:layout_constraintTop_toBottomOf="@id/valueGioiTinh" />
 
                 <TextView
-                    app:layout_constraintTop_toBottomOf="@id/divider9"
                     android:id="@+id/txtThongTinDC"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/gray2"
                     android:padding="@dimen/paddingIteminDetailScreen"
-                    android:text="Thông tin địa chỉ"
+                    android:text="Thông tin liên lạc"
                     android:textColor="@color/black"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@id/divider9" />
 
+
+                <EditText
+                    android:id="@+id/valueHoTen"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginStart="85dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/border_edittext"
+                    android:hint="* Họ tên"
+                    android:maxLines="2"
+                    android:padding="8dp"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/txtHoTen"
+                    app:layout_constraintTop_toBottomOf="@+id/txtThongTinDC" />
+
+                <TextView
+                    android:id="@+id/txtHoTen"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/paddingIteminDetailScreen"
+                    android:paddingEnd="30dp"
+                    android:text="Họ tên"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@id/valueHoTen"
+                    app:layout_constraintTop_toTopOf="@id/valueHoTen" />
+
+
+                <View
+                    android:id="@+id/divider122"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@android:color/darker_gray"
+                    app:layout_constraintTop_toBottomOf="@id/valueHoTen" />
+
+
+                <EditText
+                    android:id="@+id/valueSdt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginStart="85dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/border_edittext"
+                    android:hint="* Số điện thoại"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:padding="8dp"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/txtSdt"
+                    app:layout_constraintTop_toBottomOf="@+id/divider122" />
+
+                <TextView
+                    android:id="@+id/txtSdt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/paddingIteminDetailScreen"
+                    android:paddingEnd="30dp"
+                    android:text="SĐT"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@id/valueSdt"
+                    app:layout_constraintTop_toTopOf="@id/valueSdt" />
+
+
+                <View
+                    android:id="@+id/divider123"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@android:color/darker_gray"
+                    app:layout_constraintTop_toBottomOf="@id/valueSdt" />
+
+                <EditText
+                    android:id="@+id/valueFacebook"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginStart="85dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/border_edittext"
+                    android:hint="Facebook nếu có"
+                    android:maxLines="2"
+                    android:padding="8dp"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/txtFaceBook"
+                    app:layout_constraintTop_toBottomOf="@+id/divider123" />
+
+                <TextView
+                    android:id="@+id/txtFaceBook"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/paddingIteminDetailScreen"
+                    android:paddingEnd="30dp"
+                    android:text="Facebook"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@id/valueFacebook"
+                    app:layout_constraintTop_toTopOf="@id/valueFacebook" />
+
+
+                <View
+                    android:id="@+id/divider124"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@android:color/darker_gray"
+                    app:layout_constraintTop_toBottomOf="@id/valueFacebook" />
 
 
                 <Spinner
                     android:id="@+id/spinnerTinhTP"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginLeft="85dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@id/txtThongTinDC"
+                    android:layout_marginLeft="85dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="5dp"
+                    app:layout_constraintTop_toBottomOf="@id/divider124"
 
-                    >
-                </Spinner>
+                    ></Spinner>
 
                 <TextView
                     android:id="@+id/txtTP"
-                    android:textSize="13sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:textStyle="bold"
-                    android:text="Tỉnh/TP"
-                    android:padding="@dimen/paddingIteminDetailScreen"
-                    android:paddingEnd="25dp"
-
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toTopOf="@id/spinnerTinhTP"
+                    android:padding="@dimen/paddingIteminDetailScreen"
+                    android:paddingEnd="25dp"
+                    android:text="Tỉnh/TP"
+                    android:textSize="13sp"
+
+                    android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="@id/spinnerTinhTP"
-                    />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/spinnerTinhTP" />
+
                 <View
                     android:id="@+id/divider10"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@android:color/darker_gray"
-                    app:layout_constraintTop_toBottomOf="@id/spinnerTinhTP"
-                    android:paddingTop="8dp"
                     android:layout_marginTop="7dp"
-                    />
-
+                    android:background="@android:color/darker_gray"
+                    android:paddingTop="8dp"
+                    app:layout_constraintTop_toBottomOf="@id/spinnerTinhTP" />
 
 
                 <Spinner
                     android:id="@+id/spinnerQuanHuyen"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginLeft="85dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="85dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="5dp"
                     app:layout_constraintTop_toBottomOf="@id/divider10"
 
-                    >
-                </Spinner>
+                    ></Spinner>
 
                 <TextView
                     android:id="@+id/txtQuanHuyen"
-                    android:textSize="13sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:textStyle="bold"
-                    android:text="Quận huyện"
-                    android:padding="@dimen/paddingIteminDetailScreen"
-                    android:paddingEnd="25dp"
-
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toTopOf="@id/spinnerQuanHuyen"
+                    android:padding="@dimen/paddingIteminDetailScreen"
+                    android:paddingEnd="25dp"
+                    android:text="Quận huyện"
+                    android:textSize="13sp"
+
+                    android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="@id/spinnerQuanHuyen"
-                    />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/spinnerQuanHuyen" />
+
                 <View
                     android:id="@+id/divider11"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@android:color/darker_gray"
-                    app:layout_constraintTop_toBottomOf="@id/txtQuanHuyen"
-                    android:paddingTop="8dp"
                     android:layout_marginTop="7dp"
-                    />
+                    android:background="@android:color/darker_gray"
+                    android:paddingTop="8dp"
+                    app:layout_constraintTop_toBottomOf="@id/txtQuanHuyen" />
 
 
-                <EditText
+                <!--<EditText
                     android:id="@+id/valueSoNha"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -746,14 +967,32 @@
                     android:windowSoftInputMode="adjustPan"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/divider11" />
+                    app:layout_constraintTop_toBottomOf="@id/divider11" />-->
+
+                <EditText
+                    android:id="@+id/valueSoNha"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginStart="85dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/border_edittext"
+                    android:hint="* Địa chỉ"
+                    android:maxLines="3"
+                    android:padding="8dp"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/txtSoNha"
+                    app:layout_constraintTop_toBottomOf="@+id/divider11" />
+
                 <TextView
                     android:id="@+id/txtSoNha"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/paddingIteminDetailScreen"
                     android:paddingEnd="30dp"
-                    android:text="Số nhà"
+                    android:text="Địa chỉ"
                     android:textSize="13sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="@id/valueSoNha"
@@ -764,57 +1003,58 @@
                     android:id="@+id/divider12"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
+                    android:layout_marginTop="5dp"
                     android:background="@android:color/darker_gray"
-                    app:layout_constraintTop_toBottomOf="@id/valueSoNha"
-                    />
+                    app:layout_constraintTop_toBottomOf="@id/valueSoNha" />
 
                 <android.support.constraint.ConstraintLayout
                     android:id="@+id/layoutBD"
-                    android:padding="@dimen/paddingIteminDetailScreen"
-                    app:layout_constraintTop_toBottomOf="@id/divider12"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:background="@drawable/corner_seekbar_mapview"
                     android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:padding="@dimen/paddingIteminDetailScreen"
+                    app:layout_constraintTop_toBottomOf="@id/divider12">
+
                     <TextView
+                        android:id="@+id/txtLayVT"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:paddingBottom="@dimen/paddingIteminDetailScreen"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
+                        android:text="Lấy vị trí trên bản đồ"
                         android:textSize="13sp"
                         android:textStyle="italic"
-                        android:id="@+id/txtLayVT"
-                        android:text="Lấy vị trí trên bản đồ"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
                     <com.google.android.gms.maps.MapView
-                        android:layout_marginHorizontal="10dp"
-                        app:layout_constraintTop_toBottomOf="@id/txtLayVT"
                         android:id="@+id/mapViTri"
                         android:layout_width="match_parent"
-                        android:layout_height="130dp" />
+                        android:layout_height="130dp"
+                        android:layout_marginHorizontal="10dp"
+                        app:layout_constraintTop_toBottomOf="@id/txtLayVT" />
+
                     <TextView
-                        app:layout_constraintTop_toBottomOf="@id/mapViTri"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_below="@id/mapTabBanDo"
-                        android:textStyle="italic"
                         android:gravity="center"
                         android:text="Chọn vào bản đồ để hiện thị toàn màn hình"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:textStyle="italic"
+                        app:layout_constraintTop_toBottomOf="@id/mapViTri" />
                 </android.support.constraint.ConstraintLayout>
 
                 <View
                     android:id="@+id/divider13"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@android:color/darker_gray"
-                    app:layout_constraintTop_toBottomOf="@id/layoutBD"
-                    android:paddingTop="8dp"
                     android:layout_marginTop="7dp"
-                    />
+                    android:background="@android:color/darker_gray"
+                    android:paddingTop="8dp"
+                    app:layout_constraintTop_toBottomOf="@id/layoutBD" />
 
 
                 <TextView
-                    app:layout_constraintTop_toBottomOf="@id/divider13"
                     android:id="@+id/txtThongTinTienNghi"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -822,16 +1062,17 @@
                     android:padding="@dimen/paddingIteminDetailScreen"
                     android:text="Thông tin tiện nghi"
                     android:textColor="@color/black"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@id/divider13" />
 
 
                 <com.nhatro.adapter.ExpandableHeightGridView
-                    android:paddingTop="7dp"
                     android:id="@+id/gridTienNghi"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:isScrollContainer="false"
                     android:numColumns="5"
+                    android:paddingTop="7dp"
                     android:stretchMode="columnWidth"
                     app:layout_constraintTop_toBottomOf="@id/txtThongTinTienNghi" />
 
@@ -840,14 +1081,12 @@
                     android:id="@+id/divider14"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@android:color/darker_gray"
-                    app:layout_constraintTop_toBottomOf="@id/gridTienNghi"
-                    android:paddingTop="8dp"
                     android:layout_marginTop="7dp"
-                    />
+                    android:background="@android:color/darker_gray"
+                    android:paddingTop="8dp"
+                    app:layout_constraintTop_toBottomOf="@id/gridTienNghi" />
 
                 <TextView
-                    app:layout_constraintTop_toBottomOf="@id/divider14"
                     android:id="@+id/txtMoTaThem"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -855,76 +1094,77 @@
                     android:padding="@dimen/paddingIteminDetailScreen"
                     android:text="Mô tả thêm"
                     android:textColor="@color/black"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@id/divider14" />
+
                 <LinearLayout
                     android:id="@+id/layoutMTTHEM"
-                    app:layout_constraintTop_toBottomOf="@id/txtMoTaThem"
-                    android:background="@drawable/back_ground_item_list_view_comment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="7dp"
                     android:layout_marginBottom="7dp"
-                    >
+                    android:background="@drawable/back_ground_item_list_view_comment"
+                    app:layout_constraintTop_toBottomOf="@id/txtMoTaThem">
 
                     <EditText
-                        android:textSize="13sp"
-                        android:backgroundTint="@android:color/transparent"
                         android:id="@+id/edtMoTaThem"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:windowSoftInputMode="adjustPan"
-                        android:textColor="#000000"
+                        android:backgroundTint="@android:color/transparent"
                         android:hint="Mô tả thêm"
+                        android:textColor="#000000"
+                        android:textSize="13sp"
+                        android:windowSoftInputMode="adjustPan"
 
                         />
                 </LinearLayout>
 
                 <TextView
-                    android:layout_marginTop="7dp"
-                    app:layout_constraintTop_toBottomOf="@id/layoutMTTHEM"
                     android:id="@+id/txtHA"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="7dp"
                     android:background="@color/gray2"
                     android:padding="@dimen/paddingIteminDetailScreen"
                     android:text="Hình ảnh"
                     android:textColor="@color/black"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@id/layoutMTTHEM" />
 
-                <com.makeramen.roundedimageview.RoundedImageView
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                <com.makeramen.roundedimageview.RoundedImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/idbtnAddImage"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
+                    android:padding="7dp"
                     android:scaleType="fitXY"
                     android:src="@drawable/add_image"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txtHA"
                     app:riv_border_color="#c6c5c5"
                     app:riv_border_width="1dip"
                     app:riv_corner_radius="15dip"
                     app:riv_oval="false"
-                    app:riv_tile_mode="clamp"
-                    android:padding="7dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/txtHA"
-                    />
+                    app:riv_tile_mode="clamp" />
+
                 <TextView
                     android:id="@+id/txtHD"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/idbtnAddImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:text="Khi chọn ảnh, giữ vào 1 ảnh để mở chế độ chọn nhiều ảnh"
                     android:textSize="12sp"
                     android:textStyle="italic"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/idbtnAddImage" />
+
                 <com.nhatro.adapter.ExpandableHeightGridView
-                    android:paddingTop="7dp"
                     android:id="@+id/gridHA"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:isScrollContainer="false"
                     android:numColumns="3"
+                    android:paddingTop="7dp"
                     android:stretchMode="columnWidth"
                     app:layout_constraintTop_toBottomOf="@id/txtHD" />
             </android.support.constraint.ConstraintLayout>

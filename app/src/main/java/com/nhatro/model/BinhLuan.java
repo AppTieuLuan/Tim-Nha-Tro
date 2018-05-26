@@ -14,6 +14,16 @@ public class BinhLuan {
     private String idPhong;
     private int idUser;
 
+    public int getIduserhost() {
+        return iduserhost;
+    }
+
+    public void setIduserhost(int iduserhost) {
+        this.iduserhost = iduserhost;
+    }
+
+    private int iduserhost;
+
     public int getIdUser() {
         return idUser;
     }

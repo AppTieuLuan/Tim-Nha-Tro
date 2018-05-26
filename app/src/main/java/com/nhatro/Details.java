@@ -17,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -49,6 +50,13 @@ public class Details extends AppCompatActivity {
     TextView btntabChiTiet, btntabBinhLuan, btntabBanDo;
     int tab;
     Fragment active;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.actionbar_activity_tim_vi_tri, menu);
+        return true;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -175,6 +183,7 @@ public class Details extends AppCompatActivity {
                 if (tabBinhLuan == null) {
                     Bundle bundle1 = new Bundle();
                     bundle1.putString("id", iditem);
+                    bundle1.putString("tieude", tieude);
                     tabBinhLuan = new TabBinhLuan();
                     tabBinhLuan.setArguments(bundle1);
 

@@ -301,16 +301,16 @@ public class Filter extends AppCompatActivity {
 
         radGroup = (SegmentedGroup) findViewById(R.id.segmented2);
 
-        if (namnu == 0) {
-            radCa2.setSelected(true);
-            radGroup.check(R.id.radCa2);
+        if (namnu == 1) {
+            radNam.setSelected(false);
+            radGroup.check(R.id.radNam);
         } else {
-            if (namnu == 1) {
-                radNam.setSelected(true);
-                radGroup.check(R.id.radNam);
-            } else {
+            if (namnu == 2) {
                 radNu.setSelected(true);
                 radGroup.check(R.id.radNu);
+            } else {
+                radCa2.setSelected(true);
+                radGroup.check(R.id.radCa2);
             }
 
         }

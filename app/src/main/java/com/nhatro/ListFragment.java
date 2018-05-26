@@ -4,12 +4,14 @@ package com.nhatro;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,6 +34,8 @@ import com.nhatro.model.LocDL;
 import com.nhatro.model.PhongTro;
 
 import java.util.ArrayList;
+
+import static android.content.Context.MODE_PRIVATE;
 
 
 /**
@@ -142,6 +146,12 @@ public class ListFragment extends Fragment {
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /*if (checkLogin().equals("-1")) {
+                    Toast.makeText(getContext(), "Đăng nhập trước khi thực hiện thao tác này !", Toast.LENGTH_SHORT).show();
+                } else {
+                    Intent intents = new Intent(getContext(), Newpost.class);
+                    startActivity(intents);
+                }*/
                 Intent intents = new Intent(getContext(), Newpost.class);
                 startActivity(intents);
             }
@@ -153,6 +163,23 @@ public class ListFragment extends Fragment {
 
     public void LoadNewData(LocDL locDL) {
 
+    }
+
+    public String checkLogin() {
+        SharedPreferences pre = getActivity().getSharedPreferences("Mydata", MODE_PRIVATE);
+        String user = pre.getString("MyUser", "");
+
+        if (user.equals("")) {
+            return "-1";
+        } else {
+            return "2222";
+        }
+    }
+
+    public void getUserInfo() {
+        SharedPreferences pre = getActivity().getSharedPreferences("Mydata", MODE_PRIVATE);
+        String user = pre.getString("MyUser", "");
+        int sss = 1;
     }
 
     public void filterData(LocDL locDL) {

@@ -131,7 +131,6 @@ public class DAL_TinTimPhong {
         MyService jsonParser = new MyService();
 
         String json = jsonParser.callService(URL_NEW, MyService.POST, args);
-        Log.d("JSONNNNNNNNNNNNNNNNNN", json);
         if (json != null) {
             try {
                 JSONObject jsonObject = new JSONObject(json);
@@ -161,7 +160,9 @@ public class DAL_TinTimPhong {
                     tinTimPhong.setSdt(jsonObject1.getString("sodt"));
                     tinTimPhong.setFacebook(jsonObject1.getString("facebook"));
                     tinTimPhong.setAvatar(jsonObject1.getString("avatar"));
-
+                    tinTimPhong.setIdqh(jsonObject1.getString("idqh"));
+                    tinTimPhong.setIdtp(jsonObject1.getInt("idtp"));
+                    tinTimPhong.setIduser(jsonObject1.getInt("iduser"));
                     return tinTimPhong;
                 } else {
                     return null;
@@ -171,5 +172,95 @@ public class DAL_TinTimPhong {
             }
         }
         return null;
+    }
+
+    public boolean capNhatTinTimPhong(TinTimPhong tinTimPhong, TinTimPhong t1) {
+        String URL_NEW = variable.getWebservice() + "capNhatTinTimPhong.php";
+
+        String sql = "";
+        if (!tinTimPhong.getTieude().equals(t1.getTieude())) {
+            sql = sql + "tieude = '" + tinTimPhong.getTieude() + "',";
+        }
+        if (tinTimPhong.getLoaitin() != t1.getLoaitin()) {
+            sql = sql + " loaitin = " + tinTimPhong.getLoaitin() + ",";
+        }
+        if (tinTimPhong.getSonguoimin() != t1.getSonguoimin()) {
+            sql = sql + " songuoimin = " + tinTimPhong.getSonguoimin() + ",";
+        }
+        if (tinTimPhong.getSonguoimax() != t1.getSonguoimax()) {
+            sql = sql + " songuoimax = " + tinTimPhong.getSonguoimax() + ",";
+        }
+
+        if (tinTimPhong.getGiamin() != t1.getGiamin()) {
+            sql = sql + " giamin = " + tinTimPhong.getGiamin() + ",";
+        }
+        if (tinTimPhong.getGiamax() != t1.getGiamax()) {
+            sql = sql + " giamax = " + tinTimPhong.getGiamax() + ",";
+        }
+        if (tinTimPhong.getGioitinh() != t1.getGioitinh()) {
+            sql = sql + " gioitinh = " + tinTimPhong.getGioitinh() + ",";
+        }
+        if (tinTimPhong.getGiogiac() != t1.getGiogiac()) {
+            sql = sql + " giogiac = " + tinTimPhong.getGiogiac() + ",";
+        }
+        if (tinTimPhong.getIdtp() != t1.getIdtp()) {
+            sql = sql + " idtp = " + tinTimPhong.getIdtp() + ",";
+        }
+
+        if (!tinTimPhong.getIdqh().equals(t1.getIdqh())) {
+            sql = sql + " idqh = '" + tinTimPhong.getIdqh() + "',";
+            sql = sql + " tenqh = '" + tinTimPhong.getQh() + "',";
+        }
+        if (!tinTimPhong.getMotathem().equals(t1.getMotathem())) {
+            sql = sql + " motathem = '" + tinTimPhong.getMotathem() + "',";
+        }
+
+        if (tinTimPhong.getLat() != t1.getLat()) {
+            sql = sql + " lat = " + tinTimPhong.getLat() + ",";
+        }
+        if (tinTimPhong.getLng() != t1.getLng()) {
+            sql = sql + " tintimphong.lng = " + tinTimPhong.getLng() + ",";
+        }
+        if (tinTimPhong.getBankinh() != t1.getBankinh()) {
+            sql = sql + " bankinh = " + tinTimPhong.getBankinh() + ",";
+        }
+        if (!tinTimPhong.getTiennghi().equals(t1.getTiennghi())) {
+            sql = sql + " tiennghi = '" + tinTimPhong.getTiennghi() + "',";
+        }
+
+        if (!tinTimPhong.getMotathem().equals(t1.getMotathem())) {
+            sql = sql + " motathem = '" + tinTimPhong.getMotathem() + "',";
+        }
+
+        if (sql.equals("")) {
+            return true;
+        }
+        if (sql.length() > 0) {
+            sql = sql.substring(0, sql.length() - 1);
+        }
+
+        sql = sql + " where id = '" + tinTimPhong.getId() + "'";
+        String query = "update tintimphong set " + sql;
+        List<NameValuePair> args = new ArrayList<NameValuePair>();
+
+        args.add(new BasicNameValuePair("query", query));
+
+        MyService jsonParser = new MyService();
+
+        String json = jsonParser.makeService(URL_NEW, MyService.POST, args);
+        if (json != null) {
+            try {
+                JSONObject jsonObject = new JSONObject(json);
+                int success = jsonObject.getInt("kq");
+                if (success == 1) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } catch (JSONException e) {
+                return false;
+            }
+        }
+        return false;
     }
 }

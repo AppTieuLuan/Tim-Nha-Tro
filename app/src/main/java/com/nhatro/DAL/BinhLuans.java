@@ -3,6 +3,7 @@ package com.nhatro.DAL;
 import android.util.Log;
 
 import com.nhatro.model.BinhLuan;
+import com.nhatro.model.ThongBao;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -71,7 +72,7 @@ public class BinhLuans {
         return null;
     }
 
-    public String themBL(BinhLuan b) {
+    public String themBL(BinhLuan b,int loai) {
         String URL_NEW = variable.getWebservice() + "themBL.php";
 
         List<NameValuePair> args = new ArrayList<NameValuePair>();
@@ -79,7 +80,6 @@ public class BinhLuans {
         args.add(new BasicNameValuePair("idphong", b.getIdPhong()));
         args.add(new BasicNameValuePair("iduser", String.valueOf(b.getIdUser())));
         // Lấy đối tượng JSON
-
         MyService jsonParser = new MyService();
 
         String json = jsonParser.makeService(URL_NEW, MyService.POST, args);
@@ -151,7 +151,7 @@ public class BinhLuans {
     }
 
 
-    public String themBLTinTimPhong(BinhLuan b) {
+    public String themBLTinTimPhong(BinhLuan b, ThongBao thongBao) {
         String URL_NEW = variable.getWebservice() + "themBLtinTimphong.php";
 
         List<NameValuePair> args = new ArrayList<NameValuePair>();
@@ -160,6 +160,9 @@ public class BinhLuans {
         args.add(new BasicNameValuePair("iduser", String.valueOf(b.getIdUser())));
         // Lấy đối tượng JSON
 
+        args.add(new BasicNameValuePair("usernhan", String.valueOf(thongBao.getIdusernhan())));
+        args.add(new BasicNameValuePair("tieudetin", thongBao.getTieudeTin()));
+        args.add(new BasicNameValuePair("loai", String.valueOf(thongBao.getLoai())));
         MyService jsonParser = new MyService();
 
         String json = jsonParser.makeService(URL_NEW, MyService.POST, args);

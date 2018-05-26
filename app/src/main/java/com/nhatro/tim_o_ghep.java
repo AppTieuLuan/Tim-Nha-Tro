@@ -133,7 +133,10 @@ public class tim_o_ghep extends Fragment {
             @Override
             public void onClick(View v) {
 
+                Bundle bundle = new Bundle();
+                bundle.putInt("key", 1);
                 Intent intent = new Intent(getContext(), ThemTinTimPhong.class);
+                intent.putExtra("data", bundle);
                 startActivityForResult(intent, 777);
             }
         });

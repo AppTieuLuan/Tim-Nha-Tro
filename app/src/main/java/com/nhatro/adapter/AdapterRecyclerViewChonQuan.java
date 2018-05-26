@@ -37,6 +37,11 @@ public class AdapterRecyclerViewChonQuan extends RecyclerView.Adapter<AdapterRec
         return new RecyclerChonQuanViewHolder(itemview);
     }
 
+    public void updateItem(int position) {
+        data.get(position).setSelect(true);
+        notifyItemChanged(position);
+    }
+
     @Override
     public void onBindViewHolder(@NonNull RecyclerChonQuanViewHolder holder, int position) {
         holder.tenQuan.setText(data.get(position).getTen());
@@ -52,7 +57,6 @@ public class AdapterRecyclerViewChonQuan extends RecyclerView.Adapter<AdapterRec
             @Override
             public void onClick(View view, int position) {
                 boolean tmp = data.get(position).isSelect();
-
                 data.get(position).setSelect(!tmp);
                 notifyItemChanged(position);
             }
@@ -64,10 +68,11 @@ public class AdapterRecyclerViewChonQuan extends RecyclerView.Adapter<AdapterRec
         return data.size();
     }
 
-    public class RecyclerChonQuanViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class RecyclerChonQuanViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tenQuan;
         ImageView isCheck;
         private OnItemRecycleClickListener onItemRecycleClickListener;
+
         public RecyclerChonQuanViewHolder(View itemView) {
             super(itemView);
             tenQuan = itemView.findViewById(R.id.tenQuan);
@@ -76,12 +81,13 @@ public class AdapterRecyclerViewChonQuan extends RecyclerView.Adapter<AdapterRec
             itemView.setOnClickListener(this);
         }
 
-        public void setItemClickListener(OnItemRecycleClickListener itemClickListener){
+        public void setItemClickListener(OnItemRecycleClickListener itemClickListener) {
             this.onItemRecycleClickListener = itemClickListener;
         }
+
         @Override
         public void onClick(View v) {
-            onItemRecycleClickListener.onClick(v,getAdapterPosition());
+            onItemRecycleClickListener.onClick(v, getAdapterPosition());
         }
     }
 }

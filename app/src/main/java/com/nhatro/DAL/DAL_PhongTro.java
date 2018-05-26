@@ -62,6 +62,11 @@ public class DAL_PhongTro {
         args.add(new BasicNameValuePair("idtp", String.valueOf(a.getIdtp())));
         args.add(new BasicNameValuePair("idquanhuyen", String.valueOf(a.getIdqh())));
 
+        args.add(new BasicNameValuePair("hoten", a.getHoten()));
+        args.add(new BasicNameValuePair("sdt", a.getSdt()));
+        args.add(new BasicNameValuePair("facebook", a.getFacebook()));
+
+
         JSONArray images = new JSONArray();
 
         for (int i = 0; i < listImages.size(); i++) {
@@ -73,6 +78,7 @@ public class DAL_PhongTro {
         MyService jsonParser = new MyService();
 
         String json = jsonParser.makeService(URL_NEW, MyService.POST, args);
+        Log.d("HKKKKKKKKK", json);
         if (json != null) {
             try {
                 JSONObject jsonObject = new JSONObject(json);
@@ -220,6 +226,9 @@ public class DAL_PhongTro {
                     a.setGiogiac(jsonObject1.getString("giogiac"));
                     a.setTentp(jsonObject1.getString("tentp"));
                     a.setTenqh(jsonObject1.getString("tenquanhuyen"));
+                    a.setIduser(jsonObject1.getInt("iduser"));
+                    a.setIdtp(jsonObject1.getInt("idtp"));
+                    a.setIdqh(jsonObject1.getInt("idquanhuyen"));
                     return a;
                 } else {
                     return null;
@@ -259,5 +268,137 @@ public class DAL_PhongTro {
             }
         }
         return null;
+    }
+
+    public int capNhatThongTinChiTiet(PhongTros a) {
+        String URL_NEW = variable.getWebservice() + "capNhatThongTinPhong.php";
+
+        List<NameValuePair> args = new ArrayList<NameValuePair>();
+
+        args.add(new BasicNameValuePair("id", a.getId()));
+        args.add(new BasicNameValuePair("tieude", a.getTieude()));
+        args.add(new BasicNameValuePair("loaitin", String.valueOf(a.getLoaitin())));
+        args.add(new BasicNameValuePair("chieudai", String.valueOf(a.getChieudai())));
+        args.add(new BasicNameValuePair("chieurong", String.valueOf(a.getChieurong())));
+        args.add(new BasicNameValuePair("tiencoc", String.valueOf(a.getTiencoc())));
+        args.add(new BasicNameValuePair("donvicoc", "VNĐ/Phòng"));
+        args.add(new BasicNameValuePair("gia", String.valueOf(a.getGia())));
+        args.add(new BasicNameValuePair("doituong", String.valueOf(a.getDoituong())));
+        args.add(new BasicNameValuePair("tiendien", String.valueOf(a.getGiadien())));
+        args.add(new BasicNameValuePair("donvidien", a.getDonvidien()));
+        args.add(new BasicNameValuePair("tiennuoc", String.valueOf(a.getGianuoc())));
+        args.add(new BasicNameValuePair("donvinuoc", a.getDonvinuoc()));
+        args.add(new BasicNameValuePair("giogiac", a.getGiogiac()));
+        args.add(new BasicNameValuePair("songuoimin", String.valueOf(a.getSonguoimin())));
+        args.add(new BasicNameValuePair("songuoimax", String.valueOf(a.getSonguoimax())));
+
+
+        MyService jsonParser = new MyService();
+
+        String json = jsonParser.makeService(URL_NEW, MyService.POST, args);
+        if (json != null) {
+            try {
+                JSONObject jsonObject = new JSONObject(json);
+                int success = jsonObject.getInt("kq");
+                if (success == 1) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            } catch (JSONException e) {
+                return 0;
+            }
+        }
+        return 0;
+    }
+
+
+    public int capNhatTienNghi(String id, String tiennghi) {
+        String URL_NEW = variable.getWebservice() + "capNhatTienNghiPhong.php";
+
+        List<NameValuePair> args = new ArrayList<NameValuePair>();
+
+        args.add(new BasicNameValuePair("id", id));
+        args.add(new BasicNameValuePair("tiennghi", tiennghi));
+
+
+        MyService jsonParser = new MyService();
+
+        String json = jsonParser.makeService(URL_NEW, MyService.POST, args);
+        if (json != null) {
+            try {
+                JSONObject jsonObject = new JSONObject(json);
+                int success = jsonObject.getInt("kq");
+                if (success == 1) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            } catch (JSONException e) {
+                return 0;
+            }
+        }
+        return 0;
+    }
+
+    public int capNhatMoTaThem(String id, String motathem) {
+        String URL_NEW = variable.getWebservice() + "capNhatMoTaThem.php";
+
+        List<NameValuePair> args = new ArrayList<NameValuePair>();
+
+        args.add(new BasicNameValuePair("id", id));
+        args.add(new BasicNameValuePair("motathem", motathem));
+
+
+        MyService jsonParser = new MyService();
+
+        String json = jsonParser.makeService(URL_NEW, MyService.POST, args);
+        if (json != null) {
+            try {
+                JSONObject jsonObject = new JSONObject(json);
+                int success = jsonObject.getInt("kq");
+                if (success == 1) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            } catch (JSONException e) {
+                return 0;
+            }
+        }
+        return 0;
+    }
+
+    public int capNhatLienLac(String id, String hoten, String sdt, String facebook, int idtp, int idquanhuyen, String diachi) {
+        String URL_NEW = variable.getWebservice() + "capNhatLienLac.php";
+
+        List<NameValuePair> args = new ArrayList<NameValuePair>();
+
+        args.add(new BasicNameValuePair("id", id));
+        args.add(new BasicNameValuePair("hoten", hoten));
+        args.add(new BasicNameValuePair("sdt", sdt));
+        args.add(new BasicNameValuePair("facebook", facebook));
+        args.add(new BasicNameValuePair("idtp", String.valueOf(idtp)));
+        args.add(new BasicNameValuePair("idquanhuyen", String.valueOf(idquanhuyen)));
+        args.add(new BasicNameValuePair("diachi", diachi));
+
+
+        MyService jsonParser = new MyService();
+
+        String json = jsonParser.makeService(URL_NEW, MyService.POST, args);
+        if (json != null) {
+            try {
+                JSONObject jsonObject = new JSONObject(json);
+                int success = jsonObject.getInt("kq");
+                if (success == 1) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            } catch (JSONException e) {
+                return 0;
+            }
+        }
+        return 0;
     }
 }

@@ -154,10 +154,11 @@ public class MainActivity extends AppCompatActivity {
                             } else { // chưa add Fragment notify
                                 t2 = 1; // Set là đã add
                                 // Add vào
-                                fragmentManager.beginTransaction().add(R.id.frame, notifyFragment).commit();
+                                fragmentManager.beginTransaction().add(R.id.frame, notifyFragment, "notify").commit();
                                 fragmentManager.beginTransaction().hide(active).show(notifyFragment).commit();
                                 active = notifyFragment;
                             }
+
                         } else {
                             if (position == 3) {
                                 bottomNavigation.setCurrentItem(3, false);
@@ -206,11 +207,12 @@ public class MainActivity extends AppCompatActivity {
         fragmentManager.beginTransaction().add(R.id.frame, homeFragment).commit(); // Add và hiện thị fragment home khi khởi động
 
     }
-    public void checkLogin(){
+
+    public void checkLogin() {
         SharedPreferences mPrefs = getSharedPreferences("Mydata", MODE_PRIVATE);
         SharedPreferences.Editor editor = mPrefs.edit();
         String token = getToken();
-        if(token.length() > 3) {
+        if (token.length() > 3) {
             DataClient dataClient = APIUtils.getData();
             retrofit2.Call<Token> tokenCall = dataClient.CheckLogin(token);
             tokenCall.enqueue(new Callback<Token>() {
@@ -239,6 +241,7 @@ public class MainActivity extends AppCompatActivity {
             });
         }
     }
+
     public void refreshToken() {
         SharedPreferences mPrefs = getSharedPreferences("Mydata", MODE_PRIVATE);
         SharedPreferences.Editor editor = mPrefs.edit();
@@ -283,7 +286,8 @@ public class MainActivity extends AppCompatActivity {
             }
         }.start();
     }
-    public String getToken(){
+
+    public String getToken() {
         SharedPreferences mPrefs = getSharedPreferences("Mydata", MODE_PRIVATE);
         return mPrefs.getString("MyToken", "");
     }

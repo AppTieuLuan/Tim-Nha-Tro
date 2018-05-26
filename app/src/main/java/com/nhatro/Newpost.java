@@ -6,6 +6,7 @@ import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -19,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -117,7 +119,7 @@ public class Newpost extends AppCompatActivity implements OnMapReadyCallback {
     ArrayList<String> imagesAdded;
     RoundedImageView idbtnAddImage;
 
-    EditText valueTieuDe;
+    EditText valueTieuDe, valueHoTen, valueSdt, valueFacebook;
     CheckBox checkPhongTro, checkNhaNguyenCan, checkTimOGhep;
     EditText valueGia, valueDatCoc, valueChieuDai, valueChieuRong, valueTienDien, valueTienNuoc, valueSoNha;
     RadioButton radNam, radNu, radCa2;
@@ -136,6 +138,7 @@ public class Newpost extends AppCompatActivity implements OnMapReadyCallback {
 
         init();
 
+        getUserInfo();
         mapView = (MapView) findViewById(R.id.mapViTri);
         mapView.onCreate(savedInstanceState);
         mapView.onResume();
@@ -169,7 +172,7 @@ public class Newpost extends AppCompatActivity implements OnMapReadyCallback {
         //mHandlerUpdateGrid = new mHandlerUpdateGrid();
 
         lt = new LoadToast(this);
-        lt.setText("Sending Reply...");
+        lt.setText("Đang xử lý...");
         lt.setTranslationY(height / 2 - 100);
 
 
@@ -336,6 +339,38 @@ public class Newpost extends AppCompatActivity implements OnMapReadyCallback {
         grid_add_image_adapter = new Grid_Add_Image_Adapter(getApplicationContext(), R.layout.item_grid_chon_hinh_anh, add_images);
         gridHA.setAdapter(grid_add_image_adapter);
         grid_add_image_adapter.notifyDataSetChanged();
+        checkTimOGhep.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                checkPhongTro.setChecked(false);
+                checkNhaNguyenCan.setChecked(false);
+                if (isChecked) {
+                    checkTimOGhep.setChecked(true);
+                }
+            }
+        });
+
+        checkPhongTro.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                checkNhaNguyenCan.setChecked(false);
+                checkTimOGhep.setChecked(false);
+                if (isChecked) {
+                    checkPhongTro.setChecked(true);
+                }
+            }
+        });
+        checkNhaNguyenCan.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                checkTimOGhep.setChecked(false);
+                checkPhongTro.setChecked(false);
+                if (isChecked) {
+                    checkNhaNguyenCan.setChecked(true);
+                }
+            }
+        });
+
 
         setUpButtonOK();
 
@@ -395,12 +430,13 @@ public class Newpost extends AppCompatActivity implements OnMapReadyCallback {
                 layoutTransparent.setVisibility(View.GONE);
                 if ((boolean) msg.obj) {
                     lt.success();
-                    try {
-                        Thread.sleep(2000);
+                    finish();
+                    /*try {
+                        //Thread.sleep(2000);
                         finish();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
-                    }
+                    }*/
                 } else {
                     //lt.error();
                     lt.hide();
@@ -453,7 +489,109 @@ public class Newpost extends AppCompatActivity implements OnMapReadyCallback {
 
                 a.setSonguoimin(Integer.parseInt(minSoNguoi.getText().toString()));
                 a.setSonguoimax(Integer.parseInt(maxSoNguoi.getText().toString()));
-                a.setTiennghi("1111111111111111");
+                a.setHoten(valueHoTen.getText().toString());
+                a.setSdt(valueSdt.getText().toString());
+                a.setFacebook(valueFacebook.getText().toString());
+
+                String tiennghi = "";
+                for (int i = 0; i < lstFacilities.size(); i++) {
+                    if (i == 0) {
+                        if (lstFacilities.get(i).isSelected() == true) {
+                            tiennghi = "wifi,";
+                        }
+                    } else {
+                        if (i == 1) {
+                            if (lstFacilities.get(i).isSelected() == true) {
+                                tiennghi = tiennghi + "gac,";
+                            }
+                        } else {
+                            if (i == 2) {
+                                if (lstFacilities.get(i).isSelected() == true) {
+                                    tiennghi = tiennghi + "toilet,";
+                                }
+                            } else {
+                                if (i == 3) {
+                                    if (lstFacilities.get(i).isSelected() == true) {
+                                        tiennghi = tiennghi + "phongtam,";
+                                    }
+                                } else {
+                                    if (i == 4) {
+                                        if (lstFacilities.get(i).isSelected() == true) {
+                                            tiennghi = tiennghi + "giuong,";
+                                        }
+                                    } else {
+                                        if (i == 5) {
+                                            if (lstFacilities.get(i).isSelected() == true) {
+                                                tiennghi = tiennghi + "tv,";
+                                            }
+                                        } else {
+                                            if (i == 6) {
+                                                if (lstFacilities.get(i).isSelected() == true) {
+                                                    tiennghi = tiennghi + "tulanh,";
+                                                }
+                                            } else {
+                                                if (i == 7) {
+                                                    if (lstFacilities.get(i).isSelected() == true) {
+                                                        tiennghi = tiennghi + "bepga,";
+                                                    }
+                                                } else {
+                                                    if (i == 8) {
+                                                        if (lstFacilities.get(i).isSelected() == true) {
+                                                            tiennghi = tiennghi + "quat,";
+                                                        }
+                                                    } else {
+                                                        if (i == 9) {
+                                                            if (lstFacilities.get(i).isSelected() == true) {
+                                                                tiennghi = tiennghi + "tudo,";
+                                                            }
+                                                        } else {
+                                                            if (i == 10) {
+                                                                if (lstFacilities.get(i).isSelected() == true) {
+                                                                    tiennghi = tiennghi + "maylanh,";
+                                                                }
+                                                            } else {
+                                                                if (i == 11) {
+                                                                    if (lstFacilities.get(i).isSelected() == true) {
+                                                                        tiennghi = tiennghi + "den,";
+                                                                    }
+                                                                } else {
+                                                                    if (i == 12) {
+                                                                        if (lstFacilities.get(i).isSelected() == true) {
+                                                                            tiennghi = tiennghi + "baove,";
+                                                                        }
+                                                                    } else {
+                                                                        if (i == 13) {
+                                                                            if (lstFacilities.get(i).isSelected() == true) {
+                                                                                tiennghi = tiennghi + "camera,";
+                                                                            }
+                                                                        } else {
+                                                                            if (i == 14) {
+                                                                                if (lstFacilities.get(i).isSelected() == true) {
+                                                                                    tiennghi = tiennghi + "khudexe,";
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+
+                if (tiennghi.length() > 0) {
+                    tiennghi = tiennghi.substring(0, tiennghi.length() - 1);
+                }
+
+                a.setTiennghi(tiennghi);
 
                 if (radNam.isChecked()) {
                     a.setDoituong(1);
@@ -612,8 +750,6 @@ public class Newpost extends AppCompatActivity implements OnMapReadyCallback {
                         threadXuLy.start();
                     }
                 }
-
-
             }
         });
     }
@@ -659,17 +795,27 @@ public class Newpost extends AppCompatActivity implements OnMapReadyCallback {
                                                 showToast("Chọn đối tượng: Nam - Nữ hay dành cho cả 2 !");
                                                 return false;
                                             } else {
-                                                if (valueSoNha.getText().toString().equals("")) {
-                                                    showToast("Nhập địa chỉ chi tiết: Số nhà, đường, phường/xã/thị trấn... !");
+                                                if (valueHoTen.getText().toString().equals("")) {
+                                                    showToast("Nhập họ tên...");
                                                     return false;
                                                 } else {
-                                                    if (marker == null) {
-                                                        showToast("Chọn vị trí phòng trên bản đồ !");
+                                                    if (valueSdt.getText().toString().equals("")) {
+                                                        showToast("Nhập số điện thoại...");
                                                         return false;
                                                     } else {
-                                                        if (add_images.size() < 3) {
-                                                            showToast("Chọn ít nhất 3 hình ảnh cho phòng !");
+                                                        if (valueSoNha.getText().toString().equals("")) {
+                                                            showToast("Nhập địa chỉ chi tiết: Số nhà, đường, phường/xã/thị trấn... !");
                                                             return false;
+                                                        } else {
+                                                            if (marker == null) {
+                                                                showToast("Chọn vị trí phòng trên bản đồ !");
+                                                                return false;
+                                                            } else {
+                                                                if (add_images.size() < 3) {
+                                                                    showToast("Chọn ít nhất 3 hình ảnh cho phòng !");
+                                                                    return false;
+                                                                }
+                                                            }
                                                         }
                                                     }
                                                 }
@@ -723,6 +869,9 @@ public class Newpost extends AppCompatActivity implements OnMapReadyCallback {
         seekSoNguoi = findViewById(R.id.seekSoNguoi);
         minSoNguoi = findViewById(R.id.minSoNguoi);
         maxSoNguoi = findViewById(R.id.maxSoNguoi);
+        valueHoTen = findViewById(R.id.valueHoTen);
+        valueSdt = findViewById(R.id.valueSdt);
+        valueFacebook = findViewById(R.id.valueFacebook);
 
         indexSpinnerTinhTp = 0;
         spinnerQuanHuyen = findViewById(R.id.spinnerQuanHuyen);
@@ -895,4 +1044,9 @@ public class Newpost extends AppCompatActivity implements OnMapReadyCallback {
         return rs;
     }
 
+    public void getUserInfo() {
+        SharedPreferences pre = getSharedPreferences("Mydata", MODE_PRIVATE);
+        String user = pre.getString("MyUser", "");
+        int sss = 1;
+    }
 }

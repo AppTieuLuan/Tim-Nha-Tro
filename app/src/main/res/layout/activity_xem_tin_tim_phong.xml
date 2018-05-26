@@ -115,14 +115,24 @@
 
                     <TextView
                         android:id="@+id/txtTieuDe"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:maxLines="3"
                         android:text="Tìm phòng trọ tại quận 9 cho 1 người ở. "
                         android:textSize="13sp"
                         android:textStyle="bold"
-                        app:layout_constraintEnd_toEndOf="parent" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/btnEdit"
+                        />
+                    <ImageView
+                        android:id="@+id/btnEdit"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:padding="2dp"
+                        android:src="@drawable/ic_edit"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/txtTieuDe" />
 
                     <View
                         android:id="@+id/divider1"

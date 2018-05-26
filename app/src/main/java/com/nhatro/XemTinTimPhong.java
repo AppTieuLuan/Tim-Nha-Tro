@@ -33,10 +33,12 @@ import com.nhatro.adapter.ExpandableHeightGridView;
 import com.nhatro.adapter.Grid_Facilities_Adapter;
 import com.nhatro.model.BinhLuan;
 import com.nhatro.model.Item_Grid_Facilities;
+import com.nhatro.model.ThongBao;
 import com.nhatro.model.TinTimPhong;
 import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -59,7 +61,7 @@ public class XemTinTimPhong extends AppCompatActivity {
     CircleImageView profile_image;
     TextView txtTen, txtSoDT, txtTieuDe, valueLoaiNhaO, valueSoNguoi, valueGiaMonMuon,
             valueQH, valueKhuVuc, valueGioGiac, txtbinhluan, valueGioiTinh, txtxemthem;
-    ImageView btnCall, btnGuiSMS, btnFaceBook, btnMessenger;
+    ImageView btnCall, btnGuiSMS, btnFaceBook, btnMessenger, btnEdit;
     EditText edtNhapBl, edtSuaBL;
     ConstraintLayout layoutND;
     LinearLayout layoutLoad;
@@ -82,17 +84,19 @@ public class XemTinTimPhong extends AppCompatActivity {
     BottomSheetDialog bottomSheetDialogSua;
     View sheetViewSua;
 
+    TinTimPhong dlTin;
+    ThongBao thongBao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_xem_tin_tim_phong);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        dlTin = new TinTimPhong();
         findView();
         getData();
 
-
+        thongBao = new ThongBao();
         lstTienNghi = new ArrayList<>();
 
         lstTienNghi.add(new Item_Grid_Facilities("Wifi", R.drawable.icons_wi_fi, false));
@@ -123,7 +127,7 @@ public class XemTinTimPhong extends AppCompatActivity {
     }
 
     public void findView() {
-
+        btnEdit = findViewById(R.id.btnEdit);
         layoutND = findViewById(R.id.layoutND);
         layoutLoad = findViewById(R.id.layoutLoad);
         isXoaBL = false;
@@ -210,6 +214,12 @@ public class XemTinTimPhong extends AppCompatActivity {
                         binhLuan.setIdUser(3);
                         binhLuan.setNoiDungBl(edtNhapBl.getText().toString());
                         binhLuan.setIdPhong(idItem);
+
+                        thongBao.setIdusernhan(dlTin.getIduser());
+                        thongBao.setIdtintuc(idItem);
+                        thongBao.setIduser2(1);
+                        thongBao.setTieudeTin(dlTin.getTieude());
+                        thongBao.setLoai(2);
 
                         ThemBinhLuan themBinhLuan = new ThemBinhLuan();
                         themBinhLuan.execute(binhLuan);
@@ -300,6 +310,19 @@ public class XemTinTimPhong extends AppCompatActivity {
                 }
             }
         });
+
+        btnEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putInt("key", 2);
+                bundle.putString("iditem", idItem);
+                bundle.putSerializable("tintimphong", dlTin);
+                Intent intents = new Intent(getApplicationContext(), ThemTinTimPhong.class);
+                intents.putExtra("data", bundle);
+                startActivityForResult(intents, 90);
+            }
+        });
     }
 
     @Override
@@ -333,6 +356,8 @@ public class XemTinTimPhong extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Có lỗi khi lấy dữ liệu. Thử lại sau ..", Toast.LENGTH_SHORT).show();
                 layoutLoad.setVisibility(View.GONE);
             } else {
+                dlTin = tinTimPhong;
+
                 try {
                     Picasso.with(getApplicationContext()).load(tinTimPhong.getAvatar()).into(profile_image);
                 } catch (Exception e) {
@@ -341,103 +366,120 @@ public class XemTinTimPhong extends AppCompatActivity {
                 txtTen.setText(tinTimPhong.getHoten());
                 txtSoDT.setText(tinTimPhong.getSdt());
 
-                if (tinTimPhong.getLoaitin() == 1) {
-                    valueLoaiNhaO.setText("Tìm nhà trọ.");
-                } else {
-                    if (tinTimPhong.getLoaitin() == 2) {
-                        valueLoaiNhaO.setText("Tìm ở ghép.");
-                    } else {
-                        if (tinTimPhong.getLoaitin() == 3) {
-                            valueLoaiNhaO.setText("Tìm nhà nguyên căn.");
-                        }
-                    }
-                }
-                valueSoNguoi.setText(tinTimPhong.getSonguoimin() + " - " + tinTimPhong.getSonguoimax() + " người.");
-                if (tinTimPhong.getGiamin() == tinTimPhong.getGiamax()) {
-                    valueGiaMonMuon.setText(tinTimPhong.getGiamin() + " vnđ");
-                } else {
-                    valueGiaMonMuon.setText("Từ " + String.valueOf(tinTimPhong.getGiamin()) + " - " + tinTimPhong.getGiamax() + " vnđ");
-                }
+                setView(tinTimPhong);
 
-                valueQH.setText(tinTimPhong.getQh() + " / " + tinTimPhong.getTentp());
-                if (tinTimPhong.getKhuvuc().equals("")) {
-                    valueKhuVuc.setText("Không yêu cầu.");
-                } else {
-                    valueKhuVuc.setText(tinTimPhong.getKhuvuc());
-                }
+                setClickCall_SMS(tinTimPhong.getSdt(), tinTimPhong.getFacebook());
+                layoutLoad.setVisibility(View.GONE);
+                layoutND.setVisibility(View.VISIBLE);
+            }
 
-                if (tinTimPhong.getGiogiac() == 1) {
-                    valueGioGiac.setText("Yêu cầu giờ giấc tự do.");
-                } else {
-                    valueGioGiac.setText("Không yêu cầu.");
-                }
-                if (tinTimPhong.getMotathem().equals("")) {
-                    txtbinhluan.setText("Không có mô tả thêm");
-                } else {
-                    txtbinhluan.setText(tinTimPhong.getMotathem());
-                }
+        }
+    }
 
-                if (tinTimPhong.getGioitinh() == 3) {
-                    valueGioiTinh.setText("Không yêu cầu.");
-                } else {
-                    if (tinTimPhong.getGioitinh() == 1) {
-                        valueLoaiNhaO.setText("Nam");
-                    } else {
-                        if (tinTimPhong.getGioitinh() == 2) {
-                            valueGioiTinh.setText("Nữ");
-                        }
-                    }
+    public void setView(TinTimPhong tinTimPhong) {
+
+        txtTieuDe.setText(tinTimPhong.getTieude());
+        if (tinTimPhong.getLoaitin() == 1) {
+            valueLoaiNhaO.setText("Tìm nhà trọ.");
+        } else {
+            if (tinTimPhong.getLoaitin() == 2) {
+                valueLoaiNhaO.setText("Tìm ở ghép.");
+            } else {
+                if (tinTimPhong.getLoaitin() == 3) {
+                    valueLoaiNhaO.setText("Tìm nhà nguyên căn.");
                 }
-                String[] array = tinTimPhong.getTiennghi().split(",", -1);
-                for (int i = 0; i < array.length; i++) {
-                    if (array[i].equals("wifi")) {
-                        lstTienNghi.get(0).setSelected(true);
+            }
+        }
+        valueSoNguoi.setText(tinTimPhong.getSonguoimin() + " - " + tinTimPhong.getSonguoimax() + " người.");
+        if (tinTimPhong.getGiamin() == tinTimPhong.getGiamax()) {
+            valueGiaMonMuon.setText(tinTimPhong.getGiamin() + " vnđ");
+        } else {
+            DecimalFormat formatter = new DecimalFormat("###,###,###");
+            String tmp = formatter.format(tinTimPhong.getGiamin());
+            String tmp2 = formatter.format(tinTimPhong.getGiamax());
+            valueGiaMonMuon.setText("Từ " + String.valueOf(tmp) + " - " + tmp2 + " vnđ");
+        }
+
+        valueQH.setText(tinTimPhong.getQh() + " / " + tinTimPhong.getTentp());
+        if (tinTimPhong.getKhuvuc().equals("")) {
+            valueKhuVuc.setText("Không yêu cầu.");
+        } else {
+            valueKhuVuc.setText(tinTimPhong.getKhuvuc());
+        }
+
+        if (tinTimPhong.getGiogiac() == 1) {
+            valueGioGiac.setText("Yêu cầu giờ giấc tự do.");
+        } else {
+            valueGioGiac.setText("Không yêu cầu.");
+        }
+        if (tinTimPhong.getMotathem().equals("")) {
+            txtbinhluan.setText("Không có mô tả thêm");
+        } else {
+            txtbinhluan.setText(tinTimPhong.getMotathem());
+        }
+
+        if (tinTimPhong.getGioitinh() == 3) {
+            valueGioiTinh.setText("Không yêu cầu.");
+        } else {
+            if (tinTimPhong.getGioitinh() == 1) {
+                valueGioiTinh.setText("Nam");
+            } else {
+                if (tinTimPhong.getGioitinh() == 2) {
+                    valueGioiTinh.setText("Nữ");
+                }
+            }
+        }
+        for (int i = 0; i < lstTienNghi.size(); i++) {
+            lstTienNghi.get(i).setSelected(false);
+        }
+        String[] array = tinTimPhong.getTiennghi().split(",", -1);
+        for (int i = 0; i < array.length; i++) {
+            if (array[i].equals("wifi")) {
+                lstTienNghi.get(0).setSelected(true);
+            } else {
+                if (array[i].equals("gac")) {
+                    lstTienNghi.get(1).setSelected(true);
+                } else {
+                    if (array[i].equals("toilet")) {
+                        lstTienNghi.get(2).setSelected(true);
                     } else {
-                        if (array[i].equals("gac")) {
-                            lstTienNghi.get(1).setSelected(true);
+                        if (array[i].equals("phongtam")) {
+                            lstTienNghi.get(3).setSelected(true);
                         } else {
-                            if (array[i].equals("toilet")) {
-                                lstTienNghi.get(2).setSelected(true);
+                            if (array[i].equals("giuong")) {
+                                lstTienNghi.get(4).setSelected(true);
                             } else {
-                                if (array[i].equals("phongtam")) {
-                                    lstTienNghi.get(3).setSelected(true);
+                                if (array[i].equals("tv")) {
+                                    lstTienNghi.get(5).setSelected(true);
                                 } else {
-                                    if (array[i].equals("giuong")) {
-                                        lstTienNghi.get(4).setSelected(true);
+                                    if (array[i].equals("tulanh")) {
+                                        lstTienNghi.get(6).setSelected(true);
                                     } else {
-                                        if (array[i].equals("tv")) {
-                                            lstTienNghi.get(5).setSelected(true);
+                                        if (array[i].equals("bepga")) {
+                                            lstTienNghi.get(7).setSelected(true);
                                         } else {
-                                            if (array[i].equals("tulanh")) {
-                                                lstTienNghi.get(6).setSelected(true);
+                                            if (array[i].equals("quat")) {
+                                                lstTienNghi.get(8).setSelected(true);
                                             } else {
-                                                if (array[i].equals("bepga")) {
-                                                    lstTienNghi.get(7).setSelected(true);
+                                                if (array[i].equals("tudo")) {
+                                                    lstTienNghi.get(9).setSelected(true);
                                                 } else {
-                                                    if (array[i].equals("quat")) {
-                                                        lstTienNghi.get(8).setSelected(true);
+                                                    if (array[i].equals("maylanh")) {
+                                                        lstTienNghi.get(10).setSelected(true);
                                                     } else {
-                                                        if (array[i].equals("tudo")) {
-                                                            lstTienNghi.get(9).setSelected(true);
+                                                        if (array[i].equals("den")) {
+                                                            lstTienNghi.get(11).setSelected(true);
                                                         } else {
-                                                            if (array[i].equals("maylanh")) {
-                                                                lstTienNghi.get(10).setSelected(true);
+                                                            if (array[i].equals("baove")) {
+                                                                lstTienNghi.get(12).setSelected(true);
                                                             } else {
-                                                                if (array[i].equals("den")) {
-                                                                    lstTienNghi.get(11).setSelected(true);
+                                                                if (array[i].equals("camera")) {
+                                                                    lstTienNghi.get(13).setSelected(true);
                                                                 } else {
-                                                                    if (array[i].equals("baove")) {
-                                                                        lstTienNghi.get(12).setSelected(true);
+                                                                    if (array[i].equals("khudexe")) {
+                                                                        lstTienNghi.get(14).setSelected(true);
                                                                     } else {
-                                                                        if (array[i].equals("camera")) {
-                                                                            lstTienNghi.get(13).setSelected(true);
-                                                                        } else {
-                                                                            if (array[i].equals("khudexe")) {
-                                                                                lstTienNghi.get(14).setSelected(true);
-                                                                            } else {
 
-                                                                            }
-                                                                        }
                                                                     }
                                                                 }
                                                             }
@@ -452,14 +494,9 @@ public class XemTinTimPhong extends AppCompatActivity {
                         }
                     }
                 }
-                myAdapter.notifyDataSetChanged();
-                setClickCall_SMS(tinTimPhong.getSdt(), tinTimPhong.getFacebook());
-
-                layoutLoad.setVisibility(View.GONE);
-                layoutND.setVisibility(View.VISIBLE);
             }
-
         }
+        myAdapter.notifyDataSetChanged();
     }
 
     public void setClickCall_SMS(String sdt, String facebook) {
@@ -564,7 +601,7 @@ public class XemTinTimPhong extends AppCompatActivity {
         @Override
         protected String doInBackground(BinhLuan... binhLuans) {
             BinhLuans binhLuans1 = new BinhLuans();
-            String res = binhLuans1.themBLTinTimPhong(binhLuans[0]);
+            String res = binhLuans1.themBLTinTimPhong(binhLuans[0], thongBao);
 
             return res;
         }
@@ -696,6 +733,19 @@ public class XemTinTimPhong extends AppCompatActivity {
             isXoaBL = false;
             bottomSheetDialogSua.setCancelable(true);
             progresSuabl.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data != null) {
+            if (resultCode == 75) {
+                Bundle bundles = data.getBundleExtra("data");
+                //tenTP = bundle.getString("tenTP");
+                dlTin = (TinTimPhong) bundles.getSerializable("data");
+                setView(dlTin);
+            }
         }
     }
 }

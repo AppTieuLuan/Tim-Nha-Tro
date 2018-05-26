@@ -86,8 +86,6 @@ public class ThemTinTimPhong extends AppCompatActivity implements OnMapReadyCall
     ExpandableHeightGridView gridTienNghi;
     ArrayList<Item_Grid_Facilities> lstFacilities = new ArrayList<>();
     Grid_Facilities_Adapter myAdapter;
-
-
     LinearLayout layoutTransparent;
     LoadToast lt, loadToast2;
     ThemTinTimPhong.mHadler mHadler;
@@ -101,6 +99,10 @@ public class ThemTinTimPhong extends AppCompatActivity implements OnMapReadyCall
     AlertDialog.Builder alertDialogBuilder;
 
     String idqh = "";
+    int indexSpnTinh;
+    TinTimPhong thongTinTimPhong;
+    int key;
+    String iditem = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,6 +145,9 @@ public class ThemTinTimPhong extends AppCompatActivity implements OnMapReadyCall
         spinnerTinhTPAdapter = new SpinnerTinhTP(getApplicationContext(), arrTinhTP);
         spinnerTinhTP.setAdapter(spinnerTinhTPAdapter);
 
+        Intent intent = getIntent();
+        Bundle bundle = intent.getBundleExtra("data");
+        key = bundle.getInt("key");
 
         // set listener
         seekSoNguoi.setOnRangeSeekbarChangeListener(new OnRangeSeekbarChangeListener() {
@@ -157,8 +162,6 @@ public class ThemTinTimPhong extends AppCompatActivity implements OnMapReadyCall
 
         minGia.setText("0 VNĐ");
         maxGia.setText("10.000.000 VNĐ");
-
-
         seekGia.setOnRangeSeekbarChangeListener(new OnRangeSeekbarChangeListener() {
             @Override
             public void valueChanged(Number minValue, Number maxValue) {
@@ -166,11 +169,8 @@ public class ThemTinTimPhong extends AppCompatActivity implements OnMapReadyCall
                 DecimalFormat formatter = new DecimalFormat("###,###,###");
                 String tmp = formatter.format(minValue) + " VNĐ";
                 minGia.setText(tmp);
-
                 tmp = formatter.format(maxValue) + " VNĐ";
                 maxGia.setText(tmp);
-
-
             }
         });
 
@@ -184,8 +184,6 @@ public class ThemTinTimPhong extends AppCompatActivity implements OnMapReadyCall
                 quanHuyens = sqLite_quanHuyen.getDSQH(arrTinhTP.get(position).getId());
                 adapterRecyclerViewChonQuan = new AdapterRecyclerViewChonQuan(quanHuyens, getApplicationContext());
                 recycleQH.setAdapter(adapterRecyclerViewChonQuan);
-
-
             }
 
             @Override
@@ -210,6 +208,174 @@ public class ThemTinTimPhong extends AppCompatActivity implements OnMapReadyCall
         setupGridTienNghi();
         setUpbuttonOK();
         setUpCheck();
+
+        if (key == 2) {
+            iditem = bundle.getString("iditem");
+            thongTinTimPhong = new TinTimPhong();
+            thongTinTimPhong = (TinTimPhong) bundle.getSerializable("tintimphong");
+            getDataEdit();
+        }
+    }
+
+    public void getDataEdit() {
+        valueTieuDe.setText(thongTinTimPhong.getTieude());
+        if (thongTinTimPhong.getLoaitin() == 1) {
+            checkPhongTro.setChecked(true);
+        } else {
+            if (thongTinTimPhong.getLoaitin() == 2) {
+                checkTimOGhep.setChecked(true);
+            } else {
+                checkNhaNguyenCan.setChecked(true);
+            }
+        }
+        minSoNguoi.setText(String.valueOf(thongTinTimPhong.getSonguoimin()));
+        maxSoNguoi.setText(String.valueOf(thongTinTimPhong.getSonguoimax()));
+        seekSoNguoi.setMinValue(1)
+                .setMaxValue(10)
+                .setMinStartValue(thongTinTimPhong.getSonguoimin())
+                .setMaxStartValue(thongTinTimPhong.getSonguoimax())
+                .apply();
+
+        DecimalFormat formatter = new DecimalFormat("###,###,###");
+        String tmp = formatter.format(thongTinTimPhong.getGiamin()) + " VNĐ";
+        minGia.setText(tmp);
+
+        tmp = formatter.format(thongTinTimPhong.getGiamax()) + " VNĐ";
+        maxGia.setText(tmp);
+        seekGia.setMinValue(0)
+                .setMaxValue(10000000)
+                .setMinStartValue(thongTinTimPhong.getGiamin())
+                .setMaxStartValue(thongTinTimPhong.getGiamax())
+                .apply();
+
+        if (thongTinTimPhong.getGioitinh() == 1) {
+            radNam.setChecked(true);
+            radCa2.setChecked(false);
+            radNu.setChecked(false);
+        } else {
+            if (thongTinTimPhong.getGioitinh() == 2) {
+                radNam.setChecked(false);
+                radCa2.setChecked(false);
+                radNu.setChecked(true);
+            } else {
+                radNam.setChecked(false);
+                radCa2.setChecked(true);
+                radNu.setChecked(false);
+            }
+        }
+
+        if (thongTinTimPhong.getGiogiac() == 0) {
+            checkTD.setChecked(false);
+        } else {
+            checkTD.setChecked(true);
+        }
+        for (int i = 0; i < arrTinhTP.size(); i++) {
+            if (arrTinhTP.get(i).getId() == thongTinTimPhong.getIdtp()) {
+                indexSpnTinh = i;
+                break;
+            }
+        }
+        spinnerTinhTP.setSelection(indexSpnTinh);
+        //spinnerTinhTP.setSelection(40);
+
+        quanHuyens.clear();
+        quanHuyens = sqLite_quanHuyen.getDSQH(thongTinTimPhong.getIdtp());
+
+        adapterRecyclerViewChonQuan = new AdapterRecyclerViewChonQuan(quanHuyens, getApplicationContext());
+        recycleQH.setAdapter(adapterRecyclerViewChonQuan);
+
+        String idqh = thongTinTimPhong.getIdqh();
+        idqh = idqh.replaceAll("\"", "");
+
+        String arr[] = idqh.split(",");
+
+        for (int i = 0; i < arr.length; i++) {
+            for (int j = 0; j < quanHuyens.size(); j++) {
+                if (Integer.parseInt(arr[i]) == quanHuyens.get(j).getId()) {
+                    quanHuyens.get(j).setSelect(true);
+                    adapterRecyclerViewChonQuan.updateItem(j);
+                    //quanHuyens.get(j).setSelect(true);
+                    //adapterRecyclerViewChonQuan.notifyItemChanged(j);
+                    //adapterRecyclerViewChonQuan = new AdapterRecyclerViewChonQuan(quanHuyens, getApplicationContext());
+                    //recycleQH.setAdapter(adapterRecyclerViewChonQuan);
+                    break;
+                }
+            }
+        }
+        /*adapterRecyclerViewChonQuan = new AdapterRecyclerViewChonQuan(quanHuyens, getApplicationContext());
+        recycleQH.setAdapter(adapterRecyclerViewChonQuan);*/
+
+        valueKV.setText(thongTinTimPhong.getMotathem());
+        setUpGridTienNghiEdit();
+        edtNhapBl.setText(thongTinTimPhong.getMotathem());
+    }
+
+    public void setUpGridTienNghiEdit() {
+        String[] array = thongTinTimPhong.getTiennghi().split(",", -1);
+        for (int i = 0; i < array.length; i++) {
+            if (array[i].equals("wifi")) {
+                lstFacilities.get(0).setSelected(true);
+            } else {
+                if (array[i].equals("gac")) {
+                    lstFacilities.get(1).setSelected(true);
+                } else {
+                    if (array[i].equals("toilet")) {
+                        lstFacilities.get(2).setSelected(true);
+                    } else {
+                        if (array[i].equals("phongtam")) {
+                            lstFacilities.get(3).setSelected(true);
+                        } else {
+                            if (array[i].equals("giuong")) {
+                                lstFacilities.get(4).setSelected(true);
+                            } else {
+                                if (array[i].equals("tv")) {
+                                    lstFacilities.get(5).setSelected(true);
+                                } else {
+                                    if (array[i].equals("tulanh")) {
+                                        lstFacilities.get(6).setSelected(true);
+                                    } else {
+                                        if (array[i].equals("bepga")) {
+                                            lstFacilities.get(7).setSelected(true);
+                                        } else {
+                                            if (array[i].equals("quat")) {
+                                                lstFacilities.get(8).setSelected(true);
+                                            } else {
+                                                if (array[i].equals("tudo")) {
+                                                    lstFacilities.get(9).setSelected(true);
+                                                } else {
+                                                    if (array[i].equals("maylanh")) {
+                                                        lstFacilities.get(10).setSelected(true);
+                                                    } else {
+                                                        if (array[i].equals("den")) {
+                                                            lstFacilities.get(11).setSelected(true);
+                                                        } else {
+                                                            if (array[i].equals("baove")) {
+                                                                lstFacilities.get(12).setSelected(true);
+                                                            } else {
+                                                                if (array[i].equals("camera")) {
+                                                                    lstFacilities.get(13).setSelected(true);
+                                                                } else {
+                                                                    if (array[i].equals("khudexe")) {
+                                                                        lstFacilities.get(14).setSelected(true);
+                                                                    } else {
+
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        myAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -244,6 +410,29 @@ public class ThemTinTimPhong extends AppCompatActivity implements OnMapReadyCall
                 startActivityForResult(intent, 1110);
             }
         });
+
+        if (key == 2) {
+            if (currentCircle != null) {
+                currentCircle.setRadius(thongTinTimPhong.getBankinh() * 1000);
+                currentCircle.setCenter(new LatLng(thongTinTimPhong.getLat(), thongTinTimPhong.getLng()));
+            } else {
+                CircleOptions circleOptions = new CircleOptions();
+                circleOptions.center(new LatLng(thongTinTimPhong.getLat(), thongTinTimPhong.getLng()));
+                circleOptions.radius(thongTinTimPhong.getBankinh() * 1000);
+                circleOptions.strokeColor(Color.parseColor("#66b5ed"));
+                circleOptions.fillColor(0x5366b5ed);
+                circleOptions.strokeWidth(1);
+                currentCircle = map.addCircle(circleOptions);
+            }
+
+            //map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latt, lngg), getZoomLevel(currentCircle)));
+            map.animateCamera(CameraUpdateFactory.newLatLngZoom(
+                    currentCircle.getCenter(), getZoomLevel(currentCircle)));
+
+            this.lat = thongTinTimPhong.getLat();
+            this.lng = thongTinTimPhong.getLng();
+        }
+
     }
 
     public int getZoomLevel(Circle circle) {
@@ -349,7 +538,7 @@ public class ThemTinTimPhong extends AppCompatActivity implements OnMapReadyCall
         //mHandlerUpdateGrid = new mHandlerUpdateGrid();
 
         lt = new LoadToast(this);
-        lt.setText("Sending Reply...");
+        lt.setText("Đang xử lý...");
         lt.setTranslationY(height / 2 - 100);
 
 
@@ -360,8 +549,6 @@ public class ThemTinTimPhong extends AppCompatActivity implements OnMapReadyCall
         layoutTransparent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
             }
         });
 
@@ -377,7 +564,6 @@ public class ThemTinTimPhong extends AppCompatActivity implements OnMapReadyCall
                 threadXuLy.start();
             }
         });
-
         alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -395,12 +581,10 @@ public class ThemTinTimPhong extends AppCompatActivity implements OnMapReadyCall
         });
     }
 
-
     public class mHadler extends Handler {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-
             if (msg.what == 0) {
                 lt.show();
                 layoutTransparent.setVisibility(View.VISIBLE);
@@ -410,6 +594,18 @@ public class ThemTinTimPhong extends AppCompatActivity implements OnMapReadyCall
                 layoutTransparent.setVisibility(View.GONE);
                 if ((boolean) msg.obj) {
                     lt.success();
+
+                    // Sửa dữ liệu thành công
+                    if (key == 2) {
+                        Intent intents = getIntent();
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("data", thongTinTimPhong);
+                        intents.putExtra("data", bundle);
+                        setResult(75, intents);
+                        finish();
+                    } else {
+
+                    }
                 } else {
                     //lt.error();
                     lt.hide();
@@ -424,7 +620,6 @@ public class ThemTinTimPhong extends AppCompatActivity implements OnMapReadyCall
         @Override
         public void run() {
             mHadler.sendEmptyMessage(0);
-
             TinTimPhong tinTimPhong = new TinTimPhong();
             tinTimPhong.setTieude(valueTieuDe.getText().toString());
             if (checkPhongTro.isChecked()) {
@@ -438,13 +633,11 @@ public class ThemTinTimPhong extends AppCompatActivity implements OnMapReadyCall
                     }
                 }
             }
-
             tinTimPhong.setSonguoimin(Integer.parseInt(minSoNguoi.getText().toString()));
             tinTimPhong.setSonguoimax(Integer.parseInt(maxSoNguoi.getText().toString()));
             tinTimPhong.setGiamin(seekGia.getSelectedMinValue().intValue());
             tinTimPhong.setGiamax(seekGia.getSelectedMaxValue().intValue());
             tinTimPhong.setIdtp(idtp);
-
             idqh = "";
             String tenqh = "";
             for (int i = 0; i < quanHuyens.size(); i++) {
@@ -457,7 +650,6 @@ public class ThemTinTimPhong extends AppCompatActivity implements OnMapReadyCall
                 idqh = idqh.substring(0, idqh.length() - 1);
                 tenqh = tenqh.substring(0, tenqh.length() - 2);
             }
-
             tinTimPhong.setQh(tenqh);
             tinTimPhong.setIdqh(idqh);
             tinTimPhong.setKhuvuc(valueKV.getText().toString());
@@ -465,7 +657,7 @@ public class ThemTinTimPhong extends AppCompatActivity implements OnMapReadyCall
             tinTimPhong.setLat(lat);
             tinTimPhong.setLng(lng);
             tinTimPhong.setBankinh(bankinh);
-
+            tinTimPhong.setId(iditem);
             String tiennghi = "";
             for (int i = 0; i < lstFacilities.size(); i++) {
                 if (i == 0) {
@@ -560,7 +752,7 @@ public class ThemTinTimPhong extends AppCompatActivity implements OnMapReadyCall
             }
 
             tinTimPhong.setIduser(1);
-
+            tinTimPhong.setTentp(arrTinhTP.get(indexSpnTinh).getTen());
             if (tiennghi.length() > 0) {
                 tiennghi = tiennghi.substring(0, tiennghi.length() - 1);
             }
@@ -569,12 +761,12 @@ public class ThemTinTimPhong extends AppCompatActivity implements OnMapReadyCall
             tinTimPhong.setMotathem(edtNhapBl.getText().toString());
 
             if (radCa2.isChecked()) {
-                tinTimPhong.setGioitinh(2);
+                tinTimPhong.setGioitinh(3);
             } else {
                 if (radNam.isChecked()) {
-                    tinTimPhong.setGioitinh(0);
-                } else {
                     tinTimPhong.setGioitinh(1);
+                } else {
+                    tinTimPhong.setGioitinh(2);
                 }
             }
             if (checkNhanTB.isChecked()) {
@@ -583,19 +775,33 @@ public class ThemTinTimPhong extends AppCompatActivity implements OnMapReadyCall
                 tinTimPhong.setNhanthongbao(0);
             }
 
-            if (checkTD.isChecked()) {
+            if (!checkTD.isChecked()) {
                 tinTimPhong.setGiogiac(0);
             } else {
                 tinTimPhong.setGiogiac(1);
             }
-
+            //boolean kq = false;
             // Xử lý thêm ở đây ở đây
+            if (key != 2) {
+                boolean kq;
+                DAL_TinTimPhong dal_tinTimPhong = new DAL_TinTimPhong();
+                kq = dal_tinTimPhong.themTinMoi(tinTimPhong);
+                Message message = mHadler.obtainMessage(1, kq);
+                mHadler.sendMessage(message);
+            } else {
+                //Toast.makeText(getApplicationContext(), "Cập nhật..", Toast.LENGTH_SHORT).show();
+                DAL_TinTimPhong dal_tinTimPhong = new DAL_TinTimPhong();
+                boolean kq;
+                kq = dal_tinTimPhong.capNhatTinTimPhong(tinTimPhong, thongTinTimPhong);
+                if (kq) {
+                    thongTinTimPhong = tinTimPhong;
+                }
+                Message message = mHadler.obtainMessage(1, kq);
+                mHadler.sendMessage(message);
 
-            DAL_TinTimPhong dal_tinTimPhong = new DAL_TinTimPhong();
-            boolean kq = dal_tinTimPhong.themTinMoi(tinTimPhong);
+            }
 
-            Message message = mHadler.obtainMessage(1, kq);
-            mHadler.sendMessage(message);
+
         }
     }
 
@@ -616,7 +822,7 @@ public class ThemTinTimPhong extends AppCompatActivity implements OnMapReadyCall
                     }
                 }
                 if (!tmp) {
-                    showToast("Chọn các quận/huyện muốn tìm !");
+                    showToast("Chọn các quận/huyện muốn tìm kiếm !");
                     return false;
                 } else {
                     if (currentCircle == null) {
@@ -639,7 +845,6 @@ public class ThemTinTimPhong extends AppCompatActivity implements OnMapReadyCall
         checkPhongTro = findViewById(R.id.checkPhongTro);
         checkNhaNguyenCan = findViewById(R.id.checkNhaNguyenCan);
         checkTimOGhep = findViewById(R.id.checkTimOGhep);
-
         checkPhongTro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -648,6 +853,5 @@ public class ThemTinTimPhong extends AppCompatActivity implements OnMapReadyCall
                 checkTimOGhep.setSelected(false);
             }
         });
-
     }
 }

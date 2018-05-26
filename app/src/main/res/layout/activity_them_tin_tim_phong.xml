@@ -33,23 +33,6 @@
                     android:textColor="@color/black"
                     android:textStyle="bold" />
 
-                <EditText
-                    android:id="@+id/valueTieuDe"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:backgroundTint="@color/white"
-                    android:hint="Nhập tiêu đề *"
-                    android:maxLines="7"
-                    android:paddingLeft="90dp"
-                    android:textColor="#000000"
-                    android:textSize="13sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/txtThongTin"
-
-                    />
-
                 <TextView
                     android:id="@+id/txtTieuDe"
                     android:layout_width="wrap_content"
@@ -61,17 +44,33 @@
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="@id/valueTieuDe"
                     app:layout_constraintTop_toTopOf="@id/valueTieuDe"
+                    />
 
+                <EditText
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/border_edittext"
+                    android:id="@+id/valueTieuDe"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:padding="8dp"
+                    android:maxLines="3"
+                    android:layout_marginEnd="10dp"
+                    android:hint="* Tiêu đề"
+                    android:layout_marginStart="85dp"
+                    android:textSize="12sp"
+                    app:layout_constraintTop_toBottomOf="@+id/txtThongTin"
+                    app:layout_constraintStart_toEndOf="@id/txtTieuDe"
                     />
 
                 <View
+                    android:layout_marginTop="5dp"
                     android:id="@+id/divider1"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@android:color/darker_gray"
                     app:layout_constraintTop_toBottomOf="@id/valueTieuDe" />
-
-
                 <TextView
                     android:id="@+id/txtLoaiNhaO"
                     android:layout_width="wrap_content"
@@ -110,8 +109,6 @@
                         app:layout_constraintTop_toBottomOf="@id/checkNhaNguyenCan" />
 
                 </RadioGroup>
-
-
                 <View
                     android:id="@+id/divider2"
                     android:layout_width="match_parent"
@@ -119,7 +116,6 @@
                     android:background="@android:color/darker_gray"
                     app:layout_constraintTop_toBottomOf="@id/radGroup" />
                 />
-
                 <TextView
                     android:id="@+id/txtSoNguoi"
                     android:layout_width="wrap_content"
@@ -130,7 +126,6 @@
                     android:textSize="13sp"
                     android:textStyle="bold"
                     app:layout_constraintTop_toBottomOf="@id/divider2" />
-
                 <LinearLayout
                     android:id="@+id/layoutSoNguoi"
                     android:layout_width="match_parent"
@@ -183,7 +178,6 @@
                     </LinearLayout>
 
                 </LinearLayout>
-
                 <View
                     android:id="@+id/divider3"
                     android:layout_width="match_parent"
@@ -191,7 +185,6 @@
                     android:background="@android:color/darker_gray"
                     app:layout_constraintTop_toBottomOf="@id/layoutSoNguoi" />
                 />
-
                 <TextView
                     android:id="@+id/txtGia"
                     android:layout_width="wrap_content"
@@ -202,7 +195,6 @@
                     android:textSize="13sp"
                     android:textStyle="bold"
                     app:layout_constraintTop_toBottomOf="@id/divider3" />
-
                 <LinearLayout
                     android:id="@+id/layoutGia"
                     android:layout_width="match_parent"
@@ -253,8 +245,6 @@
                     </LinearLayout>
 
                 </LinearLayout>
-
-
                 <View
                     android:id="@+id/divider4"
                     android:layout_width="match_parent"
@@ -262,7 +252,6 @@
                     android:background="@android:color/darker_gray"
                     app:layout_constraintTop_toBottomOf="@id/layoutGia" />
                 />
-
                 <TextView
                     android:id="@+id/txtGT"
                     android:layout_width="wrap_content"
@@ -301,8 +290,6 @@
                         app:layout_constraintTop_toBottomOf="@id/checkNhaNguyenCan" />
 
                 </RadioGroup>
-
-
                 <View
                     android:id="@+id/divider22"
                     android:layout_width="match_parent"
@@ -310,8 +297,6 @@
                     android:background="@android:color/darker_gray"
                     app:layout_constraintTop_toBottomOf="@id/radGt" />
                 />
-
-
                 <TextView
                     android:id="@+id/giogiac"
                     android:layout_width="wrap_content"
@@ -337,7 +322,6 @@
                     android:background="@android:color/darker_gray"
                     app:layout_constraintTop_toBottomOf="@id/giogiac" />
                 />
-
                 <TextView
                     android:id="@+id/txtDC"
                     android:layout_width="match_parent"
@@ -348,7 +332,6 @@
                     android:textColor="@color/black"
                     android:textStyle="bold"
                     app:layout_constraintTop_toBottomOf="@id/divider30" />
-
                 <Spinner
                     android:id="@+id/spinnerTinhTP"
                     android:layout_width="match_parent"
@@ -358,7 +341,6 @@
                     app:layout_constraintTop_toBottomOf="@id/txtDC"
 
                     ></Spinner>
-
                 <TextView
                     android:id="@+id/txtTP"
                     android:layout_width="wrap_content"
@@ -372,7 +354,6 @@
                     app:layout_constraintBottom_toBottomOf="@id/spinnerTinhTP"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@id/spinnerTinhTP" />
-
                 <View
                     android:id="@+id/divider5"
                     android:layout_width="match_parent"
@@ -391,7 +372,6 @@
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/divider5" />
-
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recycleQH"
                     app:layout_constraintTop_toBottomOf="@id/txtQuanHuyen"
@@ -408,9 +388,8 @@
                     android:layout_height="1dp"
                     android:background="@android:color/darker_gray"
                     app:layout_constraintTop_toBottomOf="@id/recycleQH" />
-
-
                 <LinearLayout
+                    android:paddingTop="5dp"
                     android:id="@+id/layoutKV"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -430,20 +409,20 @@
                         app:layout_constraintTop_toTopOf="@id/valueKV" />
 
                     <EditText
-
                         android:id="@+id/valueKV"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
-                        android:backgroundTint="@color/white"
+                        android:background="@drawable/border_edittext"
                         android:hint="Ngã tư Thủ Đức, Lê Văn Việt, ... Để trống nếu không yêu cầu"
                         android:maxLines="7"
                         android:textColor="#000000"
+                        android:padding="8dp"
+                        android:layout_marginEnd="10dp"
                         android:textSize="13sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/divider6" />
-
                 </LinearLayout>
 
                 <View

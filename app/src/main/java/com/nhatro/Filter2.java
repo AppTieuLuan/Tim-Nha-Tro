@@ -257,7 +257,11 @@ public class Filter2 extends AppCompatActivity {
                 }
 
                 bundle.putInt("gia", valueGia);
+                if (idqh == 0) {
+                    idqh = -1;
+                }
                 bundle.putInt("idqh", idqh);
+
                 bundle.putBooleanArray("chontiennghi", chontiennghi);
                 if (checkGioGiac.isChecked()) {
                     bundle.putInt("giogiac", 1);

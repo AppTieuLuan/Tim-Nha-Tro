@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="7dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/profile_image"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:src="@drawable/avatar_userr"
+        app:civ_border_color="#c1c0c0"
+        app:civ_border_width="1dp" />
+
+    <TextView
+        android:id="@+id/noidung"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="ACBD đã bình luận vào bài viết 'Cho thuê phòng trọ tại ngã tư thủ đức' của bạn"
+        android:textSize="13sp"
+        app:layout_constraintEnd_toStartOf="@id/setting"
+        app:layout_constraintStart_toEndOf="@id/profile_image" />
+
+    <TextView
+        android:id="@+id/ngay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="14 tháng 5 lúc 21:38"
+        android:paddingBottom="3dp"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toBottomOf="@id/profile_image"
+        app:layout_constraintStart_toStartOf="@id/noidung" />
+
+    <ImageView
+        android:id="@+id/setting"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:src="@drawable/ic3dot"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" />
+</android.support.constraint.ConstraintLayout>

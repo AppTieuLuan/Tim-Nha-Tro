@@ -29,6 +29,7 @@ import com.nhatro.R;
 import com.nhatro.XemTinTimPhong;
 import com.nhatro.adapter.Adapter_List_View_Binh_Luan;
 import com.nhatro.model.BinhLuan;
+import com.nhatro.model.ThongBao;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -62,6 +63,8 @@ public class TabBinhLuan extends Fragment {
     View sheetViewSua;
 
     int iduser = 2;
+    String tieude;
+    ThongBao thongBao;
 
     public TabBinhLuan() {
         // Required empty public constructor
@@ -77,6 +80,7 @@ public class TabBinhLuan extends Fragment {
         // Inflate the layout for this fragment
 
         v = inflater.inflate(R.layout.fragment_tab_binh_luan, container, false);
+        thongBao = new ThongBao();
         issuaxoapost = false;
         layoutTaiDL = v.findViewById(R.id.layoutTaiDL);
         layoutND = v.findViewById(R.id.layoutND);
@@ -85,6 +89,7 @@ public class TabBinhLuan extends Fragment {
         Bundle bundle = this.getArguments();
         if (bundle != null && v != null) {
             iditem = bundle.getString("id");
+            tieude = bundle.getString("tieude");
             edt = (EditText) v.findViewById(R.id.edtNhapBl);
 
             data = new ArrayList<>();
@@ -129,6 +134,8 @@ public class TabBinhLuan extends Fragment {
                             newbl.setNoiDungBl(edt.getText().toString());
                             newbl.setIdPhong(iditem);
                             newbl.setIdUser(2);
+
+                            thongBao.setLoai(1);
 
                             themBinhLuan themBinhLuan = new themBinhLuan();
                             themBinhLuan.execute(newbl);
@@ -248,8 +255,6 @@ public class TabBinhLuan extends Fragment {
                     }
                 }
             });
-
-
         }
         return v;
     }
@@ -316,7 +321,7 @@ public class TabBinhLuan extends Fragment {
         @Override
         protected String doInBackground(BinhLuan... binhLuans) {
             BinhLuans bl = new BinhLuans();
-            String rs = bl.themBL(binhLuans[0]);
+            String rs = bl.themBL(binhLuans[0], 1);
 
 
             return rs;
