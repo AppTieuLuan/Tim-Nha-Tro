@@ -8,6 +8,7 @@ import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -32,6 +34,7 @@ import android.widget.Toast;
 
 import com.crystal.crystalrangeseekbar.interfaces.OnRangeSeekbarChangeListener;
 import com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar;
+import com.google.gson.Gson;
 import com.nhatro.DAL.DAL_PhongTro;
 import com.nhatro.Newpost;
 import com.nhatro.R;
@@ -44,6 +47,7 @@ import com.nhatro.model.Item_Grid_Facilities;
 import com.nhatro.model.PhongTros;
 import com.nhatro.model.QuanHuyen;
 import com.nhatro.model.TinhTP;
+import com.nhatro.model.User;
 import com.nhatro.sqlite.SQLite_QuanHuyen;
 import com.nhatro.sqlite.SQLite_TinhTP;
 
@@ -59,7 +63,7 @@ public class TabChiTiet extends Fragment {
     String idItem;
     TextView valueDatCoc, valueLoaiNhaO, valueDienTich, valueGiaThue, valueTienDien, valueTienNuoc, valueGioGiac,
             valueHoten, valueSDT, valueDiaChi, txtbinhluan, valueGioDongCua, donViTienDien, donViTienNuoc, valueSoNguoi,
-            minSoNguoi, maxSoNguoi, valueGioiTinhs;
+            minSoNguoi, maxSoNguoi, valueGioiTinhs, textBCLoi;
 
     ImageView btnSMS, btnCall, btnFacebook, btnMessenger, btnEditTTCT, btnCancelEditTTCT, btnSaveEdit, btnEditTienIch, btnCancelEditTienNghi,
             btnSaveEditTienNghi, btnEditMoTaThem, btnCancelEditMota, btnSaveEditMota, btnEditDiaChi, btnSaveEditDiaChi, btnCancelEditDiaChi;
@@ -67,7 +71,7 @@ public class TabChiTiet extends Fragment {
     ExpandableHeightGridView gridTienNghi, gridTienNghiEdt;
     ArrayList<Item_Grid_Facilities> lstTienNghi, listSuaTienNghi;
     Grid_Facilities_Adapter myAdapter, adapterListSuaTienNghi;
-    LinearLayout layoutReport, layoutCocTruoc, layoutTienDien, layoutTienNuoc;
+    LinearLayout layoutReport, layoutCocTruoc, layoutTienDien, layoutTienNuoc, layoutTexxtReP;
     ConstraintLayout layoutLienHeEdit, loadlayoutThongTinChiTiet, layoutThongTinChiTietEdt, layoutThongTinChiTiet, layoutLienHe, layoutTienIchEdt, layoutTienIch, layoutMoTaThemEdit, layoutMoTaThem;
     PhongTros phongTros;
     ScrollView scrollChiTiet;
@@ -78,7 +82,7 @@ public class TabChiTiet extends Fragment {
     EditText valueChieuDai, valueChieuRong, valueGia, valueDatCocEdt, valueTienDienEdt, valueTienNuocEdt, valueTieuDeEdt, txtbinhluanEdit,
             valueHotenEdit, valueSDTedit, valueSoNhaEdit, valuefacebookEdit;
 
-    ProgressBar loadSave, loadSaveTienNghi, loadSaveEditMota, loadSaveDiaChi;
+    ProgressBar loadSave, loadSaveTienNghi, loadSaveEditMota, loadSaveDiaChi, progressreport;
     Spinner spinnerTinhTP, spinnerQuanHuyen;
     private int chonDonViTienDien = -1, tempChonDvTienDien = 0, ChonDonViTienNuoc = -1, tempChonDvTienNuoc;
     CharSequence[] arrdonViTienDien = new CharSequence[]{"VNĐ/Tháng", "VNĐ/kWh", "VNĐ/Người"};
@@ -96,6 +100,10 @@ public class TabChiTiet extends Fragment {
     int indexSpnTinh, indexSpnQH;
     PhongTros tempSuaPT;
     private boolean suadl;
+    User users;
+    boolean opop; // cho biết là nút báo cáo hay nút hết phòng.
+    boolean isreporting; // Cho biết đang report hay gì gì đó
+    int set1;
 
     public TabChiTiet() {
         // Required empty public constructor
@@ -109,6 +117,8 @@ public class TabChiTiet extends Fragment {
         /*if (v == null) {*/
         v = inflater.inflate(R.layout.fragment_tab_chi_tiet, container, false);
         findView(v);
+        getUserInfo();
+
 
         lstTienNghi = new ArrayList<>();
         listSuaTienNghi = new ArrayList<>();
@@ -154,7 +164,29 @@ public class TabChiTiet extends Fragment {
             layoutReport.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(getContext(), "REPORT", Toast.LENGTH_SHORT).show();
+                    if (!isreporting) {
+                        if (textBCLoi.getText().equals("Báo hết phòng")) {
+                            //Toast.makeText(getContext(), "Báo hết phòng", Toast.LENGTH_SHORT).show();
+                            set1 = 0;
+                            SetConPhong setConPhong = new SetConPhong();
+                            setConPhong.execute(0);
+
+                        } else {
+                            if (textBCLoi.getText().equals("Báo cáo lỗi")) {
+                                //Toast.makeText(getContext(), "REPORT", Toast.LENGTH_SHORT).show();
+                                Report report = new Report();
+                                report.execute();
+                            } else {
+                                if (textBCLoi.getText().equals("Báo còn phòng")) {
+                                    set1 = 1;
+                                    SetConPhong setConPhong = new SetConPhong();
+                                    setConPhong.execute(1);
+                                }
+                            }
+                        }
+                    }
+                    //Toast.makeText(getContext(), "REPORT", Toast.LENGTH_SHORT).show();
+
                 }
             });
 
@@ -167,6 +199,16 @@ public class TabChiTiet extends Fragment {
         //}
 
         return v;
+    }
+
+    public void setHidden() {
+        btnEditTTCT.setVisibility(View.GONE);
+        btnEditDiaChi.setVisibility(View.GONE);
+        btnEditTienIch.setVisibility(View.GONE);
+        btnEditMoTaThem.setVisibility(View.GONE);
+
+        progressreport.setVisibility(View.GONE);
+        textBCLoi.setText("Báo cáo lỗi");
     }
 
     public void setEvent() {
@@ -732,6 +774,9 @@ public class TabChiTiet extends Fragment {
         btnSaveEditDiaChi = v.findViewById(R.id.btnSaveEditDiaChi);
         loadSaveDiaChi = v.findViewById(R.id.loadSaveDiaChi);
         btnCancelEditDiaChi = v.findViewById(R.id.btnCancelEditDiaChi);
+        textBCLoi = v.findViewById(R.id.textBCLoi);
+        progressreport = v.findViewById(R.id.progressreport);
+        layoutTexxtReP = v.findViewById(R.id.layoutTexxtReP);
     }
 
     public boolean checkField() {
@@ -785,8 +830,23 @@ public class TabChiTiet extends Fragment {
 
         @Override
         protected Void doInBackground(String... strings) {
-            DAL_PhongTro dal_phongTro = new DAL_PhongTro();
-            phongTros = dal_phongTro.thongTinPhong(strings[0]);
+
+            SharedPreferences sharedPreferences = getContext().getSharedPreferences("Mydata", Context.MODE_PRIVATE);
+            String user = sharedPreferences.getString("MyUser", "");
+
+            if (user.equals("") || user == null) {
+                DAL_PhongTro dal_phongTro = new DAL_PhongTro();
+                phongTros = dal_phongTro.thongTinPhong(strings[0], -1);
+            } else {
+                Gson gsonUser = new Gson();
+                User users1 = new User();
+                users1 = gsonUser.fromJson(user, User.class);
+
+                DAL_PhongTro dal_phongTro = new DAL_PhongTro();
+                phongTros = dal_phongTro.thongTinPhong(strings[0], Integer.parseInt(users1.getId()));
+            }
+
+
             return null;
         }
 
@@ -796,6 +856,15 @@ public class TabChiTiet extends Fragment {
             super.onPostExecute(result);
             if (phongTros != null) {
 
+                if (users == null || Integer.parseInt(users.getId()) != phongTros.getIduser()) {
+                    setHidden();
+                } else {
+                    if (phongTros.getConphong() == 1) {
+                        textBCLoi.setText("Báo hết phòng");
+                    } else {
+                        textBCLoi.setText("Báo còn phòng");
+                    }
+                }
                 if (phongTros.getLoaitin() == 1) {
                     valueLoaiNhaO.setText("Cho thuê phòng trọ");
                 } else {
@@ -902,6 +971,7 @@ public class TabChiTiet extends Fragment {
                         }
                     }
                 }
+
                 myAdapter.notifyDataSetChanged();
                 loadlayoutThongTinChiTiet.setVisibility(View.GONE);
                 scrollChiTiet.setVisibility(View.VISIBLE);
@@ -909,6 +979,9 @@ public class TabChiTiet extends Fragment {
                 if (!phongTros.getFacebook().equals("")) {
                     setClickFacebook(phongTros.getFacebook());
                 }
+
+
+
             }
         }
     }
@@ -1261,6 +1334,82 @@ public class TabChiTiet extends Fragment {
             suadl = true;
             btnSaveEditDiaChi.setVisibility(View.GONE);
             loadSaveDiaChi.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void getUserInfo() {
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences("Mydata", Context.MODE_PRIVATE);
+        String user = sharedPreferences.getString("MyUser", "");
+
+        if (user.equals("") || user == null) {
+
+        } else {
+            Gson gsonUser = new Gson();
+            users = new User();
+            users = gsonUser.fromJson(user, User.class);
+        }
+
+    }
+
+    public class Report extends AsyncTask<Void, Void, Integer> {
+        @Override
+        protected Integer doInBackground(Void... voids) {
+
+            DAL_PhongTro dal_phongTro = new DAL_PhongTro();
+            return dal_phongTro.Report(phongTros.getId());
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            isreporting = true;
+            layoutTexxtReP.setVisibility(View.GONE);
+            progressreport.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected void onPostExecute(Integer integer) {
+            super.onPostExecute(integer);
+
+            isreporting = false;
+            layoutTexxtReP.setVisibility(View.VISIBLE);
+            progressreport.setVisibility(View.GONE);
+        }
+    }
+
+    public class SetConPhong extends AsyncTask<Integer, Void, Integer> {
+        @Override
+        protected Integer doInBackground(Integer... integers) {
+
+            DAL_PhongTro dal_phongTro = new DAL_PhongTro();
+            return dal_phongTro.SetConPhong(phongTros.getId(), integers[0]);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            isreporting = true;
+            layoutTexxtReP.setVisibility(View.GONE);
+            progressreport.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected void onPostExecute(Integer integer) {
+            super.onPostExecute(integer);
+
+            if (integer == 1) {
+                if (set1 == 0) {
+                    textBCLoi.setText("Báo còn phòng");
+                } else {
+                    textBCLoi.setText("Báo hết phòng");
+                }
+            } else {
+                Toast.makeText(getContext(), "Có lỗi xảy ra.. Thử lại sau...", Toast.LENGTH_SHORT).show();
+            }
+
+            isreporting = false;
+            layoutTexxtReP.setVisibility(View.VISIBLE);
+            progressreport.setVisibility(View.GONE);
         }
     }
 }

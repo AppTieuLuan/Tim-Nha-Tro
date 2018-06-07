@@ -5,6 +5,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -25,6 +26,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.nhatro.DAL.BinhLuans;
 import com.nhatro.DAL.DAL_TinTimPhong;
 import com.nhatro.DAL.HinhAnhs;
@@ -35,6 +37,7 @@ import com.nhatro.model.BinhLuan;
 import com.nhatro.model.Item_Grid_Facilities;
 import com.nhatro.model.ThongBao;
 import com.nhatro.model.TinTimPhong;
+import com.nhatro.model.User;
 import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
@@ -86,6 +89,7 @@ public class XemTinTimPhong extends AppCompatActivity {
 
     TinTimPhong dlTin;
     ThongBao thongBao;
+    User users;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +97,7 @@ public class XemTinTimPhong extends AppCompatActivity {
         setContentView(R.layout.activity_xem_tin_tim_phong);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         dlTin = new TinTimPhong();
+        getUserInfo();
         findView();
         getData();
 
@@ -124,6 +129,10 @@ public class XemTinTimPhong extends AppCompatActivity {
 
         setEvent();
 
+    }
+
+    public void setHidden() {
+        btnEdit.setVisibility(View.GONE);
     }
 
     public void findView() {
@@ -203,29 +212,35 @@ public class XemTinTimPhong extends AppCompatActivity {
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!isloading && !isXoaBL) {
-                    if (edtNhapBl.getText().toString().equals("")) {
-                        Toast.makeText(getApplicationContext(), "Nhập bình luận...", Toast.LENGTH_SHORT).show();
-                    } else {
-                        BinhLuan binhLuan = new BinhLuan();
-                        Date date = new Date();
-                        DateFormat dateFormat2 = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+                getUserInfo();
+                if (users == null) {
+                    Toast.makeText(getApplicationContext(), "Đăng nhập trước khi thực hiện thao tác này ...", Toast.LENGTH_SHORT).show();
+                } else {
+                    if (!isloading && !isXoaBL) {
+                        if (edtNhapBl.getText().toString().equals("")) {
+                            Toast.makeText(getApplicationContext(), "Nhập bình luận...", Toast.LENGTH_SHORT).show();
+                        } else {
+                            BinhLuan binhLuan = new BinhLuan();
+                            Date date = new Date();
+                            DateFormat dateFormat2 = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
-                        binhLuan.setIdUser(3);
-                        binhLuan.setNoiDungBl(edtNhapBl.getText().toString());
-                        binhLuan.setIdPhong(idItem);
+                            binhLuan.setIdUser(Integer.parseInt(users.getId()));
+                            binhLuan.setNoiDungBl(edtNhapBl.getText().toString());
+                            binhLuan.setIdPhong(idItem);
 
-                        thongBao.setIdusernhan(dlTin.getIduser());
-                        thongBao.setIdtintuc(idItem);
-                        thongBao.setIduser2(1);
-                        thongBao.setTieudeTin(dlTin.getTieude());
-                        thongBao.setLoai(2);
+                            thongBao.setIdusernhan(dlTin.getIduser());
+                            thongBao.setIdtintuc(idItem);
+                            thongBao.setIduser2(Integer.parseInt(users.getId()));
+                            thongBao.setTieudeTin(dlTin.getTieude());
+                            thongBao.setLoai(2);
 
-                        ThemBinhLuan themBinhLuan = new ThemBinhLuan();
-                        themBinhLuan.execute(binhLuan);
+                            ThemBinhLuan themBinhLuan = new ThemBinhLuan();
+                            themBinhLuan.execute(binhLuan);
 
+                        }
                     }
                 }
+
             }
         });
 
@@ -243,10 +258,16 @@ public class XemTinTimPhong extends AppCompatActivity {
         lstBinhLuan.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                if (data.get(position).getIdUser() == iduser) {
-                    indexxoa = position;
-                    bottomSheetDialog.show();
+                getUserInfo();
+                if (users == null) {
+                    Toast.makeText(getApplicationContext(), "Đăng nhập trước khi thực hiện thao tác này ...", Toast.LENGTH_SHORT).show();
+                } else {
+                    if (data.get(position).getIdUser() == Integer.parseInt(users.getId())) {
+                        indexxoa = position;
+                        bottomSheetDialog.show();
+                    }
                 }
+
                 return false;
             }
         });
@@ -288,11 +309,15 @@ public class XemTinTimPhong extends AppCompatActivity {
         btnSendSuaBL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                InputMethodManager inputManager = (InputMethodManager)
-                        getSystemService(Context.INPUT_METHOD_SERVICE);
+                try {
+                    InputMethodManager inputManager = (InputMethodManager)
+                            getSystemService(Context.INPUT_METHOD_SERVICE);
 
-                inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
-                        InputMethodManager.HIDE_NOT_ALWAYS);
+                    inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                            InputMethodManager.HIDE_NOT_ALWAYS);
+                } catch (Exception e) {
+
+                }
 
                 if (edtSuaBL.getText().toString().equals("")) {
                     Toast.makeText(getApplicationContext(), "Sửa bình luận ...", Toast.LENGTH_SHORT).show();
@@ -357,6 +382,14 @@ public class XemTinTimPhong extends AppCompatActivity {
                 layoutLoad.setVisibility(View.GONE);
             } else {
                 dlTin = tinTimPhong;
+
+                if (users == null) {
+                    setHidden();
+                } else {
+                    if (Integer.parseInt(users.getId()) != dlTin.getIduser()) {
+                        setHidden();
+                    }
+                }
 
                 try {
                     Picasso.with(getApplicationContext()).load(tinTimPhong.getAvatar()).into(profile_image);
@@ -617,13 +650,13 @@ public class XemTinTimPhong extends AppCompatActivity {
                 Date date = new Date();
                 DateFormat dateFormat2 = new SimpleDateFormat("dd/MM/yyyy HH:mm");
                 binhLuan.setId(s);
-                binhLuan.setIdUser(3);
+                binhLuan.setIdUser(Integer.parseInt(users.getId()));
                 binhLuan.setNoiDungBl(edtNhapBl.getText().toString());
                 binhLuan.setNgayViet(dateFormat2.format(date).toString());
                 binhLuan.setIdPhong(idItem);
-                binhLuan.setAvatarUser("https://nhatroservice.000webhostapp.com/images/20180426111852img1.jpg");
-                binhLuan.setUserName("cong4");
-                binhLuan.setTenUser("Full Name 1");
+                binhLuan.setAvatarUser(users.getAvatar());
+                binhLuan.setUserName(users.getUsername());
+                binhLuan.setTenUser(users.getHoten());
 
                 data.add(0, binhLuan);
                 adapter_list_view_binh_luan.notifyDataSetChanged();
@@ -746,6 +779,18 @@ public class XemTinTimPhong extends AppCompatActivity {
                 dlTin = (TinTimPhong) bundles.getSerializable("data");
                 setView(dlTin);
             }
+        }
+    }
+
+    public void getUserInfo() {
+        SharedPreferences sharedPreferences = getSharedPreferences("Mydata", Context.MODE_PRIVATE);
+        String user = sharedPreferences.getString("MyUser", "");
+        if (user.equals("") || user == null) {
+
+        } else {
+            users = new User();
+            Gson gsonUser = new Gson();
+            users = gsonUser.fromJson(user, User.class);
         }
     }
 }

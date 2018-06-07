@@ -122,6 +122,7 @@ public class DAL_PhongTro {
         args.add(new BasicNameValuePair("lng", String.valueOf(locDL.getLng())));
         args.add(new BasicNameValuePair("bankinh", String.valueOf(locDL.getBankinh())));
         args.add(new BasicNameValuePair("trang", String.valueOf(locDL.getTrang())));
+        args.add(new BasicNameValuePair("iduser", String.valueOf(locDL.getIduser())));
 
         MyService jsonParser = new MyService();
 
@@ -150,6 +151,12 @@ public class DAL_PhongTro {
                             pt.setHinhanh(obj.getString("hinhanh"));
                             pt.setGioitinh(obj.getString("doituong"));
                             pt.setLoaitintuc(obj.getInt("loaitintuc"));
+                            int s = obj.getInt("daluu");
+                            if (s == 1) {
+                                pt.setDaluu(true);
+                            } else {
+                                pt.setDaluu(false);
+                            }
                             dsP.add(pt);
                         }
                     } else {
@@ -180,7 +187,7 @@ public class DAL_PhongTro {
         return dsP;
     }
 
-    public PhongTros thongTinPhong(String id) {
+    public PhongTros thongTinPhong(String id, int idusers) {
         PhongTros a = new PhongTros();
         String URL_NEW = variable.getWebservice() + "layThongTinChiTiet.php";
         //String URL_NEW = "http://192.168.1.23:8080/firebase/layThongTinChiTiet.php";
@@ -188,6 +195,7 @@ public class DAL_PhongTro {
         List<NameValuePair> args = new ArrayList<NameValuePair>();
 
         args.add(new BasicNameValuePair("id", id));
+        args.add(new BasicNameValuePair("idusers", String.valueOf(idusers)));
 
         MyService jsonParser = new MyService();
 
@@ -229,6 +237,8 @@ public class DAL_PhongTro {
                     a.setIduser(jsonObject1.getInt("iduser"));
                     a.setIdtp(jsonObject1.getInt("idtp"));
                     a.setIdqh(jsonObject1.getInt("idquanhuyen"));
+                    a.setConphong(jsonObject1.getInt("conphong"));
+                    a.setDaluu(jsonObject1.getInt("daluu"));
                     return a;
                 } else {
                     return null;
@@ -381,6 +391,181 @@ public class DAL_PhongTro {
         args.add(new BasicNameValuePair("idtp", String.valueOf(idtp)));
         args.add(new BasicNameValuePair("idquanhuyen", String.valueOf(idquanhuyen)));
         args.add(new BasicNameValuePair("diachi", diachi));
+
+
+        MyService jsonParser = new MyService();
+
+        String json = jsonParser.makeService(URL_NEW, MyService.POST, args);
+        if (json != null) {
+            try {
+                JSONObject jsonObject = new JSONObject(json);
+                int success = jsonObject.getInt("kq");
+                if (success == 1) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            } catch (JSONException e) {
+                return 0;
+            }
+        }
+        return 0;
+    }
+
+    public int Report(String id) {
+        String URL_NEW = variable.getWebservice() + "report.php";
+
+        List<NameValuePair> args = new ArrayList<NameValuePair>();
+
+        args.add(new BasicNameValuePair("id", id));
+
+        MyService jsonParser = new MyService();
+
+        String json = jsonParser.makeService(URL_NEW, MyService.POST, args);
+        if (json != null) {
+            try {
+                JSONObject jsonObject = new JSONObject(json);
+                int success = jsonObject.getInt("kq");
+                if (success == 1) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            } catch (JSONException e) {
+                return 0;
+            }
+        }
+        return 0;
+    }
+
+    public int SetConPhong(String id, int conphong) {
+        String URL_NEW = variable.getWebservice() + "setConPhong.php";
+
+        List<NameValuePair> args = new ArrayList<NameValuePair>();
+
+        args.add(new BasicNameValuePair("id", id));
+        args.add(new BasicNameValuePair("conphong", String.valueOf(conphong)));
+        MyService jsonParser = new MyService();
+
+        String json = jsonParser.makeService(URL_NEW, MyService.POST, args);
+        if (json != null) {
+            try {
+                JSONObject jsonObject = new JSONObject(json);
+                int success = jsonObject.getInt("kq");
+                if (success == 1) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            } catch (JSONException e) {
+                return 0;
+            }
+        }
+        return 0;
+    }
+
+    public int Luu_BoLuu(String id, int iduser, int luu) {
+        String URL_NEW = variable.getWebservice() + "Luu_HuyLuu.php";
+
+        List<NameValuePair> args = new ArrayList<NameValuePair>();
+
+        args.add(new BasicNameValuePair("idphong", id));
+        args.add(new BasicNameValuePair("iduser", String.valueOf(iduser)));
+        args.add(new BasicNameValuePair("luu", String.valueOf(luu)));
+        MyService jsonParser = new MyService();
+
+        String json = jsonParser.makeService(URL_NEW, MyService.POST, args);
+        if (json != null) {
+            try {
+                JSONObject jsonObject = new JSONObject(json);
+                int success = jsonObject.getInt("kq");
+                if (success == 1) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            } catch (JSONException e) {
+                return 0;
+            }
+        }
+        return 0;
+    }
+
+    public int isLuu(String idphong, int iduser) {
+        String URL_NEW = variable.getWebservice() + "isLuu.php";
+
+        List<NameValuePair> args = new ArrayList<NameValuePair>();
+
+        args.add(new BasicNameValuePair("idphong", idphong));
+        args.add(new BasicNameValuePair("iduser", String.valueOf(iduser)));
+
+        MyService jsonParser = new MyService();
+
+        String json = jsonParser.makeService(URL_NEW, MyService.POST, args);
+        Log.d("SSSSS", json);
+        if (json != null) {
+            try {
+                JSONObject jsonObject = new JSONObject(json);
+                int success = jsonObject.getInt("kq");
+                if (success == 1) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            } catch (JSONException e) {
+                return 0;
+            }
+        }
+        return 0;
+    }
+
+    public int isOwner(String idphong, int iduser) {
+        String URL_NEW = variable.getWebservice() + "isOwner.php";
+
+        List<NameValuePair> args = new ArrayList<NameValuePair>();
+
+        args.add(new BasicNameValuePair("idphong", idphong));
+        args.add(new BasicNameValuePair("iduser", String.valueOf(iduser)));
+
+        MyService jsonParser = new MyService();
+
+        String json = jsonParser.makeService(URL_NEW, MyService.POST, args);
+        //Log.d("SSSSS", json);
+        if (json != null) {
+            try {
+                JSONObject jsonObject = new JSONObject(json);
+                int success = jsonObject.getInt("kq");
+                if (success == 1) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            } catch (JSONException e) {
+                return 0;
+            }
+        }
+        return 0;
+    }
+
+
+    public int upDateImage(String idphong, ArrayList<String> addnewImg, ArrayList<String> deleteImg) {
+
+        String URL_NEW = variable.getWebservice() + "upDateImage.php";
+
+        List<NameValuePair> args = new ArrayList<NameValuePair>();
+
+        args.add(new BasicNameValuePair("idphong", idphong));
+        JSONArray images = new JSONArray();
+        for (int i = 0; i < addnewImg.size(); i++) {
+            images.put(addnewImg.get(i));
+        }
+        args.add(new BasicNameValuePair("addnewImg", images.toString()));
+
+        JSONArray images2 = new JSONArray();
+        for (int i = 0; i < deleteImg.size(); i++) {
+            images2.put(deleteImg.get(i));
+        }
+        args.add(new BasicNameValuePair("deleteImg", images2.toString()));
 
 
         MyService jsonParser = new MyService();

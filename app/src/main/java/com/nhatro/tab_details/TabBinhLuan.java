@@ -3,6 +3,7 @@ package com.nhatro.tab_details;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetDialog;
@@ -24,12 +25,14 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.nhatro.DAL.BinhLuans;
 import com.nhatro.R;
 import com.nhatro.XemTinTimPhong;
 import com.nhatro.adapter.Adapter_List_View_Binh_Luan;
 import com.nhatro.model.BinhLuan;
 import com.nhatro.model.ThongBao;
+import com.nhatro.model.User;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -65,6 +68,7 @@ public class TabBinhLuan extends Fragment {
     int iduser = 2;
     String tieude;
     ThongBao thongBao;
+    User users;
 
     public TabBinhLuan() {
         // Required empty public constructor
@@ -80,6 +84,7 @@ public class TabBinhLuan extends Fragment {
         // Inflate the layout for this fragment
 
         v = inflater.inflate(R.layout.fragment_tab_binh_luan, container, false);
+        getUserInfo();
         thongBao = new ThongBao();
         issuaxoapost = false;
         layoutTaiDL = v.findViewById(R.id.layoutTaiDL);
@@ -122,28 +127,31 @@ public class TabBinhLuan extends Fragment {
                 @Override
                 public void onClick(View v) {
                     //Toast.makeText(getContext(),edt.getText().toString(),Toast.LENGTH_SHORT).show();
-                    if (edt.getText().toString().equals("")) {
-                        Snackbar.make(getView(), "Nhập nội dung", Snackbar.LENGTH_SHORT)
-                                .setAction("Action", null).show();
+                    getUserInfo();
+                    if (users == null) {
+                        Toast.makeText(getContext(), "Đăng nhập trước khi thực hiện thao tác này ..", Toast.LENGTH_SHORT).show();
                     } else {
-                        if (issuaxoapost) {
-                            Toast.makeText(getContext(), "Đang xử lý dữ liệu..vui lòng chờ giây lát...", Toast.LENGTH_SHORT).show();
+                        if (edt.getText().toString().equals("")) {
+                            Snackbar.make(getView(), "Nhập nội dung", Snackbar.LENGTH_SHORT)
+                                    .setAction("Action", null).show();
                         } else {
-                            issuaxoapost = true;
-                            BinhLuan newbl = new BinhLuan();
-                            newbl.setNoiDungBl(edt.getText().toString());
-                            newbl.setIdPhong(iditem);
-                            newbl.setIdUser(2);
+                            if (issuaxoapost) {
+                                Toast.makeText(getContext(), "Đang xử lý dữ liệu..vui lòng chờ giây lát...", Toast.LENGTH_SHORT).show();
+                            } else {
+                                issuaxoapost = true;
+                                BinhLuan newbl = new BinhLuan();
+                                newbl.setNoiDungBl(edt.getText().toString());
+                                newbl.setIdPhong(iditem);
+                                newbl.setIdUser(Integer.parseInt(users.getId()));
 
-                            thongBao.setLoai(1);
+                                thongBao.setLoai(1);
 
-                            themBinhLuan themBinhLuan = new themBinhLuan();
-                            themBinhLuan.execute(newbl);
+                                themBinhLuan themBinhLuan = new themBinhLuan();
+                                themBinhLuan.execute(newbl);
+                            }
+
                         }
-
                     }
-
-
                 }
             });
 
@@ -187,9 +195,15 @@ public class TabBinhLuan extends Fragment {
             listViewBinhLuan.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
                 public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                    if (data.get(position).getIdUser() == iduser && !issuaxoapost) {
-                        index = position;
-                        bottomSheetDialog.show();
+                    getUserInfo();
+                    if (users != null) {
+                        if (Integer.parseInt(users.getId()) == data.get(position).getIdUser()) {
+                            if (!issuaxoapost) {
+                                index = position;
+                                bottomSheetDialog.show();
+                            }
+                        }
+
                     }
                     return false;
                 }
@@ -236,8 +250,13 @@ public class TabBinhLuan extends Fragment {
                     InputMethodManager inputManager = (InputMethodManager)
                             getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
 
-                    inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
-                            InputMethodManager.HIDE_NOT_ALWAYS);
+                    try {
+                        inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
+                                InputMethodManager.HIDE_NOT_ALWAYS);
+                    } catch (Exception e) {
+
+                    }
+
 
                     if (edtSuaBL.getText().toString().equals("")) {
                         Toast.makeText(getContext(), "Nhập nội dung sửa bình luận ...", Toast.LENGTH_SHORT).show();
@@ -257,6 +276,18 @@ public class TabBinhLuan extends Fragment {
             });
         }
         return v;
+    }
+
+    public void getUserInfo() {
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("Mydata", Context.MODE_PRIVATE);
+        String user = sharedPreferences.getString("MyUser", "");
+        if (user.equals("") || user == null) {
+            users = null;
+        } else {
+            users = new User();
+            Gson gsonUser = new Gson();
+            users = gsonUser.fromJson(user, User.class);
+        }
     }
 
     public class XemThemBL extends AsyncTask<String, Void, ArrayList<BinhLuan>> {
@@ -336,8 +367,8 @@ public class TabBinhLuan extends Fragment {
                 Date date = new Date();
                 DateFormat dateFormat2 = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
-                BinhLuan binhLuan = new BinhLuan(s, "https://nhatroservice.000webhostapp.com/images/20180425224228ythfghv.jpg", "usernameDemo", "Công", edt.getText().toString(), dateFormat2.format(date).toString());
-                binhLuan.setIdUser(2);
+                BinhLuan binhLuan = new BinhLuan(s, users.getAvatar(), users.getUsername(), users.getHoten(), edt.getText().toString(), dateFormat2.format(date).toString());
+                binhLuan.setIdUser(Integer.parseInt(users.getId()));
                 data.add(0, binhLuan);
                 adapter_list_view_binh_luan.notifyDataSetChanged();
                 edt.setText("");

@@ -11,7 +11,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -86,6 +91,22 @@ public class ThongBaos {
                         tb.setIsnew(obj.getInt("new"));
                         tb.setTenuser2(obj.getString("hoten"));
                         tb.setAvataruser2(obj.getString("avatar"));
+
+                        /*DateTimeFormatter formatter = DateTimeFormat.forPattern("dd/MM/yyyy HH:mm:ss");
+                        DateTime dt = formatter.parseDateTime(string);*/
+
+                        //SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        //String s = formatter.parse(obj.getString("ngay")).getMonth();
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        try {
+                            Date d = sdf.parse(obj.getString("ngay"));
+                            tb.setMngay(d.getDate());
+                            tb.setMthang(d.getMonth() + 1);
+                            tb.setMgio(d.getHours());
+                            tb.setMphut(d.getMinutes());
+                        } catch (ParseException ex) {
+                            //Logger.getLogger(Prime.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                         rs.add(tb);
                     }
                     return rs;

@@ -88,8 +88,13 @@ public class ListThongBao_Adapter extends BaseAdapter {
                 noidung.setText("Phòng trọ mới được thêm phù hợp với các tiêu chí bạn đưa ra...Xem chi tiết");
             }
         }
-
-        ngay.setText(tb.getMngay() + " tháng " + tb.getMthang() + " lúc " + tb.getMgio() + ":" + tb.getMphut());
+        String tmp = "";
+        if (tb.getMphut() < 10) {
+            tmp = "0" + String.valueOf(tb.getMphut());
+        } else {
+            tmp = String.valueOf(tb.getMphut());
+        }
+        ngay.setText(tb.getMngay() + " tháng " + tb.getMthang() + " lúc " + tb.getMgio() + ":" + tmp);
 
 
         setting.setOnClickListener(new View.OnClickListener() {

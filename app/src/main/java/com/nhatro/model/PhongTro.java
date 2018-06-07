@@ -7,8 +7,18 @@ package com.nhatro.model;
 public class PhongTro {
     private String id;
     private String hinhanh;
+    private int conphong;
+
+    public int getConphong() {
+        return conphong;
+    }
+
+    public void setConphong(int conphong) {
+        this.conphong = conphong;
+    }
 
     public PhongTro(){
+
 
     }
     public PhongTro(String id, String hinhanh, String tieude, String diachi, float gia, float dientich, float chieudai, float chieurong, String gioitinh, boolean daluu) {

@@ -168,6 +168,8 @@ public class LoginFragment extends Fragment implements OnLoginListener{
                         if(s.equals("done")){
                             username = txtusername.getText().toString();
                             password = txtpassword.getText().toString();
+
+
                             if(username.length() > 0 && password.length() > 0){
                                 DataClient dataClient = APIUtils.getData();
                                 retrofit2.Call<Token> callback = dataClient.Login(username, password);
@@ -177,6 +179,8 @@ public class LoginFragment extends Fragment implements OnLoginListener{
                                         Token obj = (Token) response.body();
                                         String token = obj.getToken();
                                         stopAnimation();// dừng animation
+
+                                        Log.d("KET QUAAAAAAAAAAAAA",response.body().getToken());
                                         if(token.equals("Null")){
                                             Toast.makeText(getContext(),"Đăng nhập thất bại!", Toast.LENGTH_SHORT).show();
                                         }else{
@@ -202,6 +206,8 @@ public class LoginFragment extends Fragment implements OnLoginListener{
                                     public void onFailure(Call<Token> call, Throwable t) {
                                         stopAnimation();// dừng animation
                                         Toast.makeText(getContext(), "Vui lòng kiểm tra lại đường truyền mạng!", Toast.LENGTH_SHORT).show();
+
+                                        Log.d("LỖI",t.getMessage());
                                     }
                                 });
                             }else{
@@ -235,8 +241,6 @@ public class LoginFragment extends Fragment implements OnLoginListener{
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-
     }
     public void stopAnimation(){
         circularProgressButton.revertAnimation();//revert animation

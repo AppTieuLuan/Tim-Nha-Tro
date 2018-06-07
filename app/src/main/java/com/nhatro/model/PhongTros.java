@@ -26,12 +26,30 @@ public class PhongTros {
     String donvidien;
     int gianuoc;
     String donvinuoc;
+    int daluu;
+
+    public int getDaluu() {
+        return daluu;
+    }
+
+    public void setDaluu(int daluu) {
+        this.daluu = daluu;
+    }
 
     int tiencoc;
     String donvicoc;
     String giogiac;
     int idtp;
     int idqh;
+    int conphong;
+
+    public int getConphong() {
+        return conphong;
+    }
+
+    public void setConphong(int conphong) {
+        this.conphong = conphong;
+    }
 
     String username;
     String hoten;

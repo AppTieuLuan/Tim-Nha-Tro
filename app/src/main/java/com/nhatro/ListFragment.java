@@ -13,6 +13,7 @@ import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,10 +29,12 @@ import android.widget.Toast;
 
 import com.elyeproj.loaderviewlibrary.LoaderImageView;
 import com.elyeproj.loaderviewlibrary.LoaderTextView;
+import com.google.gson.Gson;
 import com.nhatro.DAL.DAL_PhongTro;
 import com.nhatro.adapter.CustomListViewAdapter;
 import com.nhatro.model.LocDL;
 import com.nhatro.model.PhongTro;
+import com.nhatro.model.User;
 
 import java.util.ArrayList;
 
@@ -41,7 +44,7 @@ import static android.content.Context.MODE_PRIVATE;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ListFragment extends Fragment {
+public class ListFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     ListView lstDanhSach;
     ArrayList<PhongTro> data;
@@ -59,6 +62,7 @@ public class ListFragment extends Fragment {
 
     mHadler mHadlerr;
     HandlerFilter handlerFilter;
+    SwipeRefreshLayout swipeRefreshLayout;
 
     public ListFragment() {
         // Required empty public constructor
@@ -88,7 +92,7 @@ public class ListFragment extends Fragment {
         footerview = inflater.inflate(R.layout.footer_listivew, null);
         loadingData = v.findViewById(R.id.loadingData);
         layoutList = v.findViewById(R.id.layoutList);
-
+        swipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_refresh_layout);
         btnAdd = v.findViewById(R.id.iconAdd);
         layoutLoading = v.findViewById(R.id.layoutLoadingList);
 
@@ -128,6 +132,8 @@ public class ListFragment extends Fragment {
             @Override
             public void onScroll(AbsListView absListView, int i, int i1, int i2) {
                 if (absListView.getLastVisiblePosition() == i2 - 1) {
+
+                    Log.d("ĐÁY", isLoading + " - " + isnext + "  -  " + loadnewisdone);
                     if (isLoading == false && isnext && loadnewisdone) {
                         LoadMoreDataAsyn loadMoreDataAsyn = new LoadMoreDataAsyn();
                         loadMoreDataAsyn.execute(locDL);
@@ -152,11 +158,30 @@ public class ListFragment extends Fragment {
                     Intent intents = new Intent(getContext(), Newpost.class);
                     startActivity(intents);
                 }*/
-                Intent intents = new Intent(getContext(), Newpost.class);
-                startActivity(intents);
+
+                SharedPreferences sharedPreferences = getContext().getSharedPreferences("Mydata", Context.MODE_PRIVATE);
+                String user = sharedPreferences.getString("MyUser", "");
+/*
+
+                Log.d("USERSSS", user);
+                Gson gsonUser = new Gson();
+                User user1 = gsonUser.fromJson(user, User.class);
+*/
+
+                if (user == null || user.equals("")) {
+                    Toast.makeText(getContext(), "Đăng nhập trước khi thực hiện thao tác này !!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Intent intents = new Intent(getContext(), Newpost.class);
+                    startActivity(intents);
+                }
+
             }
         });
+
+        swipeRefreshLayout.setOnRefreshListener(this);
+
         filterData(locDL);
+
         //loadnewData();
         return v;
     }
@@ -172,6 +197,7 @@ public class ListFragment extends Fragment {
         if (user.equals("")) {
             return "-1";
         } else {
+
             return "2222";
         }
     }
@@ -190,8 +216,39 @@ public class ListFragment extends Fragment {
         isLoading = true;
         /*Thread thread = new ThreadFilter();
         thread.start();*/
+
+        SharedPreferences pre = getActivity().getSharedPreferences("Mydata", MODE_PRIVATE);
+        String user = pre.getString("MyUser", "");
+
+        if (user.equals("")) {
+            locDL.setIduser(-1);
+        } else {
+            User user1 = new User();
+            Gson gsonUser = new Gson();
+            user1 = gsonUser.fromJson(user, User.class);
+            locDL.setIduser(Integer.parseInt(user1.getId()));
+        }
+
         LoadNewDataAsyn loadDataAsyn = new LoadNewDataAsyn();
         loadDataAsyn.execute(locDL);
+    }
+
+    @Override
+    public void onRefresh() {
+        locDL.setTrang(1);
+        SharedPreferences pre = getActivity().getSharedPreferences("Mydata", MODE_PRIVATE);
+        String user = pre.getString("MyUser", "");
+
+        if (user.equals("")) {
+            locDL.setIduser(-1);
+        } else {
+            User user1 = new User();
+            Gson gsonUser = new Gson();
+            user1 = gsonUser.fromJson(user, User.class);
+            locDL.setIduser(Integer.parseInt(user1.getId()));
+        }
+        LoadNewDataRefresh loadNewDataRefresh = new LoadNewDataRefresh();
+        loadNewDataRefresh.execute(locDL);
     }
 
     public class mHadler extends Handler {
@@ -270,6 +327,46 @@ public class ListFragment extends Fragment {
             mangData = sss.danhSachPhong(locDL);
             Message message = handlerFilter.obtainMessage(1, mangData);
             handlerFilter.sendMessage(message);
+        }
+    }
+
+    public class LoadNewDataRefresh extends AsyncTask<LocDL, Void, ArrayList<PhongTro>> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            locDL.setTrang(1);
+            data.clear();
+            adapter.notifyDataSetChanged();
+            swipeRefreshLayout.setRefreshing(true);
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<PhongTro> phongTros) {
+            super.onPostExecute(phongTros);
+
+            locDL.setTrang(2);
+            isLoading = false;
+            if (phongTros.size() == 0) {
+                isnext = false;
+            }
+            data.addAll(phongTros);
+            adapter.notifyDataSetChanged();
+            swipeRefreshLayout.setRefreshing(false);
+            loadnewisdone = true;
+
+            //Log.d("JSONN", String.valueOf(locDL.getTrang()) + " --- " + String.valueOf(isnext) + " --- " + String.valueOf(isLoading) + "--- " + String.valueOf(loadnewisdone));
+
+        }
+
+        @Override
+        protected ArrayList<PhongTro> doInBackground(LocDL... locDLS) {
+            ArrayList<PhongTro> phongTros = new ArrayList<>();
+            isLoading = true;
+
+            DAL_PhongTro sss = new DAL_PhongTro();
+            phongTros = sss.danhSachPhong(locDLS[0]);
+            return phongTros;
         }
     }
 

@@ -1,32 +1,75 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.nhatro.NotifyFragment">
+
     <LinearLayout
         android:id="@+id/layout1"
-        android:visibility="gone"
-        android:gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:visibility="gone">
+
         <TextView
-            android:textSize="15sp"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:padding="10dp"
-            android:textStyle="bold"
             android:text="Cần đăng nhập để xem các thông báo dành cho bạn"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutLoadNew"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <ProgressBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
+
     <android.support.constraint.ConstraintLayout
         android:id="@+id/contain"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="gone">
 
         <ListView
             android:id="@+id/listView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="3sp"
+            android:paddingBottom="4dp"
+            android:foregroundGravity="center">
 
         </ListView>
+
+        <TextView
+            android:id="@+id/txtxemthem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="Xem các thông báo cũ hơn..."
+            android:textColor="@color/colorPrimary"
+            android:textSize="12sp"
+            app:layout_constraintTop_toBottomOf="@id/listView" />
+
+        <ProgressBar
+            android:id="@+id/progressloadthembl"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:padding="3dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/listView" />
     </android.support.constraint.ConstraintLayout>
 </android.support.constraint.ConstraintLayout>

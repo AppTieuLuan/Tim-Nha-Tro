@@ -39,6 +39,7 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.Gson;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.nhatro.DAL.DAL_PhongTro;
 import com.nhatro.DAL.HoTros;
@@ -54,6 +55,7 @@ import com.nhatro.model.Item_Grid_Facilities;
 import com.nhatro.model.PhongTros;
 import com.nhatro.model.QuanHuyen;
 import com.nhatro.model.TinhTP;
+import com.nhatro.model.User;
 import com.nhatro.sqlite.SQLiteDataController;
 import com.nhatro.sqlite.SQLite_QuanHuyen;
 import com.nhatro.sqlite.SQLite_TinhTP;
@@ -86,7 +88,7 @@ public class Newpost extends AppCompatActivity implements OnMapReadyCallback {
     TextView valueGioDongCua, donViTienDien, donViTienNuoc;
     Calendar c;
     private int mHour, mMinute;
-
+    User users;
 
     private int chonDonViTienDien = 0, tempChonDvTienDien = 0, ChonDonViTienNuoc, tempChonDvTienNuoc;
     CharSequence[] arrdonViTienDien = new CharSequence[]{"VNĐ/Tháng", "VNĐ/kWh", "VNĐ/Người"};
@@ -135,10 +137,11 @@ public class Newpost extends AppCompatActivity implements OnMapReadyCallback {
         //getSupportActionBar().hide();
         getSupportActionBar().setTitle("Đăng tin mới");
         isposting = false;
-
+        users = new User();
         init();
 
         getUserInfo();
+        getAddress();
         mapView = (MapView) findViewById(R.id.mapViTri);
         mapView.onCreate(savedInstanceState);
         mapView.onResume();
@@ -378,6 +381,11 @@ public class Newpost extends AppCompatActivity implements OnMapReadyCallback {
 
     }
 
+    public void getAddress() {
+        valueHoTen.setText(users.getHoten());
+        valueSdt.setText(users.getSodt());
+        valueFacebook.setText(users.getFacebook());
+    }
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -606,7 +614,7 @@ public class Newpost extends AppCompatActivity implements OnMapReadyCallback {
                 a.setLat(currentLatLng.latitude);
                 a.setLng(currentLatLng.longitude);
 
-                a.setIduser(1);
+                a.setIduser(Integer.parseInt(users.getId()));
                 a.setMotathem(edtMoTaThem.getText().toString());
                 a.setGiadien(Integer.parseInt(valueTienDien.getText().toString()));
                 a.setDonvidien(donViTienDien.getText().toString());
@@ -1045,8 +1053,10 @@ public class Newpost extends AppCompatActivity implements OnMapReadyCallback {
     }
 
     public void getUserInfo() {
-        SharedPreferences pre = getSharedPreferences("Mydata", MODE_PRIVATE);
-        String user = pre.getString("MyUser", "");
-        int sss = 1;
+        SharedPreferences sharedPreferences = getSharedPreferences("Mydata", Context.MODE_PRIVATE);
+        String user = sharedPreferences.getString("MyUser", "");
+
+        Gson gsonUser = new Gson();
+        users = gsonUser.fromJson(user, User.class);
     }
 }

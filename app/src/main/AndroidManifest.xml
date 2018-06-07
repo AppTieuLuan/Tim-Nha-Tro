@@ -62,13 +62,14 @@
         <activity android:name=".XemTinTimPhong" />
         <activity android:name=".ThemTinTimPhong" />
         <activity android:name=".ChonViTriNhanThongBao" />
-        <activity android:name=".TestActivity"></activity>
+        <activity android:name=".TestActivity" />
         <activity android:name=".ChangePassActivity" />
         <activity android:name=".ChangeProfileActivity" />
         <activity android:name=".IntroduceActivity" />
         <activity android:name=".SupportActivity" />
         <activity android:name=".ManagerRoomActivity" />
-        <activity android:name=".Filter2"></activity>
+        <activity android:name=".Filter2" />
+        <activity android:name=".EditImage"></activity>
     </application>
 
 </manifest>

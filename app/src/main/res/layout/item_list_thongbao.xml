@@ -19,7 +19,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
-        android:text="ACBD đã bình luận vào bài viết 'Cho thuê phòng trọ tại ngã tư thủ đức' của bạn"
+        android:ellipsize="end"
+        android:maxLines="3"
+        android:text="ACBD đã bình luận vào bài viết 'Cho thuê phòng trọ tại ngã tư thủ đức' của bạn "
         android:textSize="13sp"
         app:layout_constraintEnd_toStartOf="@id/setting"
         app:layout_constraintStart_toEndOf="@id/profile_image" />
@@ -28,18 +30,18 @@
         android:id="@+id/ngay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingTop="4dp"
         android:text="14 tháng 5 lúc 21:38"
-        android:paddingBottom="3dp"
         android:textSize="13sp"
         app:layout_constraintBottom_toBottomOf="@id/profile_image"
         app:layout_constraintStart_toStartOf="@id/noidung" />
 
     <ImageView
         android:id="@+id/setting"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:src="@drawable/ic3dot"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:src="@drawable/ic3dot"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>

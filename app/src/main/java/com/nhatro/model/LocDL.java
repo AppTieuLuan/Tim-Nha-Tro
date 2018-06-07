@@ -14,6 +14,15 @@ public class LocDL {
     public void setOrderby(int orderby) {
         this.orderby = orderby;
     }
+    int iduser;
+
+    public int getIduser() {
+        return iduser;
+    }
+
+    public void setIduser(int iduser) {
+        this.iduser = iduser;
+    }
 
     int idtp;
     String idqh;

@@ -1,7 +1,10 @@
 package com.nhatro.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +14,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.nhatro.DAL.DAL_PhongTro;
+import com.nhatro.Newpost;
 import com.nhatro.R;
+import com.nhatro.model.Parameter_Luu;
 import com.nhatro.model.PhongTro;
+import com.nhatro.model.User;
 import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
@@ -113,21 +121,76 @@ public class CustomListViewAdapter extends BaseAdapter {
         buttonSavePost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (pt.isDaluu()) {
-                    imgSave.setColorFilter(Color.parseColor("#ffffff"));
-                    pt.setDaluu(false);
 
-                    Toast.makeText(v.getContext(), "Hủy lưu", Toast.LENGTH_SHORT).show();
+                SharedPreferences sharedPreferences = context.getSharedPreferences("Mydata", Context.MODE_PRIVATE);
+                String user = sharedPreferences.getString("MyUser", "");
+/*
+
+                Log.d("USERSSS", user);
+                Gson gsonUser = new Gson();
+                User user1 = gsonUser.fromJson(user, User.class);
+*/
+
+                if (user == null || user.equals("")) {
+                    Toast.makeText(context, "Đăng nhập trước khi thực hiện thao tác này !!", Toast.LENGTH_SHORT).show();
                 } else {
-                    imgSave.setColorFilter(Color.parseColor("#008efc"));
-                    pt.setDaluu(true);
+                   /* Intent intents = new Intent(getContext(), Newpost.class);
+                    startActivity(intents);*/
+                    if (pt.isDaluu()) {
+                        Parameter_Luu parameter_luu = new Parameter_Luu();
+                        parameter_luu.setIdphong(pt.getId());
 
-                    Toast.makeText(v.getContext(), "Đã lưu", Toast.LENGTH_SHORT).show();
+                        Gson gsonUser = new Gson();
+                        User user1 = gsonUser.fromJson(user, User.class);
+                        parameter_luu.setIduser(Integer.parseInt(user1.getId()));
+
+                        parameter_luu.setLuu(0);
+
+                        Luu_HuyLuu luu_huyLuu = new Luu_HuyLuu();
+                        luu_huyLuu.execute(parameter_luu);
+
+                        imgSave.setColorFilter(Color.parseColor("#ffffff"));
+                        pt.setDaluu(false);
+
+                        //Toast.makeText(v.getContext(), "Hủy lưu", Toast.LENGTH_SHORT).show();
+                    } else {
+
+                        Parameter_Luu parameter_luu = new Parameter_Luu();
+                        parameter_luu.setIdphong(pt.getId());
+
+                        Gson gsonUser = new Gson();
+                        User user1 = gsonUser.fromJson(user, User.class);
+                        parameter_luu.setIduser(Integer.parseInt(user1.getId()));
+
+                        parameter_luu.setLuu(1);
+
+                        Luu_HuyLuu luu_huyLuu = new Luu_HuyLuu();
+                        luu_huyLuu.execute(parameter_luu);
+
+
+                        imgSave.setColorFilter(Color.parseColor("#008efc"));
+                        pt.setDaluu(true);
+
+                        //Toast.makeText(v.getContext(), "Đã lưu", Toast.LENGTH_SHORT).show();
+                    }
                 }
+
             }
         });
 
         return view;
     }
 
+    class Luu_HuyLuu extends AsyncTask<Parameter_Luu, Void, Integer> {
+        @Override
+        protected Integer doInBackground(Parameter_Luu... parameter_luus) {
+            DAL_PhongTro dal_phongTro = new DAL_PhongTro();
+            return dal_phongTro.Luu_BoLuu(parameter_luus[0].getIdphong(), parameter_luus[0].getIduser(), parameter_luus[0].getLuu());
+        }
+
+        @Override
+        protected void onPostExecute(Integer integer) {
+            super.onPostExecute(integer);
+        }
+    }
 }

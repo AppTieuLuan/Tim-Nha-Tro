@@ -2,7 +2,9 @@ package com.nhatro;
 
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -20,10 +22,12 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionMenu;
+import com.google.gson.Gson;
 import com.nhatro.DAL.DAL_TinTimPhong;
 import com.nhatro.adapter.List_Tin_Tim_Phong_Adapter;
 import com.nhatro.model.LocDLTinTimPhong;
 import com.nhatro.model.TinTimPhongItemList;
+import com.nhatro.model.User;
 
 import java.util.ArrayList;
 
@@ -64,7 +68,7 @@ public class tim_o_ghep extends Fragment {
 
     com.github.clans.fab.FloatingActionButton iconAdd;
     LinearLayout layoutOverlay;
-
+    User users;
 
     public tim_o_ghep() {
         // Required empty public constructor
@@ -77,6 +81,8 @@ public class tim_o_ghep extends Fragment {
         // Inflate the layout for this fragment
         final View v;
         v = inflater.inflate(R.layout.fragment_tim_o_ghep, container, false);
+
+        getUserInfo();
 
         locDLTinTimPhong = new LocDLTinTimPhong();
         locDLTinTimPhong.setLoaitin("(1,2,3)");
@@ -133,11 +139,26 @@ public class tim_o_ghep extends Fragment {
             @Override
             public void onClick(View v) {
 
-                Bundle bundle = new Bundle();
-                bundle.putInt("key", 1);
-                Intent intent = new Intent(getContext(), ThemTinTimPhong.class);
-                intent.putExtra("data", bundle);
-                startActivityForResult(intent, 777);
+                SharedPreferences sharedPreferences = getContext().getSharedPreferences("Mydata", Context.MODE_PRIVATE);
+                String user = sharedPreferences.getString("MyUser", "");
+/*
+
+                Log.d("USERSSS", user);
+                Gson gsonUser = new Gson();
+                User user1 = gsonUser.fromJson(user, User.class);
+*/
+
+                if (user == null || user.equals("")) {
+                    Toast.makeText(getContext(), "Đăng nhập trước khi thực hiện thao tác này !!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("key", 1);
+                    Intent intent = new Intent(getContext(), ThemTinTimPhong.class);
+                    intent.putExtra("data", bundle);
+                    startActivityForResult(intent, 777);
+                }
+
+
             }
         });
         btnBoLoc.setOnClickListener(new View.OnClickListener() {
@@ -319,5 +340,16 @@ public class tim_o_ghep extends Fragment {
         }
     }
 
+    public void getUserInfo() {
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("Mydata", Context.MODE_PRIVATE);
+        String user = sharedPreferences.getString("MyUser", "");
+        if (user.equals("") || user == null) {
+            users = null;
+        } else {
+            users = new User();
+            Gson gsonUser = new Gson();
+            users = gsonUser.fromJson(user, User.class);
+        }
+    }
 
 }

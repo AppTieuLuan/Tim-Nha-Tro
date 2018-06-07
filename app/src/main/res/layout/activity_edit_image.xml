@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.nhatro.EditImage">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <com.makeramen.roundedimageview.RoundedImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/idbtnAddImage"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:padding="7dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/add_image"
+            app:riv_border_color="#c6c5c5"
+            app:riv_border_width="1dip"
+            app:riv_corner_radius="15dip"
+            app:riv_oval="false"
+            app:riv_tile_mode="clamp" />
+
+        <TextView
+            android:id="@+id/txtHD"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:paddingBottom="5dp"
+            android:text="Khi chọn ảnh, giữ vào 1 ảnh để mở chế độ chọn nhiều ảnh"
+            android:textSize="12sp"
+            android:textStyle="italic" />
+
+        <GridView
+            android:id="@+id/gridHA"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:isScrollContainer="false"
+            android:numColumns="3"
+            android:paddingTop="7dp"
+            android:stretchMode="columnWidth"></GridView>
+
+        <TextView
+            android:id="@+id/btnOK"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:background="@color/colorPrimary"
+            android:gravity="center"
+            android:padding="15dp"
+            android:text="XONG"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:visibility="gone"
+        android:orientation="vertical"
+        android:id="@+id/layoutOverlay"
+        android:background="@color/black_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></LinearLayout>
+
+</android.support.constraint.ConstraintLayout>
