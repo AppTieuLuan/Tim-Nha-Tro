@@ -13,9 +13,9 @@
         android:visibility="gone">
 
         <TextView
-            android:gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:padding="10dp"
             android:text="Cần đăng nhập để xem các thông báo dành cho bạn"
             android:textSize="15sp"
@@ -40,16 +40,23 @@
         android:layout_height="match_parent"
         android:visibility="gone">
 
-        <ListView
-            android:id="@+id/listView"
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:divider="@android:color/transparent"
-            android:dividerHeight="3sp"
-            android:paddingBottom="4dp"
-            android:foregroundGravity="center">
+            android:layout_height="match_parent">
 
-        </ListView>
+            <ListView
+                android:id="@+id/listView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="@android:color/transparent"
+                android:dividerHeight="3sp"
+                android:foregroundGravity="center"
+                android:paddingBottom="4dp">
+
+            </ListView>
+        </android.support.v4.widget.SwipeRefreshLayout>
+
 
         <TextView
             android:id="@+id/txtxemthem"
@@ -60,7 +67,7 @@
             android:text="Xem các thông báo cũ hơn..."
             android:textColor="@color/colorPrimary"
             android:textSize="12sp"
-            app:layout_constraintTop_toBottomOf="@id/listView" />
+            app:layout_constraintTop_toBottomOf="@id/swipe_refresh_layout" />
 
         <ProgressBar
             android:id="@+id/progressloadthembl"
@@ -70,6 +77,6 @@
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/listView" />
+            app:layout_constraintTop_toBottomOf="@id/swipe_refresh_layout" />
     </android.support.constraint.ConstraintLayout>
 </android.support.constraint.ConstraintLayout>

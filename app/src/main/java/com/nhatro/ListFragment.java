@@ -31,10 +31,15 @@ import com.elyeproj.loaderviewlibrary.LoaderImageView;
 import com.elyeproj.loaderviewlibrary.LoaderTextView;
 import com.google.gson.Gson;
 import com.nhatro.DAL.DAL_PhongTro;
+import com.nhatro.EventBus.Event_DangNhapThanhCong;
 import com.nhatro.adapter.CustomListViewAdapter;
 import com.nhatro.model.LocDL;
 import com.nhatro.model.PhongTro;
 import com.nhatro.model.User;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 
@@ -385,6 +390,7 @@ public class ListFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         protected void onPostExecute(ArrayList<PhongTro> phongTros) {
             super.onPostExecute(phongTros);
 
+            //Nó get đc da ta mà
             locDL.setTrang(2);
             isLoading = false;
             if (phongTros.size() == 0) {
@@ -445,5 +451,30 @@ public class ListFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             return phongTros;
         }
     }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+
+        if (!hidden) {
+            SharedPreferences sharedPreferences = getActivity().getSharedPreferences("Mydata", Context.MODE_PRIVATE);
+            int ss = sharedPreferences.getInt("ischangedState", -1);
+
+            //Toast.makeText(getContext(), String.valueOf(ss), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getContext(), String.valueOf(ss), Toast.LENGTH_SHORT).show();
+            if (ss == 1) {
+                SharedPreferences mPrefs = getActivity().getSharedPreferences("Mydata", getContext().MODE_PRIVATE);
+                SharedPreferences.Editor editor = mPrefs.edit();
+                editor.putInt("ischangedState", 0);
+                editor.commit();
+                locDL.setTrang(1);
+                filterData(locDL);
+            }
+
+
+        }
+
+    }
+
 
 }

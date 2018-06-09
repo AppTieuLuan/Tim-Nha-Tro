@@ -118,4 +118,19 @@ public class ThongBaos {
 
         return rs;
     }
+
+    public void setDaDoc(int id) {
+        String URL_NEW = variable.getWebservice() + "setDaDocThongBao.php";
+        //String URL_NEW = "http://192.168.1.23:8080/firebase/danhSachPhong.php";
+        // Tạo danh sách tham số gửi đến máy chủ
+        List<NameValuePair> args = new ArrayList<NameValuePair>();
+        args.add(new BasicNameValuePair("id", String.valueOf(id)));
+
+        MyService jsonParser = new MyService();
+        try {
+            jsonParser.callService(URL_NEW, MyService.POST, args);
+        } catch (Exception e) {
+
+        }
+    }
 }

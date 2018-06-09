@@ -639,7 +639,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
         @Override
         protected void onPostExecute(ArrayList<PhongTro> a) {
             super.onPostExecute(a);
-            loadingbar.setVisibility(View.GONE);
+            loadingbar.setVisibility(View.INVISIBLE);
             item = a;
             if (a.size() > 0) {
                 indexSelected = 0;

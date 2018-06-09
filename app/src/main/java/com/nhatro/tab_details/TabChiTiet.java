@@ -831,19 +831,23 @@ public class TabChiTiet extends Fragment {
         @Override
         protected Void doInBackground(String... strings) {
 
-            SharedPreferences sharedPreferences = getContext().getSharedPreferences("Mydata", Context.MODE_PRIVATE);
-            String user = sharedPreferences.getString("MyUser", "");
+            try {
+                SharedPreferences sharedPreferences = getContext().getSharedPreferences("Mydata", Context.MODE_PRIVATE);
+                String user = sharedPreferences.getString("MyUser", "");
 
-            if (user.equals("") || user == null) {
-                DAL_PhongTro dal_phongTro = new DAL_PhongTro();
-                phongTros = dal_phongTro.thongTinPhong(strings[0], -1);
-            } else {
-                Gson gsonUser = new Gson();
-                User users1 = new User();
-                users1 = gsonUser.fromJson(user, User.class);
+                if (user.equals("") || user == null) {
+                    DAL_PhongTro dal_phongTro = new DAL_PhongTro();
+                    phongTros = dal_phongTro.thongTinPhong(strings[0], -1);
+                } else {
+                    Gson gsonUser = new Gson();
+                    User users1 = new User();
+                    users1 = gsonUser.fromJson(user, User.class);
 
-                DAL_PhongTro dal_phongTro = new DAL_PhongTro();
-                phongTros = dal_phongTro.thongTinPhong(strings[0], Integer.parseInt(users1.getId()));
+                    DAL_PhongTro dal_phongTro = new DAL_PhongTro();
+                    phongTros = dal_phongTro.thongTinPhong(strings[0], Integer.parseInt(users1.getId()));
+                }
+            } catch (Exception e) {
+
             }
 
 
@@ -856,105 +860,107 @@ public class TabChiTiet extends Fragment {
             super.onPostExecute(result);
             if (phongTros != null) {
 
-                if (users == null || Integer.parseInt(users.getId()) != phongTros.getIduser()) {
-                    setHidden();
-                } else {
-                    if (phongTros.getConphong() == 1) {
-                        textBCLoi.setText("Báo hết phòng");
+                try {
+                    if (users == null || Integer.parseInt(users.getId()) != phongTros.getIduser()) {
+                        setHidden();
                     } else {
-                        textBCLoi.setText("Báo còn phòng");
-                    }
-                }
-                if (phongTros.getLoaitin() == 1) {
-                    valueLoaiNhaO.setText("Cho thuê phòng trọ");
-                } else {
-                    if (phongTros.getLoaitin() == 2) {
-                        valueLoaiNhaO.setText("Tìm bạn ở ghép");
-                    } else {
-                        if (phongTros.getLoaitin() == 3) {
-                            valueLoaiNhaO.setText("Cho thuê nhà nguyên căn");
+                        if (phongTros.getConphong() == 1) {
+                            textBCLoi.setText("Báo hết phòng");
+                        } else {
+                            textBCLoi.setText("Báo còn phòng");
                         }
                     }
-                }
-                valueDienTich.setText(phongTros.getDientich() + "m2 " + "(" + phongTros.getChieudai() + "m x " + phongTros.getChieurong() + "m)");
-
-                DecimalFormat formatter = new DecimalFormat("###,###,###");
-                String tmp = formatter.format(phongTros.getGia()) + " VNĐ/Tháng";
-
-                valueGiaThue.setText(tmp);
-
-                if (phongTros.getTiencoc() == 0) {
-                    valueDatCoc.setText("Không cần");
-                } else {
-                    tmp = formatter.format(phongTros.getTiencoc()) + " VNĐ/Tháng";
-                    valueDatCoc.setText(tmp);
-                }
-                tmp = formatter.format(phongTros.getGiadien()) + " " + phongTros.getDonvidien();
-                valueTienDien.setText(tmp);
-
-                tmp = formatter.format(phongTros.getGianuoc()) + " " + phongTros.getDonvinuoc();
-                valueTienNuoc.setText(tmp);
-
-                if (phongTros.getGiogiac().equals("-1")) {
-                    valueGioGiac.setText("Tự do");
-                } else {
-                    valueGioGiac.setText("Đóng cửa từ " + phongTros.getGiogiac());
-                }
-                valueSoNguoi.setText("Từ " + phongTros.getSonguoimin() + " - " + phongTros.getSonguoimax() + " người");
-                valueHoten.setText(phongTros.getHoten());
-                valueSDT.setText(phongTros.getSdt());
-                valueDiaChi.setText(phongTros.getDiachi() + "," + phongTros.getTenqh() + "," + phongTros.getTentp());
-
-                txtbinhluan.setText(phongTros.getMotathem());
-
-                String[] array = phongTros.getTiennghi().split(",", -1);
-                for (int i = 0; i < array.length; i++) {
-                    if (array[i].equals("wifi")) {
-                        lstTienNghi.get(0).setSelected(true);
+                    if (phongTros.getLoaitin() == 1) {
+                        valueLoaiNhaO.setText("Cho thuê phòng trọ");
                     } else {
-                        if (array[i].equals("gac")) {
-                            lstTienNghi.get(1).setSelected(true);
+                        if (phongTros.getLoaitin() == 2) {
+                            valueLoaiNhaO.setText("Tìm bạn ở ghép");
                         } else {
-                            if (array[i].equals("toilet")) {
-                                lstTienNghi.get(2).setSelected(true);
-                            } else {
-                                if (array[i].equals("phongtam")) {
-                                    lstTienNghi.get(3).setSelected(true);
-                                } else {
-                                    if (array[i].equals("giuong")) {
-                                        lstTienNghi.get(4).setSelected(true);
-                                    } else {
-                                        if (array[i].equals("tv")) {
-                                            lstTienNghi.get(5).setSelected(true);
-                                        } else {
-                                            if (array[i].equals("tulanh")) {
-                                                lstTienNghi.get(6).setSelected(true);
-                                            } else {
-                                                if (array[i].equals("bepga")) {
-                                                    lstTienNghi.get(7).setSelected(true);
-                                                } else {
-                                                    if (array[i].equals("quat")) {
-                                                        lstTienNghi.get(8).setSelected(true);
-                                                    } else {
-                                                        if (array[i].equals("tudo")) {
-                                                            lstTienNghi.get(9).setSelected(true);
-                                                        } else {
-                                                            if (array[i].equals("maylanh")) {
-                                                                lstTienNghi.get(10).setSelected(true);
-                                                            } else {
-                                                                if (array[i].equals("den")) {
-                                                                    lstTienNghi.get(11).setSelected(true);
-                                                                } else {
-                                                                    if (array[i].equals("baove")) {
-                                                                        lstTienNghi.get(12).setSelected(true);
-                                                                    } else {
-                                                                        if (array[i].equals("camera")) {
-                                                                            lstTienNghi.get(13).setSelected(true);
-                                                                        } else {
-                                                                            if (array[i].equals("khudexe")) {
-                                                                                lstTienNghi.get(14).setSelected(true);
-                                                                            } else {
+                            if (phongTros.getLoaitin() == 3) {
+                                valueLoaiNhaO.setText("Cho thuê nhà nguyên căn");
+                            }
+                        }
+                    }
+                    valueDienTich.setText(phongTros.getDientich() + "m2 " + "(" + phongTros.getChieudai() + "m x " + phongTros.getChieurong() + "m)");
 
+                    DecimalFormat formatter = new DecimalFormat("###,###,###");
+                    String tmp = formatter.format(phongTros.getGia()) + " VNĐ/Tháng";
+
+                    valueGiaThue.setText(tmp);
+
+                    if (phongTros.getTiencoc() == 0) {
+                        valueDatCoc.setText("Không cần");
+                    } else {
+                        tmp = formatter.format(phongTros.getTiencoc()) + " VNĐ/Tháng";
+                        valueDatCoc.setText(tmp);
+                    }
+                    tmp = formatter.format(phongTros.getGiadien()) + " " + phongTros.getDonvidien();
+                    valueTienDien.setText(tmp);
+
+                    tmp = formatter.format(phongTros.getGianuoc()) + " " + phongTros.getDonvinuoc();
+                    valueTienNuoc.setText(tmp);
+
+                    if (phongTros.getGiogiac().equals("-1")) {
+                        valueGioGiac.setText("Tự do");
+                    } else {
+                        valueGioGiac.setText("Đóng cửa từ " + phongTros.getGiogiac());
+                    }
+                    valueSoNguoi.setText("Từ " + phongTros.getSonguoimin() + " - " + phongTros.getSonguoimax() + " người");
+                    valueHoten.setText(phongTros.getHoten());
+                    valueSDT.setText(phongTros.getSdt());
+                    valueDiaChi.setText(phongTros.getDiachi() + "," + phongTros.getTenqh() + "," + phongTros.getTentp());
+
+                    txtbinhluan.setText(phongTros.getMotathem());
+
+                    String[] array = phongTros.getTiennghi().split(",", -1);
+                    for (int i = 0; i < array.length; i++) {
+                        if (array[i].equals("wifi")) {
+                            lstTienNghi.get(0).setSelected(true);
+                        } else {
+                            if (array[i].equals("gac")) {
+                                lstTienNghi.get(1).setSelected(true);
+                            } else {
+                                if (array[i].equals("toilet")) {
+                                    lstTienNghi.get(2).setSelected(true);
+                                } else {
+                                    if (array[i].equals("phongtam")) {
+                                        lstTienNghi.get(3).setSelected(true);
+                                    } else {
+                                        if (array[i].equals("giuong")) {
+                                            lstTienNghi.get(4).setSelected(true);
+                                        } else {
+                                            if (array[i].equals("tv")) {
+                                                lstTienNghi.get(5).setSelected(true);
+                                            } else {
+                                                if (array[i].equals("tulanh")) {
+                                                    lstTienNghi.get(6).setSelected(true);
+                                                } else {
+                                                    if (array[i].equals("bepga")) {
+                                                        lstTienNghi.get(7).setSelected(true);
+                                                    } else {
+                                                        if (array[i].equals("quat")) {
+                                                            lstTienNghi.get(8).setSelected(true);
+                                                        } else {
+                                                            if (array[i].equals("tudo")) {
+                                                                lstTienNghi.get(9).setSelected(true);
+                                                            } else {
+                                                                if (array[i].equals("maylanh")) {
+                                                                    lstTienNghi.get(10).setSelected(true);
+                                                                } else {
+                                                                    if (array[i].equals("den")) {
+                                                                        lstTienNghi.get(11).setSelected(true);
+                                                                    } else {
+                                                                        if (array[i].equals("baove")) {
+                                                                            lstTienNghi.get(12).setSelected(true);
+                                                                        } else {
+                                                                            if (array[i].equals("camera")) {
+                                                                                lstTienNghi.get(13).setSelected(true);
+                                                                            } else {
+                                                                                if (array[i].equals("khudexe")) {
+                                                                                    lstTienNghi.get(14).setSelected(true);
+                                                                                } else {
+
+                                                                                }
                                                                             }
                                                                         }
                                                                     }
@@ -970,18 +976,17 @@ public class TabChiTiet extends Fragment {
                             }
                         }
                     }
+
+                    myAdapter.notifyDataSetChanged();
+                    loadlayoutThongTinChiTiet.setVisibility(View.GONE);
+                    scrollChiTiet.setVisibility(View.VISIBLE);
+                    setClickCall_SMS();
+                    if (!phongTros.getFacebook().equals("")) {
+                        setClickFacebook(phongTros.getFacebook());
+                    }
+                } catch (Exception e) {
+
                 }
-
-                myAdapter.notifyDataSetChanged();
-                loadlayoutThongTinChiTiet.setVisibility(View.GONE);
-                scrollChiTiet.setVisibility(View.VISIBLE);
-                setClickCall_SMS();
-                if (!phongTros.getFacebook().equals("")) {
-                    setClickFacebook(phongTros.getFacebook());
-                }
-
-
-
             }
         }
     }

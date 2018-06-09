@@ -1,5 +1,6 @@
 package com.nhatro;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -108,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigation.addItem(item4);
         bottomNavigation.setCurrentItem(0);
 
-        bottomNavigation.setNotification("5", 2);
+        //bottomNavigation.setNotification("5", 2);
 
         // Change colors
         bottomNavigation.setAccentColor(Color.parseColor("#1594E9"));
@@ -205,6 +206,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         fragmentManager.beginTransaction().add(R.id.frame, homeFragment).commit(); // Add và hiện thị fragment home khi khởi động
+
+        SharedPreferences sharedPreferences = getSharedPreferences("Mydata", Context.MODE_PRIVATE);
+
+        int ss = sharedPreferences.getInt("ischangedState", -1);
+        if (ss == -1) {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putInt("ischangedState", 0).commit();
+        }
+        //SharedPreferences mPrefs = getSharedPreferences("Mydata", MODE_PRIVATE);
+
 
     }
 

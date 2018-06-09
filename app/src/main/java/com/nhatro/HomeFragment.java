@@ -2,8 +2,10 @@ package com.nhatro;
 
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
@@ -331,5 +333,57 @@ public class HomeFragment extends Fragment {
 //                transaction.commit();
             }
         }
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+
+        if (!hidden) {
+            /*SharedPreferences sharedPreferences = getContext().getSharedPreferences("Mydata", Context.MODE_PRIVATE);
+            String user = sharedPreferences.getString("MyUser", "");*//*
+
+            getUserInfo();
+
+            if (users == null) {
+                changeduser = true;
+                layout1.setVisibility(View.VISIBLE);
+                contain.setVisibility(View.GONE);
+            } else {
+                if (olduser != Integer.parseInt(users.getId())) {
+                    trang = 1;
+                    olduser = Integer.parseInt(users.getId());
+                    NotifyFragment.GetNews getNews = new NotifyFragment.GetNews();
+                    getNews.execute();
+                } else {
+                    layout1.setVisibility(View.GONE);
+                    contain.setVisibility(View.VISIBLE);
+                }
+
+
+            }*/
+
+            SharedPreferences sharedPreferences = getContext().getSharedPreferences("Mydata", Context.MODE_PRIVATE);
+            int ss = sharedPreferences.getInt("ischangedState", -1);
+
+            //Toast.makeText(getContext(), String.valueOf(ss), Toast.LENGTH_SHORT).show();
+
+            if (ss == 1) {
+
+
+                if (moDanhSach) {
+                    SharedPreferences mPrefs = getActivity().getSharedPreferences("Mydata", getContext().MODE_PRIVATE);
+                    SharedPreferences.Editor editor = mPrefs.edit();
+                    editor.putInt("ischangedState", 0);
+                    editor.commit();
+                    listFragment.filterData(locDL);
+                } else {
+
+                }
+            }
+
+
+        }
+
     }
 }

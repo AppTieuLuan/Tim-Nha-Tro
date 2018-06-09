@@ -95,11 +95,12 @@ public class PersonalFragment extends Fragment {
         setUser();
         return inflate;
     }
-    public void setUser(){
+
+    public void setUser() {
         SharedPreferences mPrefs = getActivity().getSharedPreferences("Mydata", getContext().MODE_PRIVATE);
         Gson gson = new Gson();
         String json = mPrefs.getString("MyUser", "");
-        if(json.length() > 0) {
+        if (json.length() > 0) {
             User user = gson.fromJson(json, User.class);
             txtname.setText(user.getHoten());
             username = user.getUsername();
@@ -107,23 +108,24 @@ public class PersonalFragment extends Fragment {
 
         }
     }
+
     private void selectImage() {
-        final CharSequence[] items = { "Chụp ảnh", "Chọn ảnh từ thư viện",
-                "Hủy" };
+        final CharSequence[] items = {"Chụp ảnh", "Chọn ảnh từ thư viện",
+                "Hủy"};
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Tải ảnh lên!");
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
-                boolean result=Utility.checkPermission(getActivity());
+                boolean result = Utility.checkPermission(getActivity());
                 String userChoosenTask;
                 if (items[item].equals("Chụp ảnh")) {
-                    userChoosenTask="Chụp ảnh";
-                    if(result)
+                    userChoosenTask = "Chụp ảnh";
+                    if (result)
                         cameraIntent();
                 } else if (items[item].equals("Chọn ảnh từ thư viện")) {
-                    userChoosenTask="Chọn ảnh từ thư viện";
-                    if(result)
+                    userChoosenTask = "Chọn ảnh từ thư viện";
+                    if (result)
                         galleryIntent();
                 } else if (items[item].equals("Hủy")) {
                     dialog.dismiss();
@@ -132,13 +134,15 @@ public class PersonalFragment extends Fragment {
         });
         builder.show();
     }
+
     //set camera intent
     private void cameraIntent() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(intent, REQUEST_CAMERA);
     }
+
     //set select gallery file
-    private void galleryIntent(){
+    private void galleryIntent() {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);//
@@ -148,12 +152,11 @@ public class PersonalFragment extends Fragment {
 
     public static class Utility {
         public static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123;
+
         @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-        public static boolean checkPermission(final Context context)
-        {
+        public static boolean checkPermission(final Context context) {
             int currentAPIVersion = Build.VERSION.SDK_INT;
-            if(currentAPIVersion>=android.os.Build.VERSION_CODES.M)
-            {
+            if (currentAPIVersion >= android.os.Build.VERSION_CODES.M) {
                 if (ContextCompat.checkSelfPermission(context, android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                     if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
                         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
@@ -180,6 +183,7 @@ public class PersonalFragment extends Fragment {
             }
         }
     }
+
     //set resource cho img
     private void setResourceImage(Intent data) {
         Uri selectedImage = data.getData();
@@ -192,7 +196,7 @@ public class PersonalFragment extends Fragment {
         RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
 
         String[] mang_path = file_path.split("\\/");
-        String path = "images/"+mang_path[mang_path.length-1];
+        String path = "images/" + mang_path[mang_path.length - 1];
 
         MultipartBody.Part body = MultipartBody.Part.createFormData("uploaded_file", file_path, requestBody);
         DataClient dataClient = APIUtils.getData();
@@ -200,9 +204,9 @@ public class PersonalFragment extends Fragment {
         callback.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-                if(response != null){
+                if (response != null) {
                     String mess = response.body();
-                    if(mess.equals("ok")) {//upload ảnh lên server thành công
+                    if (mess.equals("ok")) {//upload ảnh lên server thành công
                         //tiến hành cập nhật chuỗi url avatar
                         DataClient dataClient1 = APIUtils.getData();
                         retrofit2.Call<String> callback1 = dataClient1.UpdateAvatar(username, path);
@@ -210,10 +214,10 @@ public class PersonalFragment extends Fragment {
                             @Override
                             public void onResponse(Call<String> call, Response<String> response) {
                                 String message = response.body();
-                                if(message.equals("ok")){
+                                if (message.equals("ok")) {
                                     Toast.makeText(getContext(), "Cập nhật thành công!", Toast.LENGTH_SHORT).show();
                                     imgavatar.setImageURI(selectedImage);
-                                }else {
+                                } else {
                                     Toast.makeText(getContext(), "Cập nhật thất bại!", Toast.LENGTH_SHORT).show();
                                 }
                             }
@@ -223,7 +227,7 @@ public class PersonalFragment extends Fragment {
                                 Toast.makeText(getContext(), "Vui lòng kiểm tra lại đường truyền mạng!", Toast.LENGTH_SHORT).show();
                             }
                         });
-                    }else {
+                    } else {
                         Toast.makeText(getContext(), "Cập nhật thất bại!", Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -235,9 +239,10 @@ public class PersonalFragment extends Fragment {
             }
         });
     }
-    public String getRealPathFromURI (Uri contentUri) {
+
+    public String getRealPathFromURI(Uri contentUri) {
         String path = null;
-        String[] proj = { MediaStore.MediaColumns.DATA };
+        String[] proj = {MediaStore.MediaColumns.DATA};
         Cursor cursor = getActivity().getContentResolver().query(contentUri, proj, null, null, null);
         if (cursor.moveToFirst()) {
             int column_index = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
@@ -246,6 +251,7 @@ public class PersonalFragment extends Fragment {
         cursor.close();
         return path;
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK && data != null) {
@@ -275,9 +281,10 @@ public class PersonalFragment extends Fragment {
                 SharedPreferences.Editor editor = mPrefs.edit();
                 editor.putString("MyUser", "");
                 editor.putString("MyToken", "");
+                editor.putInt("ischangedState", 1); // chỗ này lưu -> Lưu để làm gì .. lưu để load lại :))
                 editor.commit();
 
-                if(callBackListener != null)
+                if (callBackListener != null)
                     callBackListener.onCallBack();
             }
         });
@@ -318,23 +325,19 @@ public class PersonalFragment extends Fragment {
             }
         });
     }
-    public void onAttachToParentFragment(Fragment fragment)
-    {
-        try
-        {
+
+    public void onAttachToParentFragment(Fragment fragment) {
+        try {
             callBackListener = (CallBackListener) fragment;
 
-        }
-        catch (ClassCastException e)
-        {
+        } catch (ClassCastException e) {
             throw new ClassCastException(
                     fragment.toString() + " must implement OnPlayerSelectionSetListener");
         }
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         onAttachToParentFragment(getParentFragment());
     }

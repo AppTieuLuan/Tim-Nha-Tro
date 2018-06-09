@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -30,11 +31,14 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.nhatro.ChangePassActivity;
+import com.nhatro.EventBus.Event_DangNhapThanhCong;
 import com.nhatro.R;
 import com.nhatro.model.User;
 import com.nhatro.model.Token;
 import com.nhatro.retrofit.APIUtils;
 import com.nhatro.retrofit.DataClient;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.Objects;
 
@@ -45,7 +49,7 @@ import retrofit2.Response;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class LoginFragment extends Fragment implements OnLoginListener{
+public class LoginFragment extends Fragment implements OnLoginListener {
     private static final String TAG = "LoginFragment";
     Boolean flag = true;
     ImageView img;
@@ -90,11 +94,11 @@ public class LoginFragment extends Fragment implements OnLoginListener{
 
         img.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if(flag) {
+                if (flag) {
                     txtpassword.setInputType(InputType.TYPE_CLASS_TEXT);
                     txtpassword.setTransformationMethod(HideReturnsTransformationMethod
                             .getInstance());// show password
-                }else {
+                } else {
                     txtpassword.setInputType(InputType.TYPE_CLASS_TEXT
                             | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                     txtpassword.setTransformationMethod(PasswordTransformationMethod
@@ -155,9 +159,9 @@ public class LoginFragment extends Fragment implements OnLoginListener{
                 @SuppressLint("StaticFieldLeak") AsyncTask<String, String, String> loading = new AsyncTask<String, String, String>() {
                     @Override
                     protected String doInBackground(String... params) {
-                        try{
+                        try {
                             Thread.sleep(1000);// sleep 1s
-                        }catch (InterruptedException e){
+                        } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
                         return "done";
@@ -165,12 +169,12 @@ public class LoginFragment extends Fragment implements OnLoginListener{
 
                     @Override
                     protected void onPostExecute(String s) {
-                        if(s.equals("done")){
+                        if (s.equals("done")) {
                             username = txtusername.getText().toString();
                             password = txtpassword.getText().toString();
 
 
-                            if(username.length() > 0 && password.length() > 0){
+                            if (username.length() > 0 && password.length() > 0) {
                                 DataClient dataClient = APIUtils.getData();
                                 retrofit2.Call<Token> callback = dataClient.Login(username, password);
                                 callback.enqueue(new Callback<Token>() {
@@ -180,10 +184,10 @@ public class LoginFragment extends Fragment implements OnLoginListener{
                                         String token = obj.getToken();
                                         stopAnimation();// dừng animation
 
-                                        Log.d("KET QUAAAAAAAAAAAAA",response.body().getToken());
-                                        if(token.equals("Null")){
-                                            Toast.makeText(getContext(),"Đăng nhập thất bại!", Toast.LENGTH_SHORT).show();
-                                        }else{
+                                        Log.d("KET QUAAAAAAAAAAAAA", response.body().getToken());
+                                        if (token.equals("Null")) {
+                                            Toast.makeText(getContext(), "Đăng nhập thất bại!", Toast.LENGTH_SHORT).show();
+                                        } else {
                                             User user = obj.getUser();
                                             //lưu lại thông tin user dưới dạng json string
                                             Gson gson = new Gson();
@@ -193,10 +197,21 @@ public class LoginFragment extends Fragment implements OnLoginListener{
 
                                             prefsEditor.putString("MyToken", token);
                                             prefsEditor.putString("MyUser", userJson);
+                                            prefsEditor.putInt("ischangedState", 1);
+                                            prefsEditor.apply();
+
                                             prefsEditor.commit();
+                                           // prefsEditor.notifyAll();
+
+
+                                            User user1 = new User();
+                                            Gson gsonUser = new Gson();
+                                            user1 = gsonUser.fromJson(userJson, User.class);
+
+                                            EventBus.getDefault().post(new Event_DangNhapThanhCong(true, Integer.parseInt(user1.getId())));
 
                                             //Toast.makeText(getContext(),user.getHoten(), Toast.LENGTH_SHORT).show();
-                                            if(callBackListener != null){
+                                            if (callBackListener != null) {
                                                 callBackListener.onCallBack();
                                             }
                                         }
@@ -207,10 +222,10 @@ public class LoginFragment extends Fragment implements OnLoginListener{
                                         stopAnimation();// dừng animation
                                         Toast.makeText(getContext(), "Vui lòng kiểm tra lại đường truyền mạng!", Toast.LENGTH_SHORT).show();
 
-                                        Log.d("LỖI",t.getMessage());
+                                        Log.d("LỖI", t.getMessage());
                                     }
                                 });
-                            }else{
+                            } else {
                                 stopAnimation();//dừng animation
                                 builder.setTitle("Thông báo")
                                         .setMessage("Vui lòng nhập đầy đủ thông tin!")
@@ -231,6 +246,7 @@ public class LoginFragment extends Fragment implements OnLoginListener{
         });
         return inflate;
     }
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -238,18 +254,22 @@ public class LoginFragment extends Fragment implements OnLoginListener{
         if (getActivity() instanceof CallBackListener)
             callBackListener = (CallBackListener) getActivity();
     }
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
     }
-    public void stopAnimation(){
+
+    public void stopAnimation() {
         circularProgressButton.revertAnimation();//revert animation
         circularProgressButton.setBackground(getResources().getDrawable(R.drawable.btnlogin));//set lại background cho button sau khi revert về defaul
     }
+
     @Override
     public void login() {
         //Toast.makeText(getContext(), "Login", Toast.LENGTH_SHORT).show();
     }
+
     public static void hideKeyboard(Activity activity) {
         View v = activity.getWindow().getCurrentFocus();
         if (v != null) {

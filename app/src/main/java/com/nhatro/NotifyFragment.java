@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,7 +35,7 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class NotifyFragment extends Fragment {
+public class NotifyFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     View v;
     LinearLayout layout1;
@@ -52,8 +53,8 @@ public class NotifyFragment extends Fragment {
     User users;
     LinearLayout layoutLoadNew;
     ViewGroup footerTaiThem, footerLoadMore;
-    boolean changeduser; // ĐÃ thay đổi user hay chưa
     int olduser;
+    SwipeRefreshLayout swipe_refresh_layout;
 
     public NotifyFragment() {
         // Required empty public constructor
@@ -99,12 +100,11 @@ public class NotifyFragment extends Fragment {
         listView = v.findViewById(R.id.listView);
         contain = v.findViewById(R.id.contain);
         layoutLoadNew = v.findViewById(R.id.layoutLoadNew);
-
+        swipe_refresh_layout = v.findViewById(R.id.swipe_refresh_layout);
 
     }
 
     public void setUp() {
-        changeduser = false;
         trang = 1;
         isloading = false;
         isnext = true;
@@ -129,6 +129,12 @@ public class NotifyFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (data.get(position).getDadoc() == 0) {
+                    setDaDoc setDaDoc = new setDaDoc();
+                    setDaDoc.execute(data.get(position).getId());
+                    data.get(position).setDadoc(1);
+                    listThongBao_adapter.notifyDataSetChanged();
+                }
                 if (data.get(position).getLoai() == 1) {
                     Intent intent = new Intent(getActivity(), Details.class);
 
@@ -172,6 +178,7 @@ public class NotifyFragment extends Fragment {
             }
         });
 
+        swipe_refresh_layout.setOnRefreshListener(this);
     }
 
     public void bottomDiaLogSetup() {
@@ -184,6 +191,7 @@ public class NotifyFragment extends Fragment {
         layout1.setVisibility(View.VISIBLE);
         contain.setVisibility(View.GONE);
     }
+
 
     @Override
     public void onHiddenChanged(boolean hidden) {
@@ -198,7 +206,6 @@ public class NotifyFragment extends Fragment {
             getUserInfo();
 
             if (users == null) {
-                changeduser = true;
                 layout1.setVisibility(View.VISIBLE);
                 contain.setVisibility(View.GONE);
             } else {
@@ -216,6 +223,12 @@ public class NotifyFragment extends Fragment {
             }
         }
 
+    }
+
+    @Override
+    public void onRefresh() {
+        PullToRefresh pullToRefresh = new PullToRefresh();
+        pullToRefresh.execute();
     }
 
     public class GetNews extends AsyncTask<Void, Void, ArrayList<ThongBao>> {
@@ -251,7 +264,42 @@ public class NotifyFragment extends Fragment {
                 trang = trang + 1;
             }
 
-            changeduser = false;
+        }
+    }
+
+    public class PullToRefresh extends AsyncTask<Void, Void, ArrayList<ThongBao>> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            /*layout1.setVisibility(View.GONE);
+            contain.setVisibility(View.GONE);
+            layoutLoadNew.setVisibility(View.VISIBLE);*/
+            trang = 1;
+            swipe_refresh_layout.setRefreshing(true);
+        }
+
+        @Override
+        protected ArrayList<ThongBao> doInBackground(Void... voids) {
+            ThongBaos thongBaos = new ThongBaos();
+            ArrayList<ThongBao> thongBaos1 = new ArrayList<>();
+            thongBaos1 = thongBaos.dsThongBao(Integer.parseInt(users.getId()), trang);
+            return thongBaos1;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<ThongBao> thongBaos) {
+            super.onPostExecute(thongBaos);
+            data.clear();
+            data.addAll(thongBaos);
+            listThongBao_adapter.notifyDataSetChanged();
+            if (thongBaos.size() == 0) {
+                isnext = false;
+            } else {
+                trang = trang + 1;
+            }
+
+            swipe_refresh_layout.setRefreshing(false);
         }
     }
 
@@ -283,6 +331,15 @@ public class NotifyFragment extends Fragment {
 
             listView.removeFooterView(footerLoadMore);
             listView.addFooterView(footerTaiThem);
+        }
+    }
+
+    public class setDaDoc extends AsyncTask<Integer, Void, Void> {
+        @Override
+        protected Void doInBackground(Integer... integers) {
+            ThongBaos thongBaos = new ThongBaos();
+            thongBaos.setDaDoc(integers[0]);
+            return null;
         }
     }
 }
