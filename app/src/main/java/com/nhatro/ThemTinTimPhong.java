@@ -35,7 +35,6 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.nhatro.DAL.DAL_TinTimPhong;
 import com.nhatro.adapter.AdapterRecyclerViewChonQuan;
 import com.nhatro.adapter.ExpandableHeightGridView;
@@ -784,8 +783,9 @@ public class ThemTinTimPhong extends AppCompatActivity implements OnMapReadyCall
             // Xử lý thêm ở đây ở đây
             if (key != 2) {
                 boolean kq;
+                String token = "";
                 DAL_TinTimPhong dal_tinTimPhong = new DAL_TinTimPhong();
-                kq = dal_tinTimPhong.themTinMoi(tinTimPhong);
+                kq = dal_tinTimPhong.themTinMoi(tinTimPhong,token);
                 Message message = mHadler.obtainMessage(1, kq);
                 mHadler.sendMessage(message);
             } else {

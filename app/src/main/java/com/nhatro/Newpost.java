@@ -2,10 +2,12 @@ package com.nhatro;
 
 import android.app.AlertDialog;
 import android.app.TimePickerDialog;
+import android.content.BroadcastReceiver;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
@@ -13,11 +15,16 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -49,8 +56,6 @@ import com.nhatro.adapter.Grid_Facilities_Adapter;
 import com.nhatro.adapter.ImageFilePath;
 import com.nhatro.adapter.SpinnerQuanHuyen_Adapter;
 import com.nhatro.adapter.SpinnerTinhTP;
-import com.nhatro.model.Add_Images;
-import com.nhatro.model.HoTro;
 import com.nhatro.model.Item_Grid_Facilities;
 import com.nhatro.model.PhongTros;
 import com.nhatro.model.QuanHuyen;
@@ -83,7 +88,7 @@ public class Newpost extends AppCompatActivity implements OnMapReadyCallback {
     mHadler mHadler;
     //mHandlerUpdateGrid mHandlerUpdateGrid;
     Toast toastError;
-
+    private BroadcastReceiver mRegistrationBroadcastReceiver;
     RadioButton radTuDo, radGio;
     TextView valueGioDongCua, donViTienDien, donViTienNuoc;
     Calendar c;
@@ -139,7 +144,6 @@ public class Newpost extends AppCompatActivity implements OnMapReadyCallback {
         isposting = false;
         users = new User();
         init();
-
         getUserInfo();
         getAddress();
         mapView = (MapView) findViewById(R.id.mapViTri);
@@ -289,9 +293,25 @@ public class Newpost extends AppCompatActivity implements OnMapReadyCallback {
         spinnerQuanHuyen_adapter = new SpinnerQuanHuyen_Adapter(getApplicationContext(), arrQuanHuyen);
         spinnerQuanHuyen_adapter.notifyDataSetChanged();
         spinnerQuanHuyen.setAdapter(spinnerQuanHuyen_adapter);
+
+        spinnerQuanHuyen.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                clearFocusAllEditext();
+                return false;
+            }
+        });
+        spinnerTinhTP.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                clearFocusAllEditext();
+                return false;
+            }
+        });
         spinnerTinhTP.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                clearFocusAllEditext();
                 //Toast.makeText(getApplicationContext(), String.valueOf(arrTinhTP.get(position).getId()) + " - " + arrTinhTP.get(position).getTen(),Toast.LENGTH_SHORT).show();
                 arrQuanHuyen = sqLite_quanHuyen.getDSQH(arrTinhTP.get(position).getId());
                 //spinnerQuanHuyen_adapter.notifyDataSetChanged();
@@ -303,19 +323,20 @@ public class Newpost extends AppCompatActivity implements OnMapReadyCallback {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
+                clearFocusAllEditext();
             }
         });
 
         spinnerQuanHuyen.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                clearFocusAllEditext();
                 indexSpinnerQuanHuyen = position;
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
+                clearFocusAllEditext();
             }
         });
         initGridTienNghi();
@@ -438,7 +459,7 @@ public class Newpost extends AppCompatActivity implements OnMapReadyCallback {
                 layoutTransparent.setVisibility(View.GONE);
                 if ((boolean) msg.obj) {
                     lt.success();
-                    finish();
+                    //finish();
                     /*try {
                         //Thread.sleep(2000);
                         finish();
@@ -659,7 +680,6 @@ public class Newpost extends AppCompatActivity implements OnMapReadyCallback {
             e.printStackTrace();
         }
     }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -902,6 +922,32 @@ public class Newpost extends AppCompatActivity implements OnMapReadyCallback {
         radGio = findViewById(R.id.radGio);
         imagesAdded = new ArrayList<>();
 
+
+    }
+
+    public void clearFocusAllEditext() {
+        try {
+            InputMethodManager inputManager = (InputMethodManager)
+                    getSystemService(Context.INPUT_METHOD_SERVICE);
+
+            inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                    InputMethodManager.HIDE_NOT_ALWAYS);
+        } catch (Exception e) {
+
+        }
+        valueTieuDe.clearFocus();
+
+        valueGia.clearFocus();
+
+        valueDatCoc.clearFocus();
+
+        valueChieuDai.clearFocus();
+
+        valueChieuRong.clearFocus();
+        valueTienDien.clearFocus();
+        valueTienNuoc.clearFocus();
+        valueSoNha.clearFocus();
+
     }
 
     public void initGridTienNghi() {
@@ -932,6 +978,7 @@ public class Newpost extends AppCompatActivity implements OnMapReadyCallback {
         gridTienNghi.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                clearFocusAllEditext();
                 boolean tmp = lstFacilities.get(i).isSelected();
                 lstFacilities.get(i).setSelected(!tmp);
                 myAdapter.notifyDataSetChanged();

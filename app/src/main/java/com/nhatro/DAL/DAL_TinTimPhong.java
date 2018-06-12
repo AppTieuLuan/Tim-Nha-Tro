@@ -22,7 +22,7 @@ import java.util.List;
 public class DAL_TinTimPhong {
     Variable variable = new Variable();
 
-    public boolean themTinMoi(TinTimPhong tinTimPhong) {
+    public boolean themTinMoi(TinTimPhong tinTimPhong, String token) {
         boolean rs = false;
 
         String URL_NEW = variable.getWebservice() + "themTinTimPhong.php";
@@ -49,10 +49,13 @@ public class DAL_TinTimPhong {
         args.add(new BasicNameValuePair("gioitinh", String.valueOf(tinTimPhong.getGioitinh())));
         args.add(new BasicNameValuePair("khuvuc", String.valueOf(tinTimPhong.getKhuvuc())));
         args.add(new BasicNameValuePair("qh", tinTimPhong.getQh()));
+        args.add(new BasicNameValuePair("token", token));
         // Lấy đối tượng JSON
         MyService jsonParser = new MyService();
 
         String json = jsonParser.makeService(URL_NEW, MyService.POST, args);
+
+
         if (json != null) {
             try {
                 JSONObject jsonObject = new JSONObject(json);

@@ -538,6 +538,8 @@
                 </LinearLayout>
 
                 <CheckBox
+                    android:visibility="gone"
+                    android:checked="true"
                     app:layout_constraintTop_toBottomOf="@+id/layoutMTTHEM"
                     android:padding="@dimen/paddingIteminDetailScreen"
                     android:textSize="13sp"

@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "807967822788",
+    "firebase_url": "https://fcm-nhatro.firebaseio.com",
+    "project_id": "fcm-nhatro",
+    "storage_bucket": "fcm-nhatro.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:807967822788:android:614ba12e6430be8d",
+        "android_client_info": {
+          "package_name": "com.nhatro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "807967822788-jef14q0qjiq10kavosq7vimo4bd4km6b.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "807967822788-jef14q0qjiq10kavosq7vimo4bd4km6b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_5PwTuO7S9osgwcIi4MU48R4PRePRMxQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

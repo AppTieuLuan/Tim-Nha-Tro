@@ -35,12 +35,9 @@
             android:value="@string/map_api_key" />
 
         <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
+
         <activity android:name=".Home" />
         <activity android:name=".Filter" />
         <activity
@@ -69,7 +66,8 @@
         <activity android:name=".SupportActivity" />
         <activity android:name=".ManagerSaveRoomActivity" />
         <activity android:name=".Filter2" />
-        <activity android:name=".EditImage" />
+        <activity android:name=".EditImage"></activity>
+
         <activity android:name=".ManageNewsActivity" />
         <activity
             android:name=".ManagerNews"
@@ -83,6 +81,18 @@
             android:name=".TabManagerActivity"
             android:label="@string/title_activity_tab_manager"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".SplashScreen"
+            android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
+
+
     </application>
 
 </manifest>

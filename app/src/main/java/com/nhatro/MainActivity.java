@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
         refreshToken();//refresh token
 
         TextView txtLogo = findViewById(R.id.txtLogo);
-        Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/font_logo.TTF");
+        Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/UTM Azuki.ttf");
         txtLogo.setTypeface(tf);
         //actionBar.hide();
 
@@ -271,13 +271,18 @@ public class MainActivity extends AppCompatActivity {
                                     @Override
                                     public void onResponse(Call<String> call, Response<String> response) {
                                         String mess = response.body();
-                                        if (mess.equals("token_correct") || mess.equals("expire")) {// hết hạn hoặc sai
-                                            editor.remove("MyToken");
-                                            editor.remove("MyUser");
-                                            editor.commit();// xóa user khi phiên làm việc đã kết thúc
-                                        } else {
-                                            editor.putString("MyToken", mess).commit();
+                                        try {
+                                            if (mess.equals("token_correct") || mess.equals("expire")) {// hết hạn hoặc sai
+                                                editor.remove("MyToken");
+                                                editor.remove("MyUser");
+                                                editor.commit();// xóa user khi phiên làm việc đã kết thúc
+                                            } else {
+                                                editor.putString("MyToken", mess).commit();
+                                            }
+                                        } catch (Exception e) {
+
                                         }
+
                                     }
 
                                     @Override
