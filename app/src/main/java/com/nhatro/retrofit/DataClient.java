@@ -1,6 +1,10 @@
 package com.nhatro.retrofit;
 
+import com.nhatro.model.PhongTro;
+import com.nhatro.model.TinTimPhongItemList;
 import com.nhatro.model.Token;
+
+import java.util.List;
 
 import okhttp3.MultipartBody;
 import retrofit2.Call;
@@ -67,4 +71,32 @@ public interface DataClient {
                             @Field("phone") String phone,
                             @Field("fburl") String url,
                             @Field("address") String address);
+
+    //Get tin theo iduser
+    @FormUrlEncoded
+    @POST("getNewsIDuser.php")
+    Call<List<PhongTro>> getNews(@Field("iduser") String iduser,
+                                 @Field("trang") int trang);
+
+    //Get tin tìm trọ theo id
+    @FormUrlEncoded
+    @POST("getNewsFindIDuser.php")
+    Call<List<TinTimPhongItemList>> getNewsFind(@Field("iduser") String iduser,
+                                                @Field("trang") int trang);
+
+    //Xóa tin phòng trọ
+    @FormUrlEncoded
+    @POST("deleteNewsID.php")
+    Call<String> deleteNews(@Field("id") String id);
+
+    //Xóa tin tìm phòng trọ
+    @FormUrlEncoded
+    @POST("deleteNewsFindID.php")
+    Call<String> deleteNewsFind(@Field("id") String id);
+
+    //Get tin đã lưu theo iduser
+    @FormUrlEncoded
+    @POST("getNewsSaveIDuser.php")
+    Call<List<PhongTro>> getSaveNews(@Field("iduser") String iduser,
+                                     @Field("trang") int trang);
 }

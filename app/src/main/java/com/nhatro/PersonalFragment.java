@@ -9,42 +9,30 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
-import android.widget.Scroller;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.nhatro.adapter.ImageFilePath;
 import com.nhatro.login.CallBackListener;
 import com.nhatro.model.User;
 import com.nhatro.retrofit.APIUtils;
 import com.nhatro.retrofit.DataClient;
 import com.squareup.picasso.Picasso;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.MediaType;
@@ -58,7 +46,7 @@ import static android.app.Activity.RESULT_OK;
 
 
 public class PersonalFragment extends Fragment {
-    LinearLayout btnchangepass, btnsave, btnprofile, btnlogout, btnintroduce, btnsupport;
+    LinearLayout btnchangepass, btnsave, btnprofile, btnlogout, btnintroduce, btnsupport, btnmanageNews;
     CallBackListener callBackListener;
     ScrollView scrollView;
     CircleImageView imgavatar;
@@ -85,6 +73,7 @@ public class PersonalFragment extends Fragment {
         imgavatar = inflate.findViewById(R.id.imgavatar);
         txtname = inflate.findViewById(R.id.txtname);
         btnintroduce = inflate.findViewById(R.id.introduce);
+        btnmanageNews = inflate.findViewById(R.id.manage);
 
         imgavatar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -305,9 +294,8 @@ public class PersonalFragment extends Fragment {
         btnsave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), ManagerRoomActivity.class);
+                Intent intent = new Intent(getActivity(), ManagerSaveRoomActivity.class);
                 startActivity(intent);
-                Toast.makeText(getContext(), "Save click!", Toast.LENGTH_SHORT).show();
             }
         });
         btnsupport.setOnClickListener(new View.OnClickListener() {
@@ -321,6 +309,13 @@ public class PersonalFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), IntroduceActivity.class);
+                startActivity(intent);
+            }
+        });
+        btnmanageNews.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), TabManagerActivity.class);
                 startActivity(intent);
             }
         });

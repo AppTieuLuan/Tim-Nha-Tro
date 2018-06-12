@@ -67,9 +67,22 @@
         <activity android:name=".ChangeProfileActivity" />
         <activity android:name=".IntroduceActivity" />
         <activity android:name=".SupportActivity" />
-        <activity android:name=".ManagerRoomActivity" />
+        <activity android:name=".ManagerSaveRoomActivity" />
         <activity android:name=".Filter2" />
-        <activity android:name=".EditImage"></activity>
+        <activity android:name=".EditImage" />
+        <activity android:name=".ManageNewsActivity" />
+        <activity
+            android:name=".ManagerNews"
+            android:label="@string/title_activity_manager_news"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".TabManager"
+            android:label="@string/title_activity_tab_manager"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".TabManagerActivity"
+            android:label="@string/title_activity_tab_manager"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

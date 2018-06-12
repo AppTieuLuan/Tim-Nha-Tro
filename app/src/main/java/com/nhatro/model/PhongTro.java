@@ -1,5 +1,8 @@
 package com.nhatro.model;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by CongHoang on 2/11/2018.
  */
@@ -49,8 +52,13 @@ public class PhongTro {
     private float dientich;
     private float chieudai;
     private float chieurong;
+    @SerializedName("doituong")
+    @Expose
     private String gioitinh;
     private boolean daluu;
+    @SerializedName("save")
+    @Expose
+    private String save;
     private int loaitintuc;
     private double lat;
     private double lng;
@@ -92,7 +100,6 @@ public class PhongTro {
     }
 
     public boolean isDaluu() {
-
         return daluu;
     }
 
@@ -177,5 +184,8 @@ public class PhongTro {
         this.chieurong = chieurong;
         this.gioitinh = gioitinh;
         this.daluu = false;
+    }
+    public String getDaluu() {
+        return save;
     }
 }
