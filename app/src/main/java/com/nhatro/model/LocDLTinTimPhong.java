@@ -6,15 +6,15 @@ package com.nhatro.model;
 
 public class LocDLTinTimPhong {
 
-    int idtp;
-    int idqh;
-    int gia;
-    String loaitin;
-    int giogiac;
-    String tiennghi;
-    int doituong;
-    int orderby;
-    int trang;
+    private int idtp;
+    private int idqh;
+    private int gia;
+    private String loaitin;
+    private int giogiac;
+    private String tiennghi;
+    private int doituong;
+    private int orderby;
+    private int trang;
 
     public LocDLTinTimPhong(){
         this.idtp = 50;

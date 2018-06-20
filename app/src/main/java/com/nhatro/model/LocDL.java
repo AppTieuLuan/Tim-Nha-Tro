@@ -5,7 +5,7 @@ package com.nhatro.model;
  */
 
 public class LocDL {
-    int orderby;
+    private int orderby;
 
     public int getOrderby() {
         return orderby;
@@ -14,7 +14,7 @@ public class LocDL {
     public void setOrderby(int orderby) {
         this.orderby = orderby;
     }
-    int iduser;
+    private int iduser;
 
     public int getIduser() {
         return iduser;
@@ -24,23 +24,23 @@ public class LocDL {
         this.iduser = iduser;
     }
 
-    int idtp;
-    String idqh;
-    int giamin;
-    int giamax;
-    int dientichmin;
-    int dientichmax;
-    int songuoio;
-    String loaitin;
-    String tiennghi;
-    int doituong;
-    int giogiac;
+    private int idtp;
+    private String idqh;
+    private int giamin;
+    private int giamax;
+    private int dientichmin;
+    private int dientichmax;
+    private int songuoio;
+    private String loaitin;
+    private String tiennghi;
+    private int doituong;
+    private int giogiac;
 
-    int danhsach;
-    double lat;
-    double lng;
-    int bankinh;
-    int trang;
+    private int danhsach;
+    private double lat;
+    private double lng;
+    private int bankinh;
+    private int trang;
 
     public int getTrang() {
         return trang;

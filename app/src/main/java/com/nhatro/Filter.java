@@ -356,6 +356,7 @@ public class Filter extends AppCompatActivity {
         btnOK = (TextView) findViewById(R.id.btnTimKiem);
         btnCancel = (TextView) findViewById(R.id.btnHuy);
 
+
         btnOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -363,83 +364,96 @@ public class Filter extends AppCompatActivity {
                 HomeFragment.selectedFacilitiess = selectedFacitilies;
                 HomeFragment.minSlider = min;
                 HomeFragment.maxSlider = max;*/
-                String tiennghi = "";
-                for (int i = 0; i < 15; i++) {
-                    if (i == 0) {
-                        if (selectedFacitilies[0] == true) {
-                            tiennghi = "wifi,";
+                pressOKBtn();
+
+            }
+        });
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+    }
+
+
+    public void pressOKBtn(){
+        String tiennghi = "";
+        for (int i = 0; i < 15; i++) {
+            if (i == 0) {
+                if (selectedFacitilies[0] == true) {
+                    tiennghi = "wifi,";
+                }
+            } else {
+                if (i == 1) {
+                    if (selectedFacitilies[1] == true) {
+                        tiennghi = tiennghi + "gac,";
+                    }
+                } else {
+                    if (i == 2) {
+                        if (selectedFacitilies[2] == true) {
+                            tiennghi = tiennghi + "toilet,";
                         }
                     } else {
-                        if (i == 1) {
-                            if (selectedFacitilies[1] == true) {
-                                tiennghi = tiennghi + "gac,";
+                        if (i == 3) {
+                            if (selectedFacitilies[i] == true) {
+                                tiennghi = tiennghi + "phongtam,";
                             }
                         } else {
-                            if (i == 2) {
-                                if (selectedFacitilies[2] == true) {
-                                    tiennghi = tiennghi + "toilet,";
+                            if (i == 4) {
+                                if (selectedFacitilies[i] == true) {
+                                    tiennghi = tiennghi + "giuong,";
                                 }
                             } else {
-                                if (i == 3) {
+                                if (i == 5) {
                                     if (selectedFacitilies[i] == true) {
-                                        tiennghi = tiennghi + "phongtam,";
+                                        tiennghi = tiennghi + "tv,";
                                     }
                                 } else {
-                                    if (i == 4) {
+                                    if (i == 6) {
                                         if (selectedFacitilies[i] == true) {
-                                            tiennghi = tiennghi + "giuong,";
+                                            tiennghi = tiennghi + "tulanh,";
                                         }
                                     } else {
-                                        if (i == 5) {
+                                        if (i == 7) {
                                             if (selectedFacitilies[i] == true) {
-                                                tiennghi = tiennghi + "tv,";
+                                                tiennghi = tiennghi + "bepga,";
                                             }
                                         } else {
-                                            if (i == 6) {
+                                            if (i == 8) {
                                                 if (selectedFacitilies[i] == true) {
-                                                    tiennghi = tiennghi + "tulanh,";
+                                                    tiennghi = tiennghi + "quat,";
                                                 }
                                             } else {
-                                                if (i == 7) {
+                                                if (i == 9) {
                                                     if (selectedFacitilies[i] == true) {
-                                                        tiennghi = tiennghi + "bepga,";
+                                                        tiennghi = tiennghi + "tudo,";
                                                     }
                                                 } else {
-                                                    if (i == 8) {
+                                                    if (i == 10) {
                                                         if (selectedFacitilies[i] == true) {
-                                                            tiennghi = tiennghi + "quat,";
+                                                            tiennghi = tiennghi + "maylanh,";
                                                         }
                                                     } else {
-                                                        if (i == 9) {
+                                                        if (i == 11) {
                                                             if (selectedFacitilies[i] == true) {
-                                                                tiennghi = tiennghi + "tudo,";
+                                                                tiennghi = tiennghi + "den,";
                                                             }
                                                         } else {
-                                                            if (i == 10) {
+                                                            if (i == 12) {
                                                                 if (selectedFacitilies[i] == true) {
-                                                                    tiennghi = tiennghi + "maylanh,";
+                                                                    tiennghi = tiennghi + "baove,";
                                                                 }
                                                             } else {
-                                                                if (i == 11) {
+                                                                if (i == 13) {
                                                                     if (selectedFacitilies[i] == true) {
-                                                                        tiennghi = tiennghi + "den,";
+                                                                        tiennghi = tiennghi + "camera,";
                                                                     }
                                                                 } else {
-                                                                    if (i == 12) {
+                                                                    if (i == 14) {
                                                                         if (selectedFacitilies[i] == true) {
-                                                                            tiennghi = tiennghi + "baove,";
-                                                                        }
-                                                                    } else {
-                                                                        if (i == 13) {
-                                                                            if (selectedFacitilies[i] == true) {
-                                                                                tiennghi = tiennghi + "camera,";
-                                                                            }
-                                                                        } else {
-                                                                            if (i == 14) {
-                                                                                if (selectedFacitilies[i] == true) {
-                                                                                    tiennghi = tiennghi + "khudexe,";
-                                                                                }
-                                                                            }
+                                                                            tiennghi = tiennghi + "khudexe,";
                                                                         }
                                                                     }
                                                                 }
@@ -455,51 +469,41 @@ public class Filter extends AppCompatActivity {
                         }
                     }
                 }
-
-                if (tiennghi.length() > 0) {
-                    tiennghi = tiennghi.substring(0, tiennghi.length() - 1);
-                }
-                Intent intent = getIntent();
-                Bundle bundle = new Bundle();
-
-                bundle.putString("tiennghi", tiennghi);
-                bundle.putIntegerArrayList("lstChonQuanHuyen", lstChonQuanHuyen);
-                bundle.putBoolean("timNhaNguyenCan", checkNhaNguyenCan.isChecked());
-                bundle.putBoolean("timPhongTro", checkNhaTro.isChecked());
-                bundle.putBoolean("timTimOGhep", checkTimOGhep.isChecked());
-                bundle.putString("tenTP", tenTP);
-                bundle.putInt("soNguoiO", soNguoiO);
-                bundle.putInt("maxArea", maxArea);
-                bundle.putInt("minArea", minArea);
-                bundle.putInt("namnu", namnu);
-                bundle.putInt("minPrice", min);
-                bundle.putInt("maxPrice", max);
-                bundle.putBoolean("changeFilter", true);
-                bundle.putBooleanArray("arrFacilities", selectedFacitilies);
-                bundle.putInt("tinhTP", tinhTP);
-                if (checkGioGiac.isChecked()) {
-                    bundle.putBoolean("giogiac", true);
-                } else {
-                    bundle.putBoolean("giogiac", false);
-                }
-                intent.putExtra("data", bundle);
-
-
-                setResult(1, intent); // phương thức này sẽ trả kết quả cho Activity1
-                finish(); // Đóng Activity hiện tại
-
             }
-        });
+        }
 
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+        if (tiennghi.length() > 0) {
+            tiennghi = tiennghi.substring(0, tiennghi.length() - 1);
+        }
+        Intent intent = getIntent();
+        Bundle bundle = new Bundle();
+
+        bundle.putString("tiennghi", tiennghi);
+        bundle.putIntegerArrayList("lstChonQuanHuyen", lstChonQuanHuyen);
+        bundle.putBoolean("timNhaNguyenCan", checkNhaNguyenCan.isChecked());
+        bundle.putBoolean("timPhongTro", checkNhaTro.isChecked());
+        bundle.putBoolean("timTimOGhep", checkTimOGhep.isChecked());
+        bundle.putString("tenTP", tenTP);
+        bundle.putInt("soNguoiO", soNguoiO);
+        bundle.putInt("maxArea", maxArea);
+        bundle.putInt("minArea", minArea);
+        bundle.putInt("namnu", namnu);
+        bundle.putInt("minPrice", min);
+        bundle.putInt("maxPrice", max);
+        bundle.putBoolean("changeFilter", true);
+        bundle.putBooleanArray("arrFacilities", selectedFacitilies);
+        bundle.putInt("tinhTP", tinhTP);
+        if (checkGioGiac.isChecked()) {
+            bundle.putBoolean("giogiac", true);
+        } else {
+            bundle.putBoolean("giogiac", false);
+        }
+        intent.putExtra("data", bundle);
+
+
+        setResult(1, intent); // phương thức này sẽ trả kết quả cho Activity1
+        finish(); // Đóng Activity hiện tại
     }
-
-
     @Override
     public boolean onSupportNavigateUp() {
         finish();

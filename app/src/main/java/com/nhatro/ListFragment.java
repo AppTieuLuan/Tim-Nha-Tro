@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -69,6 +71,7 @@ public class ListFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     HandlerFilter handlerFilter;
     SwipeRefreshLayout swipeRefreshLayout;
 
+    ConstraintLayout emptyview;
     public ListFragment() {
         // Required empty public constructor
     }
@@ -107,6 +110,7 @@ public class ListFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         data = new ArrayList<>();
 
         lstDanhSach = (ListView) v.findViewById(R.id.lstDanhSachTin);
+
         adapter = new CustomListViewAdapter(getContext(), data);
         adapter.notifyDataSetChanged();
 
@@ -115,16 +119,16 @@ public class ListFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         lstDanhSach.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(getActivity(), Details.class);
+                if (checkConnection()) {
+                    Intent intent = new Intent(getActivity(), Details.class);
 
-                Bundle bundle = new Bundle();
-                String idItem = data.get(i).getId();
-                bundle.putString("iditem", idItem);
-                bundle.putString("tieude", data.get(i).getTieude());
-                intent.putExtra("iditem", bundle);
-                getActivity().startActivity(intent);
-
-
+                    Bundle bundle = new Bundle();
+                    String idItem = data.get(i).getId();
+                    bundle.putString("iditem", idItem);
+                    bundle.putString("tieude", data.get(i).getTieude());
+                    intent.putExtra("iditem", bundle);
+                    getActivity().startActivity(intent);
+                }
             }
         });
 
@@ -136,14 +140,17 @@ public class ListFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
             @Override
             public void onScroll(AbsListView absListView, int i, int i1, int i2) {
-                if (absListView.getLastVisiblePosition() == i2 - 1) {
+                if (checkConnection()) {
+                    if (absListView.getLastVisiblePosition() == i2 - 1) {
 
-                    Log.d("ĐÁY", isLoading + " - " + isnext + "  -  " + loadnewisdone);
-                    if (isLoading == false && isnext && loadnewisdone) {
-                        LoadMoreDataAsyn loadMoreDataAsyn = new LoadMoreDataAsyn();
-                        loadMoreDataAsyn.execute(locDL);
+                        Log.d("ĐÁY", isLoading + " - " + isnext + "  -  " + loadnewisdone);
+                        if (isLoading == false && isnext && loadnewisdone) {
+                            LoadMoreDataAsyn loadMoreDataAsyn = new LoadMoreDataAsyn();
+                            loadMoreDataAsyn.execute(locDL);
+                        }
                     }
                 }
+
 
                 /*if (i + i1 == i2 && i2 == 0) {
                     if (isLoading == false && isnext && loadnewisdone) {
@@ -191,26 +198,16 @@ public class ListFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         return v;
     }
 
-    public void LoadNewData(LocDL locDL) {
-
-    }
-
-    public String checkLogin() {
-        SharedPreferences pre = getActivity().getSharedPreferences("Mydata", MODE_PRIVATE);
-        String user = pre.getString("MyUser", "");
-
-        if (user.equals("")) {
-            return "-1";
+    public boolean checkConnection() {
+        ConnectivityManager cm = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        if (activeNetwork != null) { // connected to the internet
+            return true;
         } else {
-
-            return "2222";
+            // not connected to the internet
+            Toast.makeText(getContext(), "Lỗi kết nối mạng. Thử lại sau ..", Toast.LENGTH_SHORT).show();
+            return false;
         }
-    }
-
-    public void getUserInfo() {
-        SharedPreferences pre = getActivity().getSharedPreferences("Mydata", MODE_PRIVATE);
-        String user = pre.getString("MyUser", "");
-        int sss = 1;
     }
 
     public void filterData(LocDL locDL) {
@@ -233,7 +230,11 @@ public class ListFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             user1 = gsonUser.fromJson(user, User.class);
             locDL.setIduser(Integer.parseInt(user1.getId()));
         }
+        loadNewData(locDL);
 
+    }
+
+    public void loadNewData(LocDL locDL) {
         LoadNewDataAsyn loadDataAsyn = new LoadNewDataAsyn();
         loadDataAsyn.execute(locDL);
     }
@@ -354,6 +355,9 @@ public class ListFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             isLoading = false;
             if (phongTros.size() == 0) {
                 isnext = false;
+                //lstDanhSach.getEmptyView();
+                //Log.d("ádasd", "111111111111111111111111111");
+                //lstDanhSach.getEmptyView();
             }
             data.addAll(phongTros);
             adapter.notifyDataSetChanged();
@@ -384,6 +388,8 @@ public class ListFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             adapter.notifyDataSetChanged();
             layoutList.setVisibility(View.GONE);
             layoutLoading.setVisibility(View.VISIBLE);
+
+            //Log.d("BD","Bắt đầu load dữ liệu");
         }
 
         @Override
@@ -403,6 +409,9 @@ public class ListFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             loadnewisdone = true;
 
             Log.d("JSONN", String.valueOf(locDL.getTrang()) + " --- " + String.valueOf(isnext) + " --- " + String.valueOf(isLoading) + "--- " + String.valueOf(loadnewisdone));
+
+
+            //Log.d("KT","Kết thúc load dữ liệu");
 
         }
 

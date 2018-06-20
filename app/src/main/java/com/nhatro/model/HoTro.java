@@ -5,9 +5,9 @@ package com.nhatro.model;
  */
 
 public class HoTro {
-    int id;
-    String emal;
-    String noidung;
+    private int id;
+    private String emal;
+    private String noidung;
 
     public int getId() {
         return id;

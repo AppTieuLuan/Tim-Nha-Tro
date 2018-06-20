@@ -39,7 +39,7 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-    AHBottomNavigation bottomNavigation;
+    AHBottomNavigation bottomNavigation; // Thanh menu bottom
     final android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
     HomeFragment homeFragment = new HomeFragment();
     NotifyFragment notifyFragment = new NotifyFragment();
@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     AccountFragment accountFragment = new AccountFragment();
     tim_o_ghep tim_o_ghep = new tim_o_ghep();
     Fragment active = homeFragment;
-    private int t1, t2, t3, t4 = 0;
+    private int t1, t2, t3, t4 = 0; // biến đánh dấu để biết các fragment đã được gắn vào frame hay chưa
 
     @Override
     public void onBackPressed() {

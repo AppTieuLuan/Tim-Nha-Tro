@@ -195,6 +195,7 @@ public class LoginFragment extends Fragment implements OnLoginListener {
                                             SharedPreferences.Editor prefsEditor = mPrefs.edit();
                                             String userJson = gson.toJson(user);
 
+                                            Log.d("USER",userJson);
                                             prefsEditor.putString("MyToken", token);
                                             prefsEditor.putString("MyUser", userJson);
                                             prefsEditor.putInt("ischangedState", 1);

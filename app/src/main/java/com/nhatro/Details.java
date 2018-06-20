@@ -20,6 +20,7 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -233,6 +234,12 @@ public class Details extends AppCompatActivity {
     public class LoadImages extends AsyncTask<String, Void, Void> {
 
         @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            //Log.d("BD","BẮT ĐẦU LOAD DỮ LIỆU");
+        }
+
+        @Override
         protected Void doInBackground(String... strings) {
             HinhAnhs hinhAnhs = new HinhAnhs();
             images = hinhAnhs.getImages(strings[0]);
@@ -245,6 +252,8 @@ public class Details extends AppCompatActivity {
             super.onPostExecute(result);
             myCustomPagerAdapter = new MyCustomPagerAdapter(getApplicationContext(), images);
             viewPager.setAdapter(myCustomPagerAdapter);
+
+
         }
     }
 

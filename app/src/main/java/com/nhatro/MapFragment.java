@@ -79,13 +79,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
     Horizontal_Recycle_Map_Adapter horizontal_recycle_map_adapter;
 
     ArrayList<PhongTro> tem = new ArrayList<>();
-    //private CardMapViewAdapter mCardAdapter;
-    //private ShadowTransformer mCardShadowTransformer;
-    //private ViewPager mViewPager;
-
-
-    //    private CardFragmentPagerAdapter mFragmentCardAdapter;
-//    private ShadowTransformer mFragmentCardShadowTransformer;
 
 
     private TextView txtBanKinh;
@@ -201,104 +194,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
         return view;
     }
 
-    private void setUpViewPager() {
-
-    }
-
-    public void getDataaaaa(int test) {
-        if (test == 1) {
-            ArrayList<PhongTro> a = new ArrayList<>();
-            PhongTro s = new PhongTro();
-            s.setLng(106.7720977217);
-            s.setLat(10.850647124617);
-            s.setLoaitintuc(3);
-            s.setGioitinh("1");
-            s.setHinhanh("");
-            s.setChieudai(1);
-            s.setChieurong(2);
-            s.setId("1");
-            s.setTieude("234234");
-            s.setGia(234234);
-            s.setDiachi("35345345");
-
-            a.add(s);
-
-            PhongTro s1 = new PhongTro();
-            s1.setLng(106.767866);
-            s1.setLat(10.845266);
-            s1.setLoaitintuc(3);
-            s1.setGioitinh("1");
-            s1.setHinhanh("");
-            s1.setChieudai(1);
-            s1.setChieurong(2);
-            s1.setId("1");
-            s1.setTieude("234234");
-            s1.setGia(234234);
-            s1.setDiachi("35345345");
-
-            a.add(s1);
-
-            tem.addAll(a);
-
-            // item.clear();
-
-            item.addAll(a);
-            horizontal_recycle_map_adapter.notifyDataSetChanged();
-            //recyclerView.setVisibility(View.GONE);
-            /*item.addAll(tem);
-            horizontal_recycle_map_adapter.notifyDataSetChanged();*/
-           /* horizontal_recycle_map_adapter = new Horizontal_Recycle_Map_Adapter(item);
-            recyclerView.setAdapter(horizontal_recycle_map_adapter);*/
-            this.tes = test + 1;
-        } else {
-            if (tes == 2) {
-                ArrayList<PhongTro> a = new ArrayList<>();
-                PhongTro s = new PhongTro();
-                s.setLng(106.8720977217);
-                s.setLat(10.850647124617);
-                s.setLoaitintuc(3);
-                s.setGioitinh("1");
-                s.setHinhanh("");
-                s.setChieudai(1);
-                s.setChieurong(2);
-                s.setId("1");
-                s.setTieude("MOI LOADDD ");
-                s.setGia(234234);
-                s.setDiachi("vo van kiet");
-
-                a.add(s);
-                item.clear();
-                item.addAll(a);
-                horizontal_recycle_map_adapter.notifyDataSetChanged();
-
-                //tes = tes + 1;
-            } else {
-                PhongTro s1 = new PhongTro();
-                s1.setLng(106.767866);
-                s1.setLat(10.545266);
-                s1.setLoaitintuc(3);
-                s1.setGioitinh("1");
-                s1.setHinhanh("");
-                s1.setChieudai(1);
-                s1.setChieurong(2);
-                s1.setId("1");
-                s1.setTieude("234234");
-                s1.setGia(234234);
-                s1.setDiachi("35345345");
-
-
-                /*ArrayList<PhongTro> temp = new ArrayList<>();
-                temp = item;
-                temp.add(s1);*/
-                item.clear();
-                horizontal_recycle_map_adapter.notifyDataSetChanged();
-
-                /*item.addAll(temp);
-                horizontal_recycle_map_adapter.notifyDataSetChanged();*/
-            }
-
-        }
-    }
 
     public int getZoomLevel(Circle circle) {
         int zoomLevel = 11;
@@ -308,16 +203,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
             zoomLevel = (int) (16 - Math.log(scale) / Math.log(2));
         }
         return zoomLevel;
-    }
-
-    public void filterData(LocDL locDL) {
-       /* Toast.makeText(getContext(),"Đang Lọc DL",Toast.LENGTH_SHORT).show();*/
-        this.locDL = locDL;
-
-        DAL_PhongTro dal_phongTro = new DAL_PhongTro();
-        //String tsss = dal_phongTro.danhSachPhong(locDL);
-
-        //Log.d("KẾT QUẢ : ", tsss);
     }
 
     private void findViewId(View view) {
@@ -344,46 +229,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
         currentCircle = map.addCircle(circleOptions);
     }
 
-
-    public void dataMoveCamera() {
-        Toast.makeText(getContext(), "Đang Lọc DL cmr", Toast.LENGTH_SHORT).show();
-
-    }
-
-    public void update(ArrayList<PhongTro> a) {
-        this.item = a;
-        horizontal_recycle_map_adapter.notifyDataSetChanged();
-    }
-
     public void loadData(LocDL loc) {
-        Toast.makeText(getContext(), "Đang Lọc DL", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getContext(), "Đang Lọc DL", Toast.LENGTH_SHORT).show();
 
         loc.setLat(map.getCameraPosition().target.latitude);
         loc.setLng(map.getCameraPosition().target.longitude);
         loc.setBankinh(banKinh);
 
         this.locDL = loc;
-        /*ThreadFilter threadFilter = new ThreadFilter();
-        threadFilter.run();*/
-
-
         GetDataAsync getDataAsync = new GetDataAsync();
         getDataAsync.execute(locDL);
-
-        //getDataaaaa(tes);
-
-
-        //drawCircle(new LatLng(map.getCameraPosition().target.latitude,map.getCameraPosition().target.longitude),Integer.parseInt(String.valueOf(seekBarBanKinh.getProgressFloat())));
-
-
-    }
-
-    public LatLng getLatLong() {
-        return tempMarker.getPosition();
-    }
-
-    public int banKinh() {
-        return banKinh;
     }
 
     @Override
@@ -545,25 +400,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
         loadData(locDL);
     }
 
-    public void renderMarker(int position) {
-        for (int i = 0; i < this.item.size(); i++) {
-
-            LatLng temp = new LatLng(item.get(i).getLat(), item.get(i).getLng());
-
-            IconGenerator iconFactory = new IconGenerator(getContext());
-            if (i == position) {
-                iconFactory.setStyle(IconGenerator.STYLE_BLUE);
-            } else {
-                iconFactory.setStyle(IconGenerator.STYLE_DEFAULT);
-            }
-
-            MarkerOptions markerOptions = new MarkerOptions().
-                    icon(BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon(makeCharSequence(String.valueOf(item.get(i).getGia()) + " vnđ")))).
-                    position(temp).
-                    anchor(iconFactory.getAnchorU(), iconFactory.getAnchorV());
-            map.addMarker(markerOptions);
-        }
-    }
 
     private void getLocation() {
         LocationManager locationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
@@ -594,8 +430,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
 
     @Override
     public void onClick(View view) {
-//        mViewPager.setAdapter(mCardAdapter);
-//        mViewPager.setPageTransformer(false, mCardShadowTransformer);
     }
 
     private CharSequence makeCharSequence(String str) {
@@ -606,7 +440,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
     }
 
     public class GetDataAsync extends AsyncTask<LocDL, String, ArrayList<PhongTro>> {
-
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -700,6 +533,4 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
             }
         }
     }
-
-
 }

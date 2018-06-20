@@ -412,12 +412,14 @@ public class DAL_PhongTro {
         return 0;
     }
 
-    public int Report(String id) {
+    public int Report(String id, String nd, int iduser) {
         String URL_NEW = variable.getWebservice() + "report.php";
 
         List<NameValuePair> args = new ArrayList<NameValuePair>();
 
         args.add(new BasicNameValuePair("id", id));
+        args.add(new BasicNameValuePair("nd", nd));
+        args.add(new BasicNameValuePair("iduser", String.valueOf(iduser)));
 
         MyService jsonParser = new MyService();
 

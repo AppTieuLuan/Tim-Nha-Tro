@@ -29,11 +29,11 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements View.OnClickListener {
 
     boolean moDanhSach = true; // Đánh dấu mở danh sách hay ko
-    TextView txtCheDoXem;
-    ImageView imgBanDo;
+    TextView txtCheDoXem; // btn chọn cách tìm kiếm
+    ImageView imgBanDo; //
     int REQUEST_CODE = 1;
 
     //android.support.v4.app.FragmentManager fragmentManager = getChildFragmentManager();
@@ -58,6 +58,7 @@ public class HomeFragment extends Fragment {
     MapFragment mapFragment = new MapFragment();
     ListFragment listFragment = new ListFragment();
     android.support.v4.app.FragmentManager fragmentManager1;
+    CharSequence[] sapXep;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -70,7 +71,7 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View v = inflater.inflate(R.layout.fragment_home, container, false);
-        final CharSequence[] sapXep = new CharSequence[]{"Mới nhất", "Giá từ thấp đến cao", "Giá từ cao xuống thấp"};
+        sapXep = new CharSequence[]{"Mới nhất", "Giá từ thấp đến cao", "Giá từ cao xuống thấp"};
 
         lstChonQuanHuyen = new ArrayList<>();
 
@@ -105,148 +106,13 @@ public class HomeFragment extends Fragment {
         timNhaNguyenCan = false;
         timPhongTro = false;
         timTimOGhep = false;
-        btnBoLoc.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), Filter.class);
+        btnBoLoc.setOnClickListener(this);
+        btnSapXep.setOnClickListener(this);
+        btnMap.setOnClickListener(this);
 
-                Bundle bundle = new Bundle();
-                bundle.putBoolean("giogiac", giogiac);
-                bundle.putBoolean("moDanhSach", moDanhSach); // nếu mở danh sách sẽ hiện thị mục chọn tp, quận huyện
-                bundle.putBoolean("timNhaNguyenCan", timNhaNguyenCan);
-                bundle.putBoolean("timPhongTro", timPhongTro);
-                bundle.putBoolean("timTimOGhep", timTimOGhep);
-                bundle.putIntegerArrayList("lstChonQuanHuyen", lstChonQuanHuyen);
-                bundle.putString("tenTP", tenTP);
-                bundle.putInt("maxPrice", maxSlider);
-                bundle.putInt("minPrice", minSlider);
-                bundle.putInt("namnu", namnu);
-                bundle.putInt("minArea", minArea);
-                bundle.putInt("maxArea", maxArea);
-                bundle.putBooleanArray("arrFacilities", selectedFacilitiess);
-                bundle.putInt("tinhTP", tinhTP);
-                bundle.putInt("soNguoiO", soNguoiO);
-                intent.putExtra("data", bundle);
-
-                startActivityForResult(intent, REQUEST_CODE);
-
-
-                //show it
-                //bottomSheetDialogFragment.show(getChildFragmentManager(), bottomSheetDialogFragment.getTag());
-            }
-        });
-        btnSapXep.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                builder.setTitle("Sắp xếp")
-                        .setSingleChoiceItems(sapXep, chonSapXep, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                tempChon = which;
-                            }
-                        })
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                locDL.setTrang(1);
-                                chonSapXep = tempChon;
-                                locDL.setOrderby(chonSapXep + 1);
-                                if (moDanhSach) {
-                                    listFragment.filterData(locDL);
-                                } else {
-                                    mapFragment.loadData(locDL);
-                                }
-                            }
-                        });
-                builder.create().show();
-            }
-        });
-        btnMap.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (moDanhSach) {
-                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                    params.weight = 1.5f;
-                    btnMap.setLayoutParams(params);
-                    btnBoLoc.setLayoutParams(params);
-                    btnSapXep.setVisibility(View.GONE);
-                    moDanhSach = false;
-                    txtCheDoXem.setText("Danh sách");
-                    imgBanDo.setImageResource(R.drawable.icon_list);
-                    locDL.setDanhsach(0);
-                    if (isFragmentMap) {
-                        fragmentManager1.beginTransaction().hide(listFragment).show(mapFragment).commit();
-                        if (changeFilter) {
-                            mapFragment.loadData(locDL);
-                            changeFilter = false;
-                        }
-                    } else {
-                        isFragmentMap = true;
-
-
-                       /* Bundle bundle = new Bundle();
-                        bundle.putString("DocNum", docNum);   //parameters are (key, value).*/
-
-                        // mFrag.setArguments(bundle);
-
-//                        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-//                        transaction.replace(R.id.framDanhSach, new MapFragment());
-//                        transaction.commit();
-                        Bundle bundlemap = new Bundle();
-                        bundlemap.putInt("giamin", locDL.getGiamin());
-                        bundlemap.putInt("giamax", locDL.getGiamax());
-                        bundlemap.putInt("dientichmin", locDL.getDientichmin());
-                        bundlemap.putInt("dientichmax", locDL.getDientichmax());
-                        bundlemap.putInt("songuoio", locDL.getSonguoio());
-                        bundlemap.putString("loaitin", locDL.getLoaitin());
-                        bundlemap.putString("tiennghi", locDL.getTiennghi());
-                        bundlemap.putInt("doituong", locDL.getDoituong());
-                        bundlemap.putInt("giogiac", locDL.getGiogiac());
-
-                        mapFragment.setArguments(bundlemap);
-                        fragmentManager1.beginTransaction().add(R.id.framDanhSach, mapFragment).commit();
-                        fragmentManager1.beginTransaction().hide(listFragment).show(mapFragment).commit();
-                        //mapFragment.loadData(locDL);
-                    }
-
-
-                } else {
-                    locDL.setDanhsach(1);
-                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                    params.weight = 1f;
-                    btnMap.setLayoutParams(params);
-                    btnBoLoc.setLayoutParams(params);
-                    btnSapXep.setVisibility(View.VISIBLE);
-                    moDanhSach = true;
-                    txtCheDoXem.setText("Bản đồ");
-                    imgBanDo.setImageResource(R.drawable.icon_maps);
-
-//                    FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-//                    transaction.replace(R.id.framDanhSach, new ListFragment());
-//                    transaction.commit();
-
-                    fragmentManager1.beginTransaction().hide(mapFragment).show(listFragment).commit();
-                    if (changeFilter) {
-                        listFragment.filterData(locDL);
-                        changeFilter = false;
-                    }
-                }
-
-            }
-        });
-
-
-        /////
-
-//        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-//        transaction.replace(R.id.framDanhSach, new ListFragment());
-//        transaction.commit();
-
-
-        ////
         return v;
     }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -340,29 +206,6 @@ public class HomeFragment extends Fragment {
         super.onHiddenChanged(hidden);
 
         if (!hidden) {
-            /*SharedPreferences sharedPreferences = getContext().getSharedPreferences("Mydata", Context.MODE_PRIVATE);
-            String user = sharedPreferences.getString("MyUser", "");*//*
-
-            getUserInfo();
-
-            if (users == null) {
-                changeduser = true;
-                layout1.setVisibility(View.VISIBLE);
-                contain.setVisibility(View.GONE);
-            } else {
-                if (olduser != Integer.parseInt(users.getId())) {
-                    trang = 1;
-                    olduser = Integer.parseInt(users.getId());
-                    NotifyFragment.GetNews getNews = new NotifyFragment.GetNews();
-                    getNews.execute();
-                } else {
-                    layout1.setVisibility(View.GONE);
-                    contain.setVisibility(View.VISIBLE);
-                }
-
-
-            }*/
-
             SharedPreferences sharedPreferences = getContext().getSharedPreferences("Mydata", Context.MODE_PRIVATE);
             int ss = sharedPreferences.getInt("ischangedState", -1);
 
@@ -385,5 +228,128 @@ public class HomeFragment extends Fragment {
 
         }
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btnMap:
+                if (moDanhSach) {
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    params.weight = 1.5f;
+                    btnMap.setLayoutParams(params);
+                    btnBoLoc.setLayoutParams(params);
+                    btnSapXep.setVisibility(View.GONE);
+                    moDanhSach = false;
+                    txtCheDoXem.setText("Danh sách");
+                    imgBanDo.setImageResource(R.drawable.icon_list);
+                    locDL.setDanhsach(0);
+                    if (isFragmentMap) {
+                        fragmentManager1.beginTransaction().hide(listFragment).show(mapFragment).commit();
+                        if (changeFilter) {
+                            mapFragment.loadData(locDL);
+                            changeFilter = false;
+                        }
+                    } else {
+                        isFragmentMap = true;
+
+
+                       /* Bundle bundle = new Bundle();
+                        bundle.putString("DocNum", docNum);   //parameters are (key, value).*/
+
+                        // mFrag.setArguments(bundle);
+
+//                        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+//                        transaction.replace(R.id.framDanhSach, new MapFragment());
+//                        transaction.commit();
+                        Bundle bundlemap = new Bundle();
+                        bundlemap.putInt("giamin", locDL.getGiamin());
+                        bundlemap.putInt("giamax", locDL.getGiamax());
+                        bundlemap.putInt("dientichmin", locDL.getDientichmin());
+                        bundlemap.putInt("dientichmax", locDL.getDientichmax());
+                        bundlemap.putInt("songuoio", locDL.getSonguoio());
+                        bundlemap.putString("loaitin", locDL.getLoaitin());
+                        bundlemap.putString("tiennghi", locDL.getTiennghi());
+                        bundlemap.putInt("doituong", locDL.getDoituong());
+                        bundlemap.putInt("giogiac", locDL.getGiogiac());
+
+                        mapFragment.setArguments(bundlemap);
+                        fragmentManager1.beginTransaction().add(R.id.framDanhSach, mapFragment).commit();
+                        fragmentManager1.beginTransaction().hide(listFragment).show(mapFragment).commit();
+                        //mapFragment.loadData(locDL);
+                    }
+
+
+                } else {
+                    locDL.setDanhsach(1);
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    params.weight = 1f;
+                    btnMap.setLayoutParams(params);
+                    btnBoLoc.setLayoutParams(params);
+                    btnSapXep.setVisibility(View.VISIBLE);
+                    moDanhSach = true;
+                    txtCheDoXem.setText("Bản đồ");
+                    imgBanDo.setImageResource(R.drawable.icon_maps);
+
+//                    FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+//                    transaction.replace(R.id.framDanhSach, new ListFragment());
+//                    transaction.commit();
+
+                    fragmentManager1.beginTransaction().hide(mapFragment).show(listFragment).commit();
+                    if (changeFilter) {
+                        listFragment.filterData(locDL);
+                        changeFilter = false;
+                    }
+                }
+                break;
+            case R.id.btnSapXep:
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle("Sắp xếp")
+                        .setSingleChoiceItems(sapXep, chonSapXep, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                tempChon = which;
+                            }
+                        })
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                locDL.setTrang(1);
+                                chonSapXep = tempChon;
+                                locDL.setOrderby(chonSapXep + 1);
+                                if (moDanhSach) {
+                                    listFragment.filterData(locDL);
+                                } else {
+                                    mapFragment.loadData(locDL);
+                                }
+                            }
+                        });
+                builder.create().show();
+                break;
+
+            case R.id.btnBoLoc:
+                Intent intent = new Intent(getActivity(), Filter.class);
+
+                Bundle bundle = new Bundle();
+                bundle.putBoolean("giogiac", giogiac);
+                bundle.putBoolean("moDanhSach", moDanhSach); // nếu mở danh sách sẽ hiện thị mục chọn tp, quận huyện
+                bundle.putBoolean("timNhaNguyenCan", timNhaNguyenCan);
+                bundle.putBoolean("timPhongTro", timPhongTro);
+                bundle.putBoolean("timTimOGhep", timTimOGhep);
+                bundle.putIntegerArrayList("lstChonQuanHuyen", lstChonQuanHuyen);
+                bundle.putString("tenTP", tenTP);
+                bundle.putInt("maxPrice", maxSlider);
+                bundle.putInt("minPrice", minSlider);
+                bundle.putInt("namnu", namnu);
+                bundle.putInt("minArea", minArea);
+                bundle.putInt("maxArea", maxArea);
+                bundle.putBooleanArray("arrFacilities", selectedFacilitiess);
+                bundle.putInt("tinhTP", tinhTP);
+                bundle.putInt("soNguoiO", soNguoiO);
+                intent.putExtra("data", bundle);
+
+                startActivityForResult(intent, REQUEST_CODE);
+                break;
+        }
     }
 }

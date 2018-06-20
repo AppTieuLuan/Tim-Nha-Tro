@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout android:padding="5dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <TextView
+        android:paddingStart="5dp"
+        android:id="@+id/textTD"
+        android:paddingBottom="10dp"
+        android:text="Báo cáo lỗi"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <EditText
+        app:layout_constraintTop_toBottomOf="@id/textTD"
+        android:id="@+id/valueEdtReport"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/border_edittext"
+        android:hint="* Nhập nội dung"
+        android:maxLines="4"
+        android:padding="8dp"
+        android:textSize="12sp" />
+</android.support.constraint.ConstraintLayout>

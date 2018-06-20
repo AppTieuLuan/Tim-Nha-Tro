@@ -459,13 +459,8 @@ public class Newpost extends AppCompatActivity implements OnMapReadyCallback {
                 layoutTransparent.setVisibility(View.GONE);
                 if ((boolean) msg.obj) {
                     lt.success();
-                    //finish();
-                    /*try {
-                        //Thread.sleep(2000);
-                        finish();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }*/
+                    Log.d("KT","Kết thúc up tin");
+
                 } else {
                     //lt.error();
                     lt.hide();
@@ -479,6 +474,7 @@ public class Newpost extends AppCompatActivity implements OnMapReadyCallback {
     public class ThreadXuLy extends Thread {
         @Override
         public void run() {
+            Log.d("BD","Bắt đầu up tin");
             mHadler.sendEmptyMessage(0);
             // Xử lý thêm ở đây ở đây
             boolean kq = false;

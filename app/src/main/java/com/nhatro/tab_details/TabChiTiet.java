@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -104,6 +105,8 @@ public class TabChiTiet extends Fragment {
     boolean opop; // cho biết là nút báo cáo hay nút hết phòng.
     boolean isreporting; // Cho biết đang report hay gì gì đó
     int set1;
+    EditText valueEdtReport;
+    AlertDialog alertReport;
 
     public TabChiTiet() {
         // Required empty public constructor
@@ -174,8 +177,10 @@ public class TabChiTiet extends Fragment {
                         } else {
                             if (textBCLoi.getText().equals("Báo cáo lỗi")) {
                                 //Toast.makeText(getContext(), "REPORT", Toast.LENGTH_SHORT).show();
-                                Report report = new Report();
-                                report.execute();
+                                //Report report = new Report();
+                                //report.execute();
+
+                                alertReport.show();
                             } else {
                                 if (textBCLoi.getText().equals("Báo còn phòng")) {
                                     set1 = 1;
@@ -777,6 +782,75 @@ public class TabChiTiet extends Fragment {
         textBCLoi = v.findViewById(R.id.textBCLoi);
         progressreport = v.findViewById(R.id.progressreport);
         layoutTexxtReP = v.findViewById(R.id.layoutTexxtReP);
+
+        LayoutInflater li = LayoutInflater.from(getContext());
+        View promptsView = li.inflate(R.layout.modal_report_custom, null);
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
+        alertDialogBuilder.setView(promptsView);
+
+        valueEdtReport = promptsView.findViewById(R.id.valueEdtReport);
+
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("OK", null) //Set to null. We override the onclick
+                .setNegativeButton("CANCEL", null);
+
+        /*alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // get user input and set it to result
+                                // edit text
+                                String valuesss = valueEdtReport.getText().toString();
+                                if (valuesss.length() > 10) {
+                                    alertReport.hide();
+                                    Report report = new Report();
+                                    report.execute();
+                                } else {
+                                    //Toast.makeText(getContext(), "Nhập nội dung lớn hơn 10 ký tự !!", Toast.LENGTH_SHORT).show();
+                                }
+
+                            }
+                        })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });*/
+
+
+        alertReport = alertDialogBuilder.create();
+        alertReport.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                Button b = alertReport.getButton(AlertDialog.BUTTON_POSITIVE);
+                b.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        // TODO Do something
+                        String valuesss = valueEdtReport.getText().toString();
+                        if (valuesss.length() > 10) {
+                            alertReport.hide();
+                            Report report = new Report();
+                            report.execute(valuesss);
+                        } else {
+                            Toast.makeText(getContext(), "Nhập nội dung lớn hơn 10 ký tự !!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+                Button c = alertReport.getButton(AlertDialog.BUTTON_NEGATIVE);
+                c.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        alertReport.dismiss();
+                    }
+                });
+            }
+        });
     }
 
     public boolean checkField() {
@@ -988,6 +1062,8 @@ public class TabChiTiet extends Fragment {
 
                 }
             }
+
+            //Log.d("BD","KẾT THÚC LOAD DỮ LIỆU");
         }
     }
 
@@ -1356,17 +1432,34 @@ public class TabChiTiet extends Fragment {
 
     }
 
-    public class Report extends AsyncTask<Void, Void, Integer> {
+    public class Report extends AsyncTask<String, Void, Integer> {
         @Override
-        protected Integer doInBackground(Void... voids) {
+        protected Integer doInBackground(String... strings) {
+            int idusersss = -1;
+            try {
+                SharedPreferences sharedPreferences = getContext().getSharedPreferences("Mydata", Context.MODE_PRIVATE);
+                String user = sharedPreferences.getString("MyUser", "");
+
+                if (user.equals("") || user == null) {
+                    idusersss = -1;
+                } else {
+                    Gson gsonUser = new Gson();
+                    User users1 = new User();
+                    users1 = gsonUser.fromJson(user, User.class);
+                    idusersss = Integer.parseInt(users1.getId());
+                }
+            } catch (Exception e) {
+
+            }
 
             DAL_PhongTro dal_phongTro = new DAL_PhongTro();
-            return dal_phongTro.Report(phongTros.getId());
+            return dal_phongTro.Report(phongTros.getId(), strings[0], idusersss);
         }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            valueEdtReport.setText("");
             isreporting = true;
             layoutTexxtReP.setVisibility(View.GONE);
             progressreport.setVisibility(View.VISIBLE);
@@ -1375,7 +1468,9 @@ public class TabChiTiet extends Fragment {
         @Override
         protected void onPostExecute(Integer integer) {
             super.onPostExecute(integer);
-
+            if (integer == 1) {
+                Toast.makeText(getContext(), "Cảm ơn bạn đã góp ý cho chúng tôi, chúng tôi sẽ xem xét lại thông tin này!", Toast.LENGTH_SHORT).show();
+            }
             isreporting = false;
             layoutTexxtReP.setVisibility(View.VISIBLE);
             progressreport.setVisibility(View.GONE);

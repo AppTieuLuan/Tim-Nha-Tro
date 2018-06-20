@@ -5,28 +5,28 @@ package com.nhatro.model;
  */
 
 public class PhongTros {
-    String id;
-    String tieude;
-    int gia;
-    String diachi;
-    float dientich;
-    float chieudai;
-    float chieurong;
-    int loaitin;
-    int songuoimin;
-    int songuoimax;
-    String tiennghi;
-    int doituong;
-    double lat;
-    double lng;
-    String ngay;
-    int iduser;
-    String motathem;
-    int giadien;
-    String donvidien;
-    int gianuoc;
-    String donvinuoc;
-    int daluu;
+    private String id;
+    private String tieude;
+    private int gia;
+    private String diachi;
+    private float dientich;
+    private float chieudai;
+    private float chieurong;
+    private int loaitin;
+    private int songuoimin;
+    private int songuoimax;
+    private String tiennghi;
+    private int doituong;
+    private double lat;
+    private double lng;
+    private String ngay;
+    private int iduser;
+    private String motathem;
+    private int giadien;
+    private String donvidien;
+    private int gianuoc;
+    private String donvinuoc;
+    private int daluu;
 
     public int getDaluu() {
         return daluu;
@@ -51,12 +51,12 @@ public class PhongTros {
         this.conphong = conphong;
     }
 
-    String username;
-    String hoten;
-    String sdt;
-    String tentp;
-    String tenqh;
-    String facebook;
+    private String username;
+    private String hoten;
+    private String sdt;
+    private String tentp;
+    private String tenqh;
+    private String facebook;
 
     public String getFacebook() {
         return facebook;
@@ -356,5 +356,5 @@ public class PhongTros {
         this.soreport = soreport;
     }
 
-    int soreport;
+    private int soreport;
 }
