@@ -549,7 +549,6 @@ public class DAL_PhongTro {
         return 0;
     }
 
-
     public int upDateImage(String idphong, ArrayList<String> addnewImg, ArrayList<String> deleteImg) {
 
         String URL_NEW = variable.getWebservice() + "upDateImage.php";

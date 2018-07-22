@@ -258,7 +258,6 @@ public class EditImage extends AppCompatActivity {
                 intents.putExtra("data", bundle);
                 setResult(10101, intents); // phương thức này sẽ trả kết quả cho Activity trước
                 finish(); // Đóng Activity hiện tại
-
             } else {
                 lt.error();
             }

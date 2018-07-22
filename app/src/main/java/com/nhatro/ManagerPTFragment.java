@@ -121,6 +121,7 @@ public class ManagerPTFragment extends Fragment implements SwipeRefreshLayout.On
             @Override
             public void onScrollStateChanged(AbsListView absListView, int i) {
             }
+
             @Override
             public void onScroll(AbsListView absListView, int i, int i1, int i2) {
                 if (absListView.getLastVisiblePosition() == i2 - 1) {
@@ -137,9 +138,10 @@ public class ManagerPTFragment extends Fragment implements SwipeRefreshLayout.On
         getData();
         return v;
     }
-    public void deleteNews(String id, String title){
+
+    public void deleteNews(String id, String title) {
         builder.setTitle("Thông báo")
-                .setMessage("Bạn có chắc muốn xóa tin \""+ title +"\" này không!")
+                .setMessage("Bạn có chắc muốn xóa tin \"" + title + "\" này không!")
                 .setNeutralButton("Có", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // ok
@@ -149,10 +151,10 @@ public class ManagerPTFragment extends Fragment implements SwipeRefreshLayout.On
                             @Override
                             public void onResponse(Call<String> call, Response<String> response) {
                                 String mess = response.body();
-                                if(mess.equals("Success")){
+                                if (mess.equals("Success")) {
                                     Toast.makeText(getContext(), "Xóa thành công!", Toast.LENGTH_SHORT).show();
                                     getData();
-                                }else{
+                                } else {
                                     Toast.makeText(getContext(), "Xóa không thành công! Vui lòng thử lại!", Toast.LENGTH_SHORT).show();
                                 }
                             }
@@ -175,11 +177,17 @@ public class ManagerPTFragment extends Fragment implements SwipeRefreshLayout.On
 
 
     public String getUserInfo() {
-        SharedPreferences pre = getActivity().getSharedPreferences("Mydata", MODE_PRIVATE);
-        String json = pre.getString("MyUser", "");
-        Gson gson = new Gson();
-        User user = gson.fromJson(json, User.class);
-        return user.getId();
+        try {
+            SharedPreferences pre = getActivity().getSharedPreferences("Mydata", MODE_PRIVATE);
+            String json = pre.getString("MyUser", "");
+            Gson gson = new Gson();
+            User user = gson.fromJson(json, User.class);
+            return user.getId();
+        } catch (Exception e) {
+            Log.e("ERRRR", e.getMessage().toString());
+            return "-1";
+        }
+
     }
 
     @Override
@@ -204,6 +212,7 @@ public class ManagerPTFragment extends Fragment implements SwipeRefreshLayout.On
             }
         }
     }
+
     public void getData() {
         lstDanhSach.smoothScrollToPosition(0);
         isnext = true;
@@ -219,6 +228,7 @@ public class ManagerPTFragment extends Fragment implements SwipeRefreshLayout.On
                 }
                 return "done";
             }
+
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
@@ -230,7 +240,7 @@ public class ManagerPTFragment extends Fragment implements SwipeRefreshLayout.On
 
             @Override
             protected void onPostExecute(String s) {
-                if(s.equals("done")){
+                if (s.equals("done")) {
                     ArrayList<PhongTro> dsPhong = new ArrayList<>();
 
                     DataClient dataClient = new APIUtils().getData();
@@ -286,6 +296,7 @@ public class ManagerPTFragment extends Fragment implements SwipeRefreshLayout.On
         };
         loading.execute();
     }
+
     public void pullRefresh() {
         lstDanhSach.smoothScrollToPosition(0);
         isnext = true;
@@ -301,6 +312,7 @@ public class ManagerPTFragment extends Fragment implements SwipeRefreshLayout.On
                 }
                 return "done";
             }
+
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
@@ -310,7 +322,7 @@ public class ManagerPTFragment extends Fragment implements SwipeRefreshLayout.On
 
             @Override
             protected void onPostExecute(String s) {
-                if(s.equals("done")){
+                if (s.equals("done")) {
                     ArrayList<PhongTro> dsPhong = new ArrayList<>();
 
                     DataClient dataClient = new APIUtils().getData();
@@ -364,6 +376,7 @@ public class ManagerPTFragment extends Fragment implements SwipeRefreshLayout.On
         };
         loading.execute();
     }
+
     public class LoadMoreDataAsyn extends AsyncTask<String, Void, String> {
 
         @Override
@@ -374,7 +387,7 @@ public class ManagerPTFragment extends Fragment implements SwipeRefreshLayout.On
 
         @Override
         protected void onPostExecute(String s) {
-            if(s.equals("done")) {
+            if (s.equals("done")) {
                 ArrayList<PhongTro> dsPhong = new ArrayList<>();
                 DataClient dataClient = new APIUtils().getData();
                 retrofit2.Call<List<PhongTro>> callback = dataClient.getNews(getUserInfo(), trang);
@@ -407,8 +420,8 @@ public class ManagerPTFragment extends Fragment implements SwipeRefreshLayout.On
                         isLoading = false;
                         if (dsPhong.size() == 0) {
                             isnext = false;
-                        }else{
-                            trang ++;
+                        } else {
+                            trang++;
                         }
                         data.addAll(dsPhong);
                         adapter.notifyDataSetChanged();

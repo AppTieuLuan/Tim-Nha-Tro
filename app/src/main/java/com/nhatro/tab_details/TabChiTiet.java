@@ -1072,10 +1072,12 @@ public class TabChiTiet extends Fragment {
             @Override
             public void onClick(View v) {
                 try {
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("fb://profile/" + id));
-                    startActivity(intent);
+                   /* Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("fb://profile/" + id));
+                    startActivity(intent);*/
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("fb://facewebmodal/f?href=" + id)));
                 } catch (Exception e) {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.facebook.com/" + id)));
+                    //startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.facebook.com/" + id)));
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(id)));
                 }
             }
         });

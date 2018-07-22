@@ -41,6 +41,7 @@ public class TinTimPhong implements Serializable {
     private String qh;
     private String tentp;
 
+
     public String getTentp() {
         return tentp;
     }

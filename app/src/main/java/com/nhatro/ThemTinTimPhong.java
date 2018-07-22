@@ -3,6 +3,7 @@ package com.nhatro;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
@@ -13,6 +14,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
@@ -35,6 +37,7 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.gson.Gson;
 import com.nhatro.DAL.DAL_TinTimPhong;
 import com.nhatro.adapter.AdapterRecyclerViewChonQuan;
 import com.nhatro.adapter.ExpandableHeightGridView;
@@ -45,6 +48,7 @@ import com.nhatro.model.Item_Grid_Facilities;
 import com.nhatro.model.QuanHuyen;
 import com.nhatro.model.TinTimPhong;
 import com.nhatro.model.TinhTP;
+import com.nhatro.model.User;
 import com.nhatro.sqlite.SQLite_QuanHuyen;
 import com.nhatro.sqlite.SQLite_TinhTP;
 
@@ -90,7 +94,7 @@ public class ThemTinTimPhong extends AppCompatActivity implements OnMapReadyCall
     ThemTinTimPhong.mHadler mHadler;
     Toast toastError;
 
-    EditText valueTieuDe, valueKV, edtNhapBl;
+    EditText valueTieuDe, valueKV, edtNhapBl, valueHT, valueSDT, valueFB;
     RadioButton checkPhongTro, checkNhaNguyenCan, checkTimOGhep, radCa2, radNam, radNu;
 
 
@@ -103,6 +107,8 @@ public class ThemTinTimPhong extends AppCompatActivity implements OnMapReadyCall
     int key;
     String iditem = "";
 
+    User usDN;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,6 +116,8 @@ public class ThemTinTimPhong extends AppCompatActivity implements OnMapReadyCall
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Thêm tin mới");
         idtp = 0;
+        usDN = new User();
+
         lstChonQH = new ArrayList<>();
         radCa2 = findViewById(R.id.radCa2);
         radCa2.setChecked(true);
@@ -131,6 +139,10 @@ public class ThemTinTimPhong extends AppCompatActivity implements OnMapReadyCall
         layoutButtonOK = findViewById(R.id.layoutButtonOK);
         checkNhanTB = findViewById(R.id.checkNhanTB);
         checkTD = findViewById(R.id.checkTD);
+        valueFB = findViewById(R.id.valueFB);
+        valueHT = findViewById(R.id.valueHT);
+        valueSDT = findViewById(R.id.valueSDT);
+        getUser();
         sqLite_quanHuyen = new SQLite_QuanHuyen(ThemTinTimPhong.this);
         quanHuyens = new ArrayList<>();
 
@@ -200,6 +212,14 @@ public class ThemTinTimPhong extends AppCompatActivity implements OnMapReadyCall
         adapterRecyclerViewChonQuan = new AdapterRecyclerViewChonQuan(quanHuyens, getApplicationContext());
         recycleQH.setAdapter(adapterRecyclerViewChonQuan);
 
+        /*recycleQH.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                clearFocus();
+                return false;
+            }
+        });*/
+
         mapView.onCreate(savedInstanceState);
         mapView.onResume();
         mapView.getMapAsync(this);
@@ -207,6 +227,10 @@ public class ThemTinTimPhong extends AppCompatActivity implements OnMapReadyCall
         setupGridTienNghi();
         setUpbuttonOK();
         setUpCheck();
+
+        valueSDT.setText(usDN.getSodt());
+        valueHT.setText(usDN.getHoten());
+        valueFB.setText(usDN.getFacebook());
 
         if (key == 2) {
             iditem = bundle.getString("iditem");
@@ -304,9 +328,14 @@ public class ThemTinTimPhong extends AppCompatActivity implements OnMapReadyCall
         /*adapterRecyclerViewChonQuan = new AdapterRecyclerViewChonQuan(quanHuyens, getApplicationContext());
         recycleQH.setAdapter(adapterRecyclerViewChonQuan);*/
 
-        valueKV.setText(thongTinTimPhong.getMotathem());
+        valueKV.setText(thongTinTimPhong.getKhuvuc());
         setUpGridTienNghiEdit();
         edtNhapBl.setText(thongTinTimPhong.getMotathem());
+
+
+        valueSDT.setText(thongTinTimPhong.getSdt());
+        valueHT.setText(thongTinTimPhong.getHoten());
+        valueFB.setText(thongTinTimPhong.getFacebook());
     }
 
     public void setUpGridTienNghiEdit() {
@@ -750,7 +779,8 @@ public class ThemTinTimPhong extends AppCompatActivity implements OnMapReadyCall
                 }
             }
 
-            tinTimPhong.setIduser(1);
+            tinTimPhong.setIduser(Integer.parseInt(usDN.getId()));
+
             tinTimPhong.setTentp(arrTinhTP.get(indexSpnTinh).getTen());
             if (tiennghi.length() > 0) {
                 tiennghi = tiennghi.substring(0, tiennghi.length() - 1);
@@ -779,13 +809,16 @@ public class ThemTinTimPhong extends AppCompatActivity implements OnMapReadyCall
             } else {
                 tinTimPhong.setGiogiac(1);
             }
+            tinTimPhong.setHoten(valueHT.getText().toString());
+            tinTimPhong.setSdt(valueSDT.getText().toString());
+            tinTimPhong.setFacebook(valueFB.getText().toString());
             //boolean kq = false;
             // Xử lý thêm ở đây ở đây
             if (key != 2) {
                 boolean kq;
                 String token = "";
                 DAL_TinTimPhong dal_tinTimPhong = new DAL_TinTimPhong();
-                kq = dal_tinTimPhong.themTinMoi(tinTimPhong,token);
+                kq = dal_tinTimPhong.themTinMoi(tinTimPhong, token);
                 Message message = mHadler.obtainMessage(1, kq);
                 mHadler.sendMessage(message);
             } else {
@@ -829,7 +862,15 @@ public class ThemTinTimPhong extends AppCompatActivity implements OnMapReadyCall
                         showToast("Đánh dấu khu vực muốn tìm trên bản đồ !!");
                         return false;
                     } else {
-
+                        if (valueHT.getText().toString().equals("")) {
+                            showToast("Nhập họ tên người liên lạc");
+                            return false;
+                        } else {
+                            if (valueSDT.getText().toString().equals("")) {
+                                showToast("Nhập số điện thoại liên lạc");
+                                return false;
+                            }
+                        }
                     }
                 }
             }
@@ -853,5 +894,29 @@ public class ThemTinTimPhong extends AppCompatActivity implements OnMapReadyCall
                 checkTimOGhep.setSelected(false);
             }
         });
+    }
+
+    private void getUser() {
+        try {
+            SharedPreferences sharedPreferences = getSharedPreferences("Mydata", Context.MODE_PRIVATE);
+            String user11 = sharedPreferences.getString("MyUser", "");
+            if (user11.equals("") || user11 == null) {
+
+            } else {
+                Gson gsonUser = new Gson();
+
+                usDN = gsonUser.fromJson(user11, User.class);
+            }
+        } catch (Exception e) {
+        }
+    }
+
+    private void clearFocus() {
+        valueTieuDe.clearFocus();
+        valueKV.clearFocus();
+        valueHT.clearFocus();
+        valueSDT.clearFocus();
+        valueFB.clearFocus();
+        edtNhapBl.clearFocus();
     }
 }

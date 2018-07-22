@@ -504,8 +504,146 @@
                     android:layout_height="1dp"
                     android:background="@android:color/darker_gray"
                     app:layout_constraintTop_toBottomOf="@id/gridTienNghi" />
+
                 <TextView
                     app:layout_constraintTop_toBottomOf="@id/divider88"
+                    android:id="@+id/txtThongLL"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/gray2"
+                    android:padding="@dimen/paddingIteminDetailScreen"
+                    android:text="Thông tin liên lạc"
+                    android:textColor="@color/black"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txtHT"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/paddingIteminDetailScreen"
+                    android:paddingEnd="30dp"
+                    android:text="Họ tên"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@id/valueHT"
+                    app:layout_constraintTop_toTopOf="@id/valueHT"
+                    />
+
+                <EditText
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/border_edittext"
+                    android:id="@+id/valueHT"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:padding="8dp"
+                    android:maxLines="1"
+                    android:layout_marginEnd="10dp"
+                    android:hint="* Họ tên"
+                    android:layout_marginStart="85dp"
+                    android:textSize="12sp"
+                    app:layout_constraintTop_toBottomOf="@+id/txtThongLL"
+                    app:layout_constraintStart_toEndOf="@id/txtHT"
+                    />
+
+
+
+                <View
+                    android:layout_marginTop="7dp"
+                    android:id="@+id/divider889"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@android:color/darker_gray"
+                    app:layout_constraintTop_toBottomOf="@id/valueHT" />
+
+
+                <TextView
+                    android:id="@+id/txtSDT"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/paddingIteminDetailScreen"
+                    android:paddingEnd="30dp"
+                    android:text="SĐT"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@id/valueSDT"
+                    app:layout_constraintTop_toTopOf="@id/valueSDT"
+                    />
+
+                <EditText
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/border_edittext"
+                    android:id="@+id/valueSDT"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:padding="8dp"
+                    android:maxLength="11"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:layout_marginEnd="10dp"
+                    android:hint="* Số điện thoại"
+                    android:layout_marginStart="85dp"
+                    android:textSize="12sp"
+                    app:layout_constraintTop_toBottomOf="@+id/divider889"
+                    app:layout_constraintStart_toEndOf="@id/txtSDT"
+                    />
+
+
+
+                <View
+                    android:layout_marginTop="7dp"
+                    android:id="@+id/divider8890"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@android:color/darker_gray"
+                    app:layout_constraintTop_toBottomOf="@id/valueSDT" />
+
+                <TextView
+                    android:id="@+id/txtFB"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/paddingIteminDetailScreen"
+                    android:paddingEnd="30dp"
+                    android:text="Facebook"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@id/valueFB"
+                    app:layout_constraintTop_toTopOf="@id/valueFB"
+                    />
+
+                <EditText
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/border_edittext"
+                    android:id="@+id/valueFB"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:padding="8dp"
+                    android:maxLines="3"
+                    android:layout_marginEnd="10dp"
+                    android:hint="Facebook"
+                    android:layout_marginStart="85dp"
+                    android:textSize="12sp"
+                    app:layout_constraintTop_toBottomOf="@+id/divider8890"
+                    app:layout_constraintStart_toEndOf="@id/txtFB"
+                    />
+
+
+
+                <View
+                    android:layout_marginTop="7dp"
+                    android:id="@+id/divider87"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@android:color/darker_gray"
+                    app:layout_constraintTop_toBottomOf="@id/valueFB" />
+
+                <TextView
+                    app:layout_constraintTop_toBottomOf="@id/divider87"
                     android:id="@+id/txtMoTaThem"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

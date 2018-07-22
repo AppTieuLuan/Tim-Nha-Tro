@@ -248,6 +248,7 @@ public class XemTinTimPhong extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (!isloadings && isnext) {
+                    edtNhapBl.clearFocus();
                     TaiThemBinhLuan getBinhLuans = new TaiThemBinhLuan();
                     getBinhLuans.execute();
                 }
@@ -411,6 +412,8 @@ public class XemTinTimPhong extends AppCompatActivity {
 
     public void setView(TinTimPhong tinTimPhong) {
 
+        txtTen.setText(tinTimPhong.getHoten());
+        txtSoDT.setText(tinTimPhong.getSdt());
         txtTieuDe.setText(tinTimPhong.getTieude());
         if (tinTimPhong.getLoaitin() == 1) {
             valueLoaiNhaO.setText("Tìm nhà trọ.");
@@ -530,6 +533,8 @@ public class XemTinTimPhong extends AppCompatActivity {
             }
         }
         myAdapter.notifyDataSetChanged();
+
+        setClickCall_SMS(tinTimPhong.getSdt(), tinTimPhong.getFacebook());
     }
 
     public void setClickCall_SMS(String sdt, String facebook) {
@@ -560,10 +565,12 @@ public class XemTinTimPhong extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     try {
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("fb://profile/" + facebook));
-                        startActivity(intent);
+                        //Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("fb://profile/" + facebook));
+                        //startActivity(intent);
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("fb://facewebmodal/f?href=" + facebook)));
+
                     } catch (Exception e) {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.facebook.com/" + facebook)));
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(facebook)));
                     }
                 }
             });
@@ -577,6 +584,20 @@ public class XemTinTimPhong extends AppCompatActivity {
                     } catch (ActivityNotFoundException ex) {
                         Toast.makeText(getApplicationContext(), "Oups!Can't open Facebook messenger right now. Please try again later.", Toast.LENGTH_SHORT).show();
                     }
+                }
+            });
+        } else {
+            btnFaceBook.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(getApplicationContext(), "Không có thông tin facebook", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            btnMessenger.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(getApplicationContext(), "Không có thông tin facebook", Toast.LENGTH_SHORT).show();
                 }
             });
         }

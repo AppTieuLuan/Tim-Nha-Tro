@@ -1424,6 +1424,7 @@
 
 
                     <TextView
+                        android:visibility="visible"
                         android:id="@+id/txtFaceBook"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -1433,6 +1434,7 @@
                         app:layout_constraintTop_toBottomOf="@id/line01" />
 
                     <ImageView
+                        android:visibility="visible"
                         android:id="@+id/iconfacebook"
                         android:layout_width="50dp"
                         android:layout_height="20dp"
@@ -1442,6 +1444,7 @@
                         app:layout_constraintTop_toBottomOf="@id/line01" />
 
                     <ImageView
+                        android:visibility="gone"
                         android:id="@+id/iconMessenger"
                         android:layout_width="50dp"
                         android:layout_height="20dp"
@@ -1452,6 +1455,7 @@
                         app:layout_constraintTop_toTopOf="@id/line01" />
 
                     <View
+                        android:visibility="visible"
                         android:id="@+id/line02"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
@@ -1622,6 +1626,7 @@
 
 
                     <TextView
+                        android:visibility="gone"
                         android:id="@+id/txtFaceBookedit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -1632,6 +1637,7 @@
                         app:layout_constraintTop_toTopOf="@id/valuefacebookEdit" />
 
                     <EditText
+                        android:visibility="gone"
                         android:id="@+id/valuefacebookEdit"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -1650,6 +1656,7 @@
 
 
                     <View
+                        android:visibility="gone"
                         android:id="@+id/line02edit"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"

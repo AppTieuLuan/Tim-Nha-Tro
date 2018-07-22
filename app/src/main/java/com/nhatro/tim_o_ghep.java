@@ -5,12 +5,15 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +38,7 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class tim_o_ghep extends Fragment {
+public class tim_o_ghep extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     private ListView listTinTimPhong;
     private List_Tin_Tim_Phong_Adapter list_tin_tim_phong_adapter;
@@ -69,6 +72,7 @@ public class tim_o_ghep extends Fragment {
     com.github.clans.fab.FloatingActionButton iconAdd;
     LinearLayout layoutOverlay;
     User users;
+    SwipeRefreshLayout swipe_refresh_layout;
 
     public tim_o_ghep() {
         // Required empty public constructor
@@ -90,10 +94,11 @@ public class tim_o_ghep extends Fragment {
         iconAdd = v.findViewById(R.id.iconAdd);
         btnBoLoc = v.findViewById(R.id.btnBoLoc);
         layoutOverlay2 = v.findViewById(R.id.layoutOverlay2);
-
+        swipe_refresh_layout = v.findViewById(R.id.swipe_refresh_layout);
         //iconAdd = v.findViewById(R.id.iconAdd);
         loadingData = v.findViewById(R.id.loadingData);
 
+        swipe_refresh_layout.setOnRefreshListener(this);
         data = new ArrayList<>();
         listTinTimPhong = v.findViewById(R.id.listTinTimPhong);
 
@@ -108,12 +113,16 @@ public class tim_o_ghep extends Fragment {
 
             @Override
             public void onScroll(AbsListView absListView, int i, int i1, int i2) {
+
                 if (absListView.getLastVisiblePosition() == i2 - 1 && !dangLoadDL && conDL && first) {
                     //data.add(new PhongTro(9,"1111","Số 1 Võ Văn Ngân, Quận Thủ Đức, TPHCM",1200000,30,10,3,"Nam"));
                     //adapter.notifyDataSetChanged();
-                    dangLoadDL = true;
-                    LoadMoreData loadMoreData = new LoadMoreData();
-                    loadMoreData.execute(locDLTinTimPhong);
+                    if (checkConnection()) {
+                        dangLoadDL = true;
+                        LoadMoreData loadMoreData = new LoadMoreData();
+                        loadMoreData.execute(locDLTinTimPhong);
+                    }
+
                     //lstDanhSach.addFooterView(footerview);
                 }
             }
@@ -122,16 +131,19 @@ public class tim_o_ghep extends Fragment {
         listTinTimPhong.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (!openmenu) {
-                    Intent intent = new Intent(getActivity(), XemTinTimPhong.class);
+                if (checkConnection()) {
+                    if (!openmenu) {
+                        Intent intent = new Intent(getActivity(), XemTinTimPhong.class);
 
-                    Bundle bundle = new Bundle();
-                    String idItem = data.get(position).getId();
-                    bundle.putString("iditem", idItem);
-                    bundle.putString("tieude", data.get(position).getTieude());
-                    intent.putExtra("data", bundle);
-                    getActivity().startActivity(intent);
+                        Bundle bundle = new Bundle();
+                        String idItem = data.get(position).getId();
+                        bundle.putString("iditem", idItem);
+                        bundle.putString("tieude", data.get(position).getTieude());
+                        intent.putExtra("data", bundle);
+                        getActivity().startActivity(intent);
+                    }
                 }
+
             }
         });
 
@@ -188,51 +200,66 @@ public class tim_o_ghep extends Fragment {
         return v;
     }
 
+    public boolean checkConnection() {
+        ConnectivityManager cm = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        if (activeNetwork != null) { // connected to the internet
+            return true;
+        } else {
+            // not connected to the internet
+            Toast.makeText(getContext(), "Lỗi kết nối mạng. Thử lại sau ..", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (data != null) {
             if (resultCode == 1112) {
-                Bundle bundle = data.getBundleExtra("data");
-                idtp = bundle.getInt("idtp");
-                tenTP = bundle.getString("tentp");
-                namnu = bundle.getInt("namnu");
-                gia = bundle.getInt("gia");
-                idqh = bundle.getInt("idqh");
-                chontiennghi = bundle.getBooleanArray("chontiennghi");
-                giogiac = bundle.getInt("giogiac");
-                tinnhanguyencan = bundle.getBoolean("tinnhanguyencan");
-                tinnhatro = bundle.getBoolean("tinnhatro");
-                tinoghep = bundle.getBoolean("tinoghep");
-                String temp1 = "(";
-                if (tinnhatro) {
-                    temp1 = temp1 + "1,";
-                }
-                if (tinoghep) {
-                    temp1 = temp1 + "2,";
-                }
-                if (tinnhanguyencan) {
-                    temp1 = temp1 + "3,";
-                }
-                if (temp1.length() > 1) {
-                    temp1 = temp1.substring(0, temp1.length() - 1);
-                }
+                if (checkConnection()) {
 
-                temp1 = temp1 + ")";
+                    Bundle bundle = data.getBundleExtra("data");
+                    idtp = bundle.getInt("idtp");
+                    tenTP = bundle.getString("tentp");
+                    namnu = bundle.getInt("namnu");
+                    gia = bundle.getInt("gia");
+                    idqh = bundle.getInt("idqh");
+                    chontiennghi = bundle.getBooleanArray("chontiennghi");
+                    giogiac = bundle.getInt("giogiac");
+                    tinnhanguyencan = bundle.getBoolean("tinnhanguyencan");
+                    tinnhatro = bundle.getBoolean("tinnhatro");
+                    tinoghep = bundle.getBoolean("tinoghep");
+                    String temp1 = "(";
+                    if (tinnhatro) {
+                        temp1 = temp1 + "1,";
+                    }
+                    if (tinoghep) {
+                        temp1 = temp1 + "2,";
+                    }
+                    if (tinnhanguyencan) {
+                        temp1 = temp1 + "3,";
+                    }
+                    if (temp1.length() > 1) {
+                        temp1 = temp1.substring(0, temp1.length() - 1);
+                    }
 
-                locDLTinTimPhong.setIdtp(idtp);
-                locDLTinTimPhong.setIdqh(idqh);
-                locDLTinTimPhong.setDoituong(namnu);
-                locDLTinTimPhong.setGia(gia);
-                locDLTinTimPhong.setGiogiac(giogiac);
-                locDLTinTimPhong.setLoaitin(temp1);
-                locDLTinTimPhong.setTrang(1);
-                locDLTinTimPhong.setTiennghi(bundle.getString("tiennghi"));
+                    temp1 = temp1 + ")";
+
+                    locDLTinTimPhong.setIdtp(idtp);
+                    locDLTinTimPhong.setIdqh(idqh);
+                    locDLTinTimPhong.setDoituong(namnu);
+                    locDLTinTimPhong.setGia(gia);
+                    locDLTinTimPhong.setGiogiac(giogiac);
+                    locDLTinTimPhong.setLoaitin(temp1);
+                    locDLTinTimPhong.setTrang(1);
+                    locDLTinTimPhong.setTiennghi(bundle.getString("tiennghi"));
 
                 /*ThreadData threadData = new ThreadData();
                 threadData.run();*/
-                LoadNewData loadNewData = new LoadNewData();
-                loadNewData.execute(locDLTinTimPhong);
+                    LoadNewData loadNewData = new LoadNewData();
+                    loadNewData.execute(locDLTinTimPhong);
+                }
             }
         }
     }
@@ -244,6 +271,73 @@ public class tim_o_ghep extends Fragment {
         tmp.add(new TinTimPhongItemList(3, "Cần thuê phòng trọ tại quận 7", 1, 1, "Quận 7 / Hồ Chí Mình", 3, "1.500.000 - 1.800.000"));
 */
         return tmp;
+    }
+
+    @Override
+    public void onRefresh() {
+        if (checkConnection()) {
+            trang = 1;
+            locDLTinTimPhong.setTrang(1);
+            LoadNewDataRefresh loadNewDataRefresh = new LoadNewDataRefresh();
+            loadNewDataRefresh.execute(locDLTinTimPhong);
+        } else {
+            swipe_refresh_layout.setRefreshing(false);
+        }
+
+
+    }
+
+    public class LoadNewDataRefresh extends AsyncTask<LocDLTinTimPhong, Void, ArrayList<TinTimPhongItemList>> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            swipe_refresh_layout.setRefreshing(true);
+            dangLoadDL = true;
+            //loadingData.setVisibility(View.VISIBLE);
+            //layoutOverlay2.setVisibility(View.VISIBLE);
+            data.clear();
+            list_tin_tim_phong_adapter.notifyDataSetChanged();
+        }
+
+        @Override
+        protected ArrayList<TinTimPhongItemList> doInBackground(LocDLTinTimPhong... locDLTinTimPhongs) {
+            DAL_TinTimPhong dal_tinTimPhong = new DAL_TinTimPhong();
+            ArrayList<TinTimPhongItemList> tinTimPhongItemLists = new ArrayList<>();
+            tinTimPhongItemLists = dal_tinTimPhong.danhSachTin(locDLTinTimPhongs[0]);
+            return tinTimPhongItemLists;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<TinTimPhongItemList> tinTimPhongItemLists) {
+            super.onPostExecute(tinTimPhongItemLists);
+            swipe_refresh_layout.setRefreshing(false);
+            if (tinTimPhongItemLists == null) {
+                Toast.makeText(getContext(), "Có lỗi xảy ra ... Thử lại sau..", Toast.LENGTH_SHORT).show();
+            } else {
+                if (tinTimPhongItemLists.size() > 0) {
+                    conDL = true;
+                    locDLTinTimPhong.setTrang(2);
+
+                } else {
+                    conDL = false;
+                }
+
+                data.clear();
+                data.addAll(tinTimPhongItemLists);
+                //list_tin_tim_phong_adapter = new List_Tin_Tim_Phong_Adapter(getContext(), R.layout.item_list_tin_tim_phong, data);
+                //listTinTimPhong.setAdapter(list_tin_tim_phong_adapter);
+
+                list_tin_tim_phong_adapter.notifyDataSetChanged();
+                dangLoadDL = false;
+                first = true;
+                //loadingData.setVisibility(View.GONE);
+
+                //layoutOverlay2.setVisibility(View.GONE);
+
+
+            }
+        }
     }
 
     public class LoadNewData extends AsyncTask<LocDLTinTimPhong, Void, ArrayList<TinTimPhongItemList>> {

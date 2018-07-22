@@ -291,7 +291,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
         });
 
 
-
         map.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
             @Override
             public void onCameraIdle() {
@@ -338,8 +337,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
             } else {
                 iconFactory.setStyle(IconGenerator.STYLE_DEFAULT);
             }
-
-
             MarkerOptions markerOptions = new MarkerOptions().
                     icon(BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon(makeCharSequence(String.valueOf(item.get(i).getGia()) + " vnđ")))).
                     position(temp).
@@ -366,13 +363,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
                     IconGenerator icon = new IconGenerator(getContext());
                     icon.setStyle(IconGenerator.STYLE_DEFAULT);
                     tmp.setIcon(BitmapDescriptorFactory.fromBitmap(icon.makeIcon(makeCharSequence(String.valueOf(item.get(indexSelected).getGia()) + " vnđ"))));
-
-
                     for (int i = 0; i < lstMarker.size(); i++) {
                         if (lstMarker.get(i).equals(marker)) {
                             indexSelected = i;
                             selectedMarker = marker;
-
                             Marker tmp2 = lstMarker.get(indexSelected);
                             IconGenerator icon2 = new IconGenerator(getContext());
                             icon2.setStyle(IconGenerator.STYLE_BLUE);
@@ -381,22 +375,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
                         }
                     }
                     recyclerView.smoothScrollToPosition(indexSelected);
-                    //mViewPager.setCurrentItem(indexSelected);
                 }
                 return false;
             }
         });
-        /*CameraPosition cameraPosition = new CameraPosition.Builder()
-                .target(new LatLng(10.85064713, 106.77209787))      // Sets the center of the map to location user
-                .zoom(14)                   // Sets the zoom
-                .build();                   // Creates a CameraPosition from the builder
-        map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));*/
-
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(10.85064713, 106.77209787), 14));
-
-
         drawCircle(new LatLng(10.85064713, 106.77209787), banKinh);
-
         loadData(locDL);
     }
 

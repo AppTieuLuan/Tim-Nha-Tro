@@ -353,8 +353,6 @@ public class TabBinhLuan extends Fragment {
         protected String doInBackground(BinhLuan... binhLuans) {
             BinhLuans bl = new BinhLuans();
             String rs = bl.themBL(binhLuans[0], 1);
-
-
             return rs;
         }
 

@@ -50,6 +50,9 @@ public class DAL_TinTimPhong {
         args.add(new BasicNameValuePair("khuvuc", String.valueOf(tinTimPhong.getKhuvuc())));
         args.add(new BasicNameValuePair("qh", tinTimPhong.getQh()));
         args.add(new BasicNameValuePair("token", token));
+        args.add(new BasicNameValuePair("sdt", tinTimPhong.getSdt()));
+        args.add(new BasicNameValuePair("hoten", tinTimPhong.getHoten()));
+        args.add(new BasicNameValuePair("fb", tinTimPhong.getFacebook()));
         // Lấy đối tượng JSON
         MyService jsonParser = new MyService();
 
@@ -134,6 +137,7 @@ public class DAL_TinTimPhong {
         MyService jsonParser = new MyService();
 
         String json = jsonParser.callService(URL_NEW, MyService.POST, args);
+        Log.d("TTTP", json);
         if (json != null) {
             try {
                 JSONObject jsonObject = new JSONObject(json);
@@ -181,30 +185,39 @@ public class DAL_TinTimPhong {
         String URL_NEW = variable.getWebservice() + "capNhatTinTimPhong.php";
 
         String sql = "";
+        String sql2 = "";
         if (!tinTimPhong.getTieude().equals(t1.getTieude())) {
             sql = sql + "tieude = '" + tinTimPhong.getTieude() + "',";
+            sql2 = sql2 + "tieude = '" + tinTimPhong.getTieude() + "',";
         }
         if (tinTimPhong.getLoaitin() != t1.getLoaitin()) {
             sql = sql + " loaitin = " + tinTimPhong.getLoaitin() + ",";
+            sql2 = sql2 + "loaitin = '" + tinTimPhong.getLoaitin() + "',";
         }
         if (tinTimPhong.getSonguoimin() != t1.getSonguoimin()) {
             sql = sql + " songuoimin = " + tinTimPhong.getSonguoimin() + ",";
+            sql2 = sql2 + " songuoimin = " + tinTimPhong.getSonguoimin() + ",";
         }
         if (tinTimPhong.getSonguoimax() != t1.getSonguoimax()) {
             sql = sql + " songuoimax = " + tinTimPhong.getSonguoimax() + ",";
+            sql2 = sql2 + " songuoimax = " + tinTimPhong.getSonguoimax() + ",";
         }
 
         if (tinTimPhong.getGiamin() != t1.getGiamin()) {
             sql = sql + " giamin = " + tinTimPhong.getGiamin() + ",";
+            sql2 = sql2 + " giamin = " + tinTimPhong.getGiamin() + ",";
         }
         if (tinTimPhong.getGiamax() != t1.getGiamax()) {
             sql = sql + " giamax = " + tinTimPhong.getGiamax() + ",";
+            sql2 = sql2 + " giamax = " + tinTimPhong.getGiamax() + ",";
         }
         if (tinTimPhong.getGioitinh() != t1.getGioitinh()) {
             sql = sql + " gioitinh = " + tinTimPhong.getGioitinh() + ",";
+            sql2 = sql2 + " gioitinh = " + tinTimPhong.getGioitinh() + ",";
         }
         if (tinTimPhong.getGiogiac() != t1.getGiogiac()) {
             sql = sql + " giogiac = " + tinTimPhong.getGiogiac() + ",";
+            sql2 = sql2 + " giogiac = " + tinTimPhong.getGiogiac() + ",";
         }
         if (tinTimPhong.getIdtp() != t1.getIdtp()) {
             sql = sql + " idtp = " + tinTimPhong.getIdtp() + ",";
@@ -220,19 +233,35 @@ public class DAL_TinTimPhong {
 
         if (tinTimPhong.getLat() != t1.getLat()) {
             sql = sql + " lat = " + tinTimPhong.getLat() + ",";
+            sql2 = sql2 + " dangkythongbao.lat = " + tinTimPhong.getLat() + ",";
         }
         if (tinTimPhong.getLng() != t1.getLng()) {
             sql = sql + " tintimphong.lng = " + tinTimPhong.getLng() + ",";
+            sql2 = sql2 + " dangkythongbao.lng = " + tinTimPhong.getLng() + ",";
         }
         if (tinTimPhong.getBankinh() != t1.getBankinh()) {
             sql = sql + " bankinh = " + tinTimPhong.getBankinh() + ",";
+            sql2 = sql2 + " bankinh = " + tinTimPhong.getBankinh() + ",";
         }
         if (!tinTimPhong.getTiennghi().equals(t1.getTiennghi())) {
             sql = sql + " tiennghi = '" + tinTimPhong.getTiennghi() + "',";
+            sql2 = sql2 + " tiennghi = '" + tinTimPhong.getTiennghi() + "',";
         }
 
         if (!tinTimPhong.getMotathem().equals(t1.getMotathem())) {
             sql = sql + " motathem = '" + tinTimPhong.getMotathem() + "',";
+        }
+        if (!tinTimPhong.getHoten().equals(t1.getHoten())) {
+            sql = sql + " hoten = '" + tinTimPhong.getHoten() + "',";
+        }
+        if (!tinTimPhong.getSdt().equals(t1.getSdt())) {
+            sql = sql + " sdt = '" + tinTimPhong.getSdt() + "',";
+        }
+        if (!tinTimPhong.getFacebook().equals(t1.getFacebook())) {
+            sql = sql + " facebook = '" + tinTimPhong.getFacebook() + "',";
+        }
+        if (!tinTimPhong.getKhuvuc().equals(t1.getKhuvuc())) {
+            sql = sql + " khuvuc = '" + tinTimPhong.getKhuvuc() + "',";
         }
 
         if (sql.equals("")) {
@@ -240,14 +269,18 @@ public class DAL_TinTimPhong {
         }
         if (sql.length() > 0) {
             sql = sql.substring(0, sql.length() - 1);
+            sql2 = sql2.substring(0, sql2.length() - 1);
         }
 
         sql = sql + " where id = '" + tinTimPhong.getId() + "'";
+        sql2 = sql2 + " where idtintuc = '" + tinTimPhong.getId() + "'";
+
         String query = "update tintimphong set " + sql;
+        String query2 = "update dangkythongbao set " + sql2;
         List<NameValuePair> args = new ArrayList<NameValuePair>();
 
         args.add(new BasicNameValuePair("query", query));
-
+        args.add(new BasicNameValuePair("query2", query2));
         MyService jsonParser = new MyService();
 
         String json = jsonParser.makeService(URL_NEW, MyService.POST, args);

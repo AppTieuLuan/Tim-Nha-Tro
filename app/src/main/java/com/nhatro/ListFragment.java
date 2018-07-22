@@ -242,6 +242,8 @@ public class ListFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     @Override
     public void onRefresh() {
         locDL.setTrang(1);
+        isnext = true;
+        isLoading = false;
         SharedPreferences pre = getActivity().getSharedPreferences("Mydata", MODE_PRIVATE);
         String user = pre.getString("MyUser", "");
 

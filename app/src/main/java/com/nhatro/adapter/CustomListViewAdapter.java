@@ -110,8 +110,6 @@ public class CustomListViewAdapter extends BaseAdapter {
                 sex.setText("Nữ");
             }
         }
-
-
         if (pt.isDaluu()) {
             imgSave.setColorFilter(Color.parseColor("#008efc"));
         } else {

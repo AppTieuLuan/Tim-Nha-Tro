@@ -69,7 +69,7 @@ public class NotifyFragment extends Fragment implements SwipeRefreshLayout.OnRef
         LayoutInflater inflaters = getLayoutInflater();
 
         findView(v);
-        footerTaiThem = (ViewGroup) inflater.inflate(R.layout.footer_list_view_binh_luan_tai_them, listView, false);
+        footerTaiThem = (ViewGroup) inflater.inflate(R.layout.footer_tai_them_tb, listView, false);
         footerLoadMore = (ViewGroup) inflater.inflate(R.layout.footer_load_more_bl, listView, false);
         listView.addFooterView(footerTaiThem);
         getUserInfo();
